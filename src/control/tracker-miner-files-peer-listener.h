@@ -54,14 +54,9 @@ void     tracker_miner_files_peer_listener_add_watch    (TrackerMinerFilesPeerLi
                                                          GFile                         *file,
                                                          const gchar * const           *graphs,
                                                          TrackerIndexLocationFlags      flags);
-void     tracker_miner_files_peer_listener_remove_watch (TrackerMinerFilesPeerListener *listener,
-                                                         const gchar                   *dbus_name,
-                                                         GFile                         *file);
 
 void     tracker_miner_files_peer_listener_remove_dbus_name (TrackerMinerFilesPeerListener *listener,
                                                              const gchar                   *dbus_name);
-void     tracker_miner_files_peer_listener_remove_file      (TrackerMinerFilesPeerListener *listener,
-                                                             GFile                         *file);
 gboolean tracker_miner_files_peer_listener_is_file_watched  (TrackerMinerFilesPeerListener *listener,
                                                              GFile                         *file);
 
