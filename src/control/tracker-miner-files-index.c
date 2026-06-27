@@ -26,13 +26,6 @@
 #include "tracker-miner-files-index.h"
 #include "tracker-miner-files-peer-listener.h"
 
-/* If defined, then a file provided to be indexed MUST be a child in
- * an configured path. if undefined, any file can be indexed, however
- * it is up to applications to maintain files outside the configured
- * locations.
- */
-#undef REQUIRE_LOCATION_IN_CONFIG
-
 struct _TrackerMinerFilesIndex {
 	GObject parent_instance;
 };

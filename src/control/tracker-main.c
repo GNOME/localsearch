@@ -48,12 +48,6 @@
 #define DBUS_NAME_PREFIX "org.freedesktop.LocalSearch3"
 #define DBUS_NAME_LEGACY_PREFIX "org.freedesktop.Tracker3.Miner.Files"
 
-#define SECONDS_PER_DAY 60 * 60 * 24
-
-#define DBUS_NAME_SUFFIX "Tracker3.Miner.Files"
-#define DBUS_PATH "/org/freedesktop/Tracker3/Miner/Files"
-#define LOCALE_FILENAME "locale-for-miner-apps.txt"
-
 static gboolean version;
 
 static GOptionEntry entries[] = {
