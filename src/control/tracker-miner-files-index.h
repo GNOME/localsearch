@@ -24,26 +24,13 @@
 
 G_BEGIN_DECLS
 
-#define TRACKER_TYPE_MINER_FILES_INDEX            (tracker_miner_files_index_get_type ())
-#define TRACKER_MINER_FILES_INDEX(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), TRACKER_TYPE_MINER_FILES_INDEX, TrackerMinerFilesIndex))
-#define TRACKER_MINER_FILES_INDEX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), TRACKER_TYPE_DBUS_MINER_FILES_INDEX, TrackerMinerFilesIndexClass))
-#define TRACKER_IS_MINER_FILES_INDEX(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), TRACKER_TYPE_MINER_FILES_INDEX))
-#define TRACKER_IS_MINER_FILES_INDEX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRACKER_TYPE_MINER_FILES_INDEX))
-#define TRACKER_MINER_FILES_INDEX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), TRACKER_TYPE_MINER_FILES_INDEX, TrackerMinerFilesIndexClass))
+#define TRACKER_TYPE_MINER_FILES_INDEX (tracker_miner_files_index_get_type ())
+G_DECLARE_FINAL_TYPE (TrackerMinerFilesIndex,
+                      tracker_miner_files_index,
+                      TRACKER, MINER_FILES_INDEX,
+                      GObject)
 
-typedef struct TrackerMinerFilesIndex TrackerMinerFilesIndex;
-typedef struct TrackerMinerFilesIndexClass TrackerMinerFilesIndexClass;
-
-struct TrackerMinerFilesIndex {
-	GObject parent;
-};
-
-struct TrackerMinerFilesIndexClass {
-	GObjectClass parent;
-};
-
-GType                   tracker_miner_files_index_get_type (void);
-TrackerMinerFilesIndex *tracker_miner_files_index_new      (void);
+TrackerMinerFilesIndex *tracker_miner_files_index_new (void);
 
 G_END_DECLS
 

@@ -289,13 +289,13 @@ unwatch_file (TrackerMinerFilesPeerListener *listener,
               GFile                         *file)
 {
 	TrackerMinerFilesPeerListenerPrivate *priv;
+	g_autoptr (GFile) f = NULL;
 
 	priv = tracker_miner_files_peer_listener_get_instance_private (listener);
 
-	g_object_ref (file);
-	g_hash_table_remove (priv->file_peers, file);
-	g_signal_emit (listener, signals[UNWATCH_FILE], 0, file);
-	g_object_unref (file);
+	f = g_object_ref (file);
+	g_hash_table_remove (priv->file_peers, f);
+	g_signal_emit (listener, signals[UNWATCH_FILE], 0, f);
 }
 
 static void

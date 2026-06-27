@@ -33,6 +33,10 @@
  */
 #undef REQUIRE_LOCATION_IN_CONFIG
 
+struct _TrackerMinerFilesIndex {
+	GObject parent_instance;
+};
+
 typedef struct {
 	TrackerMinerFilesPeerListener *peer_listener;
 	TrackerDBusMinerFilesIndex *skeleton;
@@ -117,10 +121,7 @@ index_finalize (GObject *object)
 	g_object_unref (priv->skeleton);
 	g_object_unref (priv->proxy_skeleton);
 
-	if (priv->d_connection) {
-		g_object_unref (priv->d_connection);
-	}
-
+	g_clear_object (&priv->d_connection);
 	g_clear_object (&priv->peer_listener);
 	g_array_unref (priv->indexed_files);
 	g_free (priv->full_path);
@@ -175,7 +176,7 @@ tracker_miner_files_index_handle_index_location (TrackerDBusMinerFilesIndex *ske
 	TrackerMinerFilesIndexPrivate *priv;
 	TrackerDBusRequest *request;
 	TrackerIndexLocationFlags index_flags;
-	GFile *file;
+	g_autoptr (GFile) file = NULL;
 
 	priv = TRACKER_MINER_FILES_INDEX_GET_PRIVATE (index);
 
@@ -198,8 +199,6 @@ tracker_miner_files_index_handle_index_location (TrackerDBusMinerFilesIndex *ske
 	tracker_dbus_request_end (request, NULL);
 	g_dbus_method_invocation_return_value (invocation, NULL);
 
-	g_object_unref (file);
-
 	return TRUE;
 }
 
@@ -210,7 +209,7 @@ peer_listener_unwatch_file (TrackerMinerFilesPeerListener *listener,
 {
 	TrackerMinerFilesIndex *index = user_data;
 	TrackerMinerFilesIndexPrivate *priv = TRACKER_MINER_FILES_INDEX_GET_PRIVATE (index);
-	gchar *uri;
+	g_autofree char *uri = NULL;
 	gint i;
 
 	uri = g_file_get_uri (file);
@@ -274,23 +273,21 @@ tracker_miner_files_index_init (TrackerMinerFilesIndex *object)
 TrackerMinerFilesIndex *
 tracker_miner_files_index_new (void)
 {
-	GObject *miner;
+	g_autoptr (TrackerMinerFilesIndex) files_index = NULL;
 	TrackerMinerFilesIndexPrivate *priv;
-	gchar *full_path;
-	GError *error = NULL;
+	g_autofree char *full_path = NULL;
+	g_autoptr (GError) error = NULL;
 
-	miner = g_object_new (TRACKER_TYPE_MINER_FILES_INDEX,
-	                      NULL);
+	files_index = g_object_new (TRACKER_TYPE_MINER_FILES_INDEX,
+	                            NULL);
 
-	priv = TRACKER_MINER_FILES_INDEX_GET_PRIVATE (miner);
+	priv = TRACKER_MINER_FILES_INDEX_GET_PRIVATE (files_index);
 
 	priv->d_connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
 
 	if (!priv->d_connection) {
 		g_critical ("Could not connect to the D-Bus session bus, %s",
 		            error ? error->message : "no error given.");
-		g_clear_error (&error);
-		g_object_unref (miner);
 		return NULL;
 	}
 
@@ -299,7 +296,7 @@ tracker_miner_files_index_new (void)
 
 	g_debug ("Registering D-Bus object...");
 	g_debug ("  Path:'%s'", full_path);
-	g_debug ("  Object Type:'%s'", G_OBJECT_TYPE_NAME (miner));
+	g_debug ("  Object Type:'%s'", G_OBJECT_TYPE_NAME (files_index));
 
 	if (!g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (priv->skeleton),
 	                                       priv->d_connection,
@@ -308,8 +305,6 @@ tracker_miner_files_index_new (void)
 		g_critical ("Could not register the D-Bus object %s, %s",
 		            full_path,
 		            error ? error->message : "no error given.");
-		g_clear_error (&error);
-		g_object_unref (miner);
 		return NULL;
 	}
 
@@ -320,8 +315,6 @@ tracker_miner_files_index_new (void)
 		g_critical ("Could not register the D-Bus object %s, %s",
 		            TRACKER_MINER_DBUS_NAME_PREFIX "Files.Proxy",
 		            error ? error->message : "no error given.");
-		g_clear_error (&error);
-		g_object_unref (miner);
 		return NULL;
 	}
 
@@ -329,9 +322,9 @@ tracker_miner_files_index_new (void)
 
 	priv->peer_listener = tracker_miner_files_peer_listener_new (priv->d_connection);
 	g_signal_connect (priv->peer_listener, "unwatch-file",
-	                  G_CALLBACK (peer_listener_unwatch_file), miner);
+	                  G_CALLBACK (peer_listener_unwatch_file), files_index);
 	g_signal_connect (priv->peer_listener, "graphs-changed",
-	                  G_CALLBACK (peer_listener_graphs_changed), miner);
+	                  G_CALLBACK (peer_listener_graphs_changed), files_index);
 
-	return (TrackerMinerFilesIndex *) miner;
+	return g_steal_pointer (&files_index);
 }

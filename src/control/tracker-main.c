@@ -114,10 +114,10 @@ files_index_close_cb (TrackerMinerFilesIndex *index,
 int
 main (gint argc, gchar *argv[])
 {
-	GOptionContext *context;
-	GError *error = NULL;
-	GDBusConnection *connection;
-	TrackerMinerFilesIndex *index;
+	g_autoptr (GOptionContext) context = NULL;
+	g_autoptr (GError) error = NULL;
+	g_autoptr (GDBusConnection) connection = NULL;
+	g_autoptr (TrackerMinerFilesIndex) index = NULL;
 
 	main_loop = NULL;
 
@@ -137,11 +137,9 @@ main (gint argc, gchar *argv[])
 
 	g_option_context_add_main_entries (context, entries, NULL);
 	g_option_context_parse (context, &argc, &argv, &error);
-	g_option_context_free (context);
 
 	if (error) {
 		g_printerr ("%s\n", error->message);
-		g_error_free (error);
 		return EXIT_FAILURE;
 	}
 
@@ -154,7 +152,6 @@ main (gint argc, gchar *argv[])
 	if (error) {
 		g_critical ("Could not create DBus connection: %s\n",
 		            error->message);
-		g_error_free (error);
 		return EXIT_FAILURE;
 	}
 
@@ -170,7 +167,6 @@ main (gint argc, gchar *argv[])
 	                                &error)) {
 		g_critical ("Could not request DBus name: %s",
 		            error->message);
-		g_error_free (error);
 		return EXIT_FAILURE;
 	}
 
@@ -179,23 +175,16 @@ main (gint argc, gchar *argv[])
 	                                &error)) {
 		g_critical ("Could not request DBus name: %s",
 		            error->message);
-		g_error_free (error);
 		return EXIT_FAILURE;
 	}
 
 	initialize_signal_handler ();
 
-	/* Go, go, go! */
 	g_main_loop_run (main_loop);
 
 	g_debug ("Shutdown started");
 
 	g_main_loop_unref (main_loop);
-
-	g_object_unref (connection);
-	g_object_unref (index);
-
-	g_print ("\nOK\n\n");
 
 	return EXIT_SUCCESS;
 }
