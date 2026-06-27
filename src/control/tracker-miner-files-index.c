@@ -48,11 +48,6 @@ typedef struct {
 } TrackerMinerFilesIndexPrivate;
 
 enum {
-	PROP_0,
-	PROP_FILES_MINER
-};
-
-enum {
 	CLOSE,
 	N_SIGNALS
 };
