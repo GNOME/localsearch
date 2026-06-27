@@ -45,6 +45,9 @@
 	"\n" \
 	"  http://www.gnu.org/licenses/gpl.txt\n"
 
+#define DBUS_NAME_PREFIX "org.freedesktop.LocalSearch3"
+#define DBUS_NAME_LEGACY_PREFIX "org.freedesktop.Tracker3.Miner.Files"
+
 #define SECONDS_PER_DAY 60 * 60 * 24
 
 #define DBUS_NAME_SUFFIX "Tracker3.Miner.Files"
@@ -85,6 +88,14 @@ files_index_close_cb (TrackerMinerFilesIndex *index,
 {
 	g_debug ("No further watched folders, closing");
 	g_main_loop_quit (main_loop);
+}
+
+static void
+name_lost_cb (GDBusConnection *connection,
+              const char      *name,
+              gpointer         user_data)
+{
+	g_main_loop_quit (user_data);
 }
 
 int
@@ -136,22 +147,22 @@ main (gint argc, gchar *argv[])
 	g_signal_connect (index, "close",
 	                  G_CALLBACK (files_index_close_cb), main_loop);
 
-	/* Request DBus name */
-	if (!tracker_dbus_request_name (connection,
-	                                "org.freedesktop.Tracker3.Miner.Files.Control",
-	                                &error)) {
-		g_critical ("Could not request DBus name: %s",
-		            error->message);
-		return EXIT_FAILURE;
-	}
+	/* Request DBus names */
+	g_bus_own_name_on_connection (connection,
+	                              DBUS_NAME_PREFIX ".Control",
+	                              G_BUS_NAME_OWNER_FLAGS_NONE,
+	                              NULL,
+	                              name_lost_cb,
+	                              main_loop,
+	                              NULL);
 
-	if (!tracker_dbus_request_name (connection,
-	                                "org.freedesktop.LocalSearch3.Control",
-	                                &error)) {
-		g_critical ("Could not request DBus name: %s",
-		            error->message);
-		return EXIT_FAILURE;
-	}
+	g_bus_own_name_on_connection (connection,
+	                              DBUS_NAME_LEGACY_PREFIX ".Control",
+	                              G_BUS_NAME_OWNER_FLAGS_NONE,
+	                              NULL,
+	                              name_lost_cb,
+	                              main_loop,
+	                              NULL);
 
 	initialize_signal_handler (main_loop);
 
