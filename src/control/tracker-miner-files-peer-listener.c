@@ -30,8 +30,12 @@
 #include "tracker-miner-files-peer-listener.h"
 
 enum {
-	PROP_CONNECTION = 1
+	PROP_0,
+	PROP_CONNECTION,
+	N_PROPS,
 };
+
+static GParamSpec *props[N_PROPS] = { 0, };
 
 enum {
 	WATCH_FILE,
@@ -205,43 +209,21 @@ tracker_miner_files_peer_listener_set_property (GObject      *object,
 }
 
 static void
-tracker_miner_files_peer_listener_get_property (GObject    *object,
-                                                guint       prop_id,
-                                                GValue     *value,
-                                                GParamSpec *pspec)
-{
-	TrackerMinerFilesPeerListenerPrivate *priv;
-	TrackerMinerFilesPeerListener *listener;
-
-	listener = TRACKER_MINER_FILES_PEER_LISTENER (object);
-	priv = tracker_miner_files_peer_listener_get_instance_private (listener);
-
-	switch (prop_id) {
-	case PROP_CONNECTION:
-		g_value_set_object (value, priv->d_connection);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-		break;
-	}
-}
-
-static void
 tracker_miner_files_peer_listener_class_init (TrackerMinerFilesPeerListenerClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	object_class->finalize = tracker_miner_files_peer_listener_finalize;
 	object_class->set_property = tracker_miner_files_peer_listener_set_property;
-	object_class->get_property = tracker_miner_files_peer_listener_get_property;
 
-	g_object_class_install_property (object_class,
-	                                 PROP_CONNECTION,
-	                                 g_param_spec_object ("connection",
-	                                                      "Connection",
-	                                                      "Connection",
-	                                                      G_TYPE_DBUS_CONNECTION,
-	                                                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+	props[PROP_CONNECTION] =
+		g_param_spec_object ("connection", NULL, NULL,
+		                     G_TYPE_DBUS_CONNECTION,
+		                     G_PARAM_WRITABLE |
+		                     G_PARAM_CONSTRUCT_ONLY |
+		                     G_PARAM_STATIC_STRINGS);
+
+	g_object_class_install_properties (object_class, N_PROPS, props);
 
 	signals[WATCH_FILE] =
 		g_signal_new ("watch-file",
