@@ -51,8 +51,6 @@
 #define DBUS_PATH "/org/freedesktop/Tracker3/Miner/Files"
 #define LOCALE_FILENAME "locale-for-miner-apps.txt"
 
-static GMainLoop *main_loop;
-
 static gboolean version;
 
 static GOptionEntry entries[] = {
@@ -66,40 +64,18 @@ static GOptionEntry entries[] = {
 static gboolean
 signal_handler (gpointer user_data)
 {
-	int signo = GPOINTER_TO_INT (user_data);
+	GMainLoop *loop = user_data;
 
-	static gboolean in_loop = FALSE;
-
-	/* Die if we get re-entrant signals handler calls */
-	if (in_loop) {
-		_exit (EXIT_FAILURE);
-	}
-
-	switch (signo) {
-	case SIGTERM:
-	case SIGINT:
-		in_loop = TRUE;
-		g_main_loop_quit (main_loop);
-
-		/* Fall through */
-	default:
-		if (g_strsignal (signo)) {
-			g_message ("Received signal:%d->'%s'",
-			           signo,
-			           g_strsignal (signo));
-		}
-		break;
-	}
-
-	return G_SOURCE_CONTINUE;
+	g_main_loop_quit (loop);
+	return G_SOURCE_REMOVE;
 }
 
 static void
-initialize_signal_handler (void)
+initialize_signal_handler (GMainLoop *main_loop)
 {
 #ifndef G_OS_WIN32
-	g_unix_signal_add (SIGTERM, signal_handler, GINT_TO_POINTER (SIGTERM));
-	g_unix_signal_add (SIGINT, signal_handler, GINT_TO_POINTER (SIGINT));
+	g_unix_signal_add (SIGTERM, signal_handler, main_loop);
+	g_unix_signal_add (SIGINT, signal_handler, main_loop);
 #endif /* G_OS_WIN32 */
 }
 
@@ -118,8 +94,7 @@ main (gint argc, gchar *argv[])
 	g_autoptr (GError) error = NULL;
 	g_autoptr (GDBusConnection) connection = NULL;
 	g_autoptr (TrackerMinerFilesIndex) index = NULL;
-
-	main_loop = NULL;
+	g_autoptr (GMainLoop) main_loop = NULL;
 
 	setlocale (LC_ALL, "");
 
@@ -178,7 +153,7 @@ main (gint argc, gchar *argv[])
 		return EXIT_FAILURE;
 	}
 
-	initialize_signal_handler ();
+	initialize_signal_handler (main_loop);
 
 	g_main_loop_run (main_loop);
 
