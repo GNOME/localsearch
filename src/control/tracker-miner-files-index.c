@@ -65,37 +65,6 @@ static void     index_finalize            (GObject              *object);
 
 G_DEFINE_TYPE_WITH_PRIVATE(TrackerMinerFilesIndex, tracker_miner_files_index, G_TYPE_OBJECT)
 
-#define TRACKER_MINER_INDEX_ERROR tracker_miner_index_error_quark ()
-
-GQuark tracker_miner_index_error_quark (void);
-
-typedef enum {
-	TRACKER_MINER_INDEX_ERROR_FILE_NOT_FOUND,
-	TRACKER_MINER_INDEX_ERROR_DIRECTORIES_ONLY,
-	TRACKER_MINER_INDEX_ERROR_NOT_ELIGIBLE,
-	TRACKER_MINER_INDEX_N_ERRORS
-} TrackerMinerIndexError;
-
-static const GDBusErrorEntry tracker_miner_index_error_entries[] =
-{
-	{TRACKER_MINER_INDEX_ERROR_FILE_NOT_FOUND, "org.freedesktop.Tracker.Miner.Files.Index.Error.FileNotFound"},
-	{TRACKER_MINER_INDEX_ERROR_DIRECTORIES_ONLY, "org.freedesktop.Tracker.Miner.Files.Index.Error.DirectoriesOnly"},
-	{TRACKER_MINER_INDEX_ERROR_NOT_ELIGIBLE, "org.freedesktop.Tracker.Miner.Files.Index.Error.NotEligible"},
-};
-
-G_STATIC_ASSERT (G_N_ELEMENTS (tracker_miner_index_error_entries) == TRACKER_MINER_INDEX_N_ERRORS);
-
-GQuark
-tracker_miner_index_error_quark (void)
-{
-	static gsize quark = 0;
-	g_dbus_error_register_error_domain ("tracker-miner-index-error-quark",
-	                                    &quark,
-	                                    tracker_miner_index_error_entries,
-	                                    G_N_ELEMENTS (tracker_miner_index_error_entries));
-	return (GQuark) quark;
-}
-
 static void
 tracker_miner_files_index_class_init (TrackerMinerFilesIndexClass *klass)
 {
