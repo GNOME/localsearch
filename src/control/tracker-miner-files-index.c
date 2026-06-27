@@ -45,9 +45,13 @@ enum {
 
 static guint signals[N_SIGNALS] = { 0 };
 
+static void tracker_miner_files_index_initable_iface_init (GInitableIface *iface);
+
 static void     index_finalize            (GObject              *object);
 
-G_DEFINE_TYPE (TrackerMinerFilesIndex, tracker_miner_files_index, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_CODE (TrackerMinerFilesIndex, tracker_miner_files_index, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                tracker_miner_files_index_initable_iface_init))
 
 static void
 tracker_miner_files_index_class_init (TrackerMinerFilesIndexClass *klass)
@@ -213,23 +217,19 @@ tracker_miner_files_index_init (TrackerMinerFilesIndex *index)
 	g_array_set_clear_func (index->indexed_files, string_clear);
 }
 
-TrackerMinerFilesIndex *
-tracker_miner_files_index_new (void)
+static gboolean
+tracker_miner_files_index_initable_init (GInitable     *initable,
+                                         GCancellable  *cancellable,
+                                         GError       **error)
 {
-	g_autoptr (TrackerMinerFilesIndex) files_index = NULL;
+	TrackerMinerFilesIndex *files_index =
+		TRACKER_MINER_FILES_INDEX (initable);
 	g_autofree char *full_path = NULL;
-	g_autoptr (GError) error = NULL;
 
-	files_index = g_object_new (TRACKER_TYPE_MINER_FILES_INDEX,
-	                            NULL);
+	files_index->d_connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, error);
 
-	files_index->d_connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
-
-	if (!files_index->d_connection) {
-		g_critical ("Could not connect to the D-Bus session bus, %s",
-		            error ? error->message : "no error given.");
-		return NULL;
-	}
+	if (!files_index->d_connection)
+		return FALSE;
 
 	/* Register the service name for the miner */
 	full_path = g_strconcat (TRACKER_MINER_DBUS_PATH_PREFIX, "Files/Index", NULL);
@@ -241,22 +241,14 @@ tracker_miner_files_index_new (void)
 	if (!g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (files_index->skeleton),
 	                                       files_index->d_connection,
 	                                       full_path,
-	                                       &error)) {
-		g_critical ("Could not register the D-Bus object %s, %s",
-		            full_path,
-		            error ? error->message : "no error given.");
-		return NULL;
-	}
+	                                       error))
+		return FALSE;
 
 	if (!g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (files_index->proxy_skeleton),
 	                                       files_index->d_connection,
 	                                       "/org/freedesktop/Tracker3/Miner/Files/Proxy",
-	                                       &error)) {
-		g_critical ("Could not register the D-Bus object %s, %s",
-		            TRACKER_MINER_DBUS_NAME_PREFIX "Files.Proxy",
-		            error ? error->message : "no error given.");
-		return NULL;
-	}
+	                                       error))
+		return FALSE;
 
 	files_index->full_path = full_path;
 
@@ -266,5 +258,18 @@ tracker_miner_files_index_new (void)
 	g_signal_connect (files_index->peer_listener, "graphs-changed",
 	                  G_CALLBACK (peer_listener_graphs_changed), files_index);
 
-	return g_steal_pointer (&files_index);
+	return TRUE;
+}
+
+static void
+tracker_miner_files_index_initable_iface_init (GInitableIface *iface)
+{
+	iface->init = tracker_miner_files_index_initable_init;
+}
+
+TrackerMinerFilesIndex *
+tracker_miner_files_index_new (GError **error)
+{
+	return g_initable_new (TRACKER_TYPE_MINER_FILES_INDEX,
+	                       NULL, error, NULL);
 }

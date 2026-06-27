@@ -118,10 +118,8 @@ main (gint argc, gchar *argv[])
 	g_option_context_add_main_entries (context, entries, NULL);
 	g_option_context_parse (context, &argc, &argv, &error);
 
-	if (error) {
-		g_printerr ("%s\n", error->message);
-		return EXIT_FAILURE;
-	}
+	if (error)
+		goto error;
 
 	if (version) {
 		g_print ("\n" ABOUT "\n" LICENSE "\n");
@@ -129,15 +127,15 @@ main (gint argc, gchar *argv[])
 	}
 
 	connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
-	if (error) {
-		g_critical ("Could not create DBus connection: %s\n",
-		            error->message);
-		return EXIT_FAILURE;
-	}
+	if (error)
+		goto error;
 
 	main_loop = g_main_loop_new (NULL, FALSE);
 
-	index = tracker_miner_files_index_new ();
+	index = tracker_miner_files_index_new (&error);
+	if (!index)
+		goto error;
+
 	g_signal_connect (index, "close",
 	                  G_CALLBACK (files_index_close_cb), main_loop);
 
@@ -167,4 +165,7 @@ main (gint argc, gchar *argv[])
 	g_main_loop_unref (main_loop);
 
 	return EXIT_SUCCESS;
+ error:
+	g_printerr ("%s\n", error->message);
+	return EXIT_FAILURE;
 }

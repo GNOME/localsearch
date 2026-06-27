@@ -30,7 +30,7 @@ G_DECLARE_FINAL_TYPE (TrackerMinerFilesIndex,
                       TRACKER, MINER_FILES_INDEX,
                       GObject)
 
-TrackerMinerFilesIndex *tracker_miner_files_index_new (void);
+TrackerMinerFilesIndex * tracker_miner_files_index_new (GError **error);
 
 G_END_DECLS
 
