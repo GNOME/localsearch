@@ -324,8 +324,8 @@ update_directories_from_new_config (TrackerController *controller,
 
 		path = sl->data;
 
-		/* If we are not still in the list, remove the dir */
-		if (!tracker_string_in_gslist (path, new_dirs)) {
+		/* If we are not yet in the list, remove the dir */
+		if (!g_slist_find_custom (new_dirs, path, (GCompareFunc) g_strcmp0)) {
 			g_autoptr (GFile) file = NULL;
 
 			TRACKER_NOTE (CONFIG, g_message ("  Removing directory: '%s'", path));
@@ -366,7 +366,7 @@ update_directories_from_new_config (TrackerController *controller,
 		path = sl->data;
 
 		/* If we are now in the list, add the dir */
-		if (!tracker_string_in_gslist (path, old_dirs)) {
+		if (!g_slist_find_custom (old_dirs, path, (GCompareFunc) g_strcmp0)) {
 			g_autoptr (GFile) file = NULL;
 
 			TRACKER_NOTE (CONFIG, g_message ("  Adding directory:'%s'", path));
@@ -393,7 +393,9 @@ index_recursive_directories_cb (TrackerConfig     *config,
 	                                    TRUE);
 
 	g_slist_free_full (controller->config_recursive_directories, g_free);
-	controller->config_recursive_directories = tracker_gslist_copy_with_string_data (new_dirs);
+	controller->config_recursive_directories = g_slist_copy_deep (new_dirs,
+	                                                              (GCopyFunc) g_strdup,
+	                                                              NULL);
 }
 
 static void
@@ -412,7 +414,9 @@ index_single_directories_cb (TrackerConfig     *config,
 	                                    FALSE);
 
 	g_slist_free_full (controller->config_single_directories, g_free);
-	controller->config_single_directories = tracker_gslist_copy_with_string_data (new_dirs);
+	controller->config_single_directories = g_slist_copy_deep (new_dirs,
+	                                                           (GCopyFunc) g_strdup,
+	                                                           NULL);
 }
 
 static void
@@ -539,7 +543,9 @@ initialize_from_config (TrackerController *controller)
 	TRACKER_NOTE (CONFIG, g_message ("Setting up directories to iterate from config (IndexSingleDirectory)"));
 
 	dirs = tracker_config_get_index_single_directories (controller->config);
-	controller->config_single_directories = tracker_gslist_copy_with_string_data (dirs);
+	controller->config_single_directories = g_slist_copy_deep (dirs,
+	                                                           (GCopyFunc) g_strdup,
+	                                                           NULL);
 
 	for (; dirs; dirs = dirs->next) {
 		g_autoptr (GFile) file = NULL;
@@ -560,7 +566,9 @@ initialize_from_config (TrackerController *controller)
 	TRACKER_NOTE (CONFIG, g_message ("Setting up directories to iterate from config (IndexRecursiveDirectory)"));
 
 	dirs = tracker_config_get_index_recursive_directories (controller->config);
-	controller->config_recursive_directories = tracker_gslist_copy_with_string_data (dirs);
+	controller->config_recursive_directories = g_slist_copy_deep (dirs,
+	                                                              (GCopyFunc) g_strdup,
+	                                                              NULL);
 
 	for (; dirs; dirs = dirs->next) {
 		g_autoptr (GFile) file = NULL;
