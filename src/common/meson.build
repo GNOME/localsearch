@@ -23,9 +23,6 @@ tracker_miners_common_dependencies = [glib, gio, gio_unix, libmath, tracker_spar
 if battery_detection_library_name == 'upower'
   tracker_miners_common_sources += 'tracker-power-upower.c'
   tracker_miners_common_dependencies += upower
-elif battery_detection_library_name == 'hal'
-  tracker_miners_common_sources += 'tracker-power-hal.c'
-  tracker_miners_common_dependencies += hal
 endif
 
 tracker_miners_common_private_dependencies = [charset_library]

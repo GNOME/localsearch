@@ -119,12 +119,6 @@ if battery_detection_library_name == 'upower'
     not_found_message: battery_detection_help)
 
   battery_detection_library = upower
-elif battery_detection_library_name == 'hal'
-  hal = dependency('hal',
-    version: '>= 0.5',
-    not_found_message: battery_detection_help)
-
-  battery_detection_library = hal
 endif
 
 ##########################################
