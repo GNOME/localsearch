@@ -259,13 +259,35 @@ tracker_extract_rules_manager_new (GError **error)
 	                       NULL);
 }
 
+static gboolean
+find_in_patterns (GList      *patterns,
+                  const char *mimetype,
+                  const char *reversed,
+                  int         len)
+{
+	GList *l;
+
+	for (l = patterns; l; l = l->next) {
+#if GLIB_CHECK_VERSION (2, 70, 0)
+		if (g_pattern_spec_match (l->data, len, mimetype, reversed))
+#else
+		if (g_pattern_match (l->data, len, mimetype, reversed))
+#endif
+		{
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
 static GList *
 lookup_rules (TrackerExtractRulesManager *manager,
               const gchar                *mimetype)
 {
+	g_autofree char *reversed = NULL;
 	GList *mimetype_rules = NULL;
 	RuleInfo *info;
-	gchar *reversed;
 	gint len, i;
 
 	if (!manager->rules) {
@@ -286,34 +308,16 @@ lookup_rules (TrackerExtractRulesManager *manager,
 
 	/* Apply the rules! */
 	for (i = 0; i < manager->rules->len; i++) {
-		GList *l;
-		gboolean matched_allow_pattern = FALSE, matched_block_pattern = FALSE;
+		gboolean matched_allow_pattern, matched_block_pattern;
 
 		info = &g_array_index (manager->rules, RuleInfo, i);
 
-		for (l = info->allow_patterns; l; l = l->next) {
-#if GLIB_CHECK_VERSION (2, 70, 0)
-			if (g_pattern_spec_match (l->data, len, mimetype, reversed))
-#else
-			if (g_pattern_match (l->data, len, mimetype, reversed))
-#endif
-			{
-				matched_allow_pattern = TRUE;
-				break;
-			}
-		}
-
-		for (l = info->block_patterns; l; l = l->next) {
-#if GLIB_CHECK_VERSION (2, 70, 0)
-			if (g_pattern_spec_match (l->data, len, mimetype, reversed))
-#else
-			if (g_pattern_match (l->data, len, mimetype, reversed))
-#endif
-			{
-				matched_block_pattern = TRUE;
-				break;
-			}
-		}
+		matched_allow_pattern = find_in_patterns (info->allow_patterns,
+		                                          mimetype, reversed,
+		                                          len);
+		matched_block_pattern = find_in_patterns (info->block_patterns,
+		                                          mimetype, reversed,
+		                                          len);
 
 		if (matched_allow_pattern && !matched_block_pattern) {
 			mimetype_rules = g_list_prepend (mimetype_rules, info);
@@ -324,8 +328,6 @@ lookup_rules (TrackerExtractRulesManager *manager,
 		mimetype_rules = g_list_reverse (mimetype_rules);
 		g_hash_table_insert (manager->mimetype_map, g_strdup (mimetype), mimetype_rules);
 	}
-
-	g_free (reversed);
 
 	return mimetype_rules;
 }
