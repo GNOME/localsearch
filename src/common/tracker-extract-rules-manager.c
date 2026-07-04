@@ -21,13 +21,9 @@
 
 #include <string.h>
 
-#include "tracker-module-manager.h"
+#include "tracker-extract-rules-manager.h"
 
 #include <tracker-common.h>
-
-#define EXTRACTOR_FUNCTION "tracker_extract_get_metadata"
-#define INIT_FUNCTION      "tracker_extract_module_init"
-#define SHUTDOWN_FUNCTION  "tracker_extract_module_shutdown"
 
 typedef struct {
 	const gchar *rule_path;
@@ -39,37 +35,14 @@ typedef struct {
 	gchar *hash;
 } RuleInfo;
 
-typedef struct {
-	GModule *module;
-	TrackerExtractMetadataFunc extract_func;
-	TrackerExtractInitFunc init_func;
-	TrackerExtractShutdownFunc shutdown_func;
-} ModuleInfo;
-
-static gboolean dummy_extract_func (TrackerExtractInfo  *info,
-                                    GError             **error);
-
-static ModuleInfo dummy_module = {
-	NULL, dummy_extract_func, NULL, NULL
-};
-
-static GHashTable *modules = NULL;
 static GHashTable *mimetype_map = NULL;
 static gboolean initialized = FALSE;
 static GArray *rules = NULL;
 
-struct _TrackerMimetypeInfo {
+typedef struct {
 	const GList *rules;
 	const GList *cur;
-	ModuleInfo *module;
-};
-
-static gboolean
-dummy_extract_func (TrackerExtractInfo  *info,
-                    GError             **error)
-{
-	return TRUE;
-}
+} TrackerMimetypeInfo;
 
 static gboolean
 load_extractor_rule (GKeyFile    *key_file,
@@ -155,7 +128,7 @@ load_extractor_rule (GKeyFile    *key_file,
 }
 
 gboolean
-tracker_extract_module_manager_init (void)
+tracker_extract_rules_manager_init (void)
 {
 	const gchar *extractors_dir, *name;
 	GList *files = NULL, *l;
@@ -164,11 +137,6 @@ tracker_extract_module_manager_init (void)
 
 	if (initialized) {
 		return TRUE;
-	}
-
-	if (!g_module_supported ()) {
-		g_error ("Modules are not supported for this platform");
-		return FALSE;
 	}
 
 	extractors_dir = g_getenv ("TRACKER_EXTRACTOR_RULES_DIR");
@@ -303,14 +271,8 @@ lookup_rules (const gchar *mimetype)
 	return mimetype_rules;
 }
 
-/**
- * tracker_extract_module_manager_get_matching_rules:
- * @mimetype: a MIME type string
- *
- * Returns: (transfer none): a list of extract .rule files that support the given type.
- **/
 GList *
-tracker_extract_module_manager_get_matching_rules (const gchar *mimetype)
+tracker_extract_rules_manager_get_matching_rules (const gchar *mimetype)
 {
 	GList *rule_list, *l;
 	GList *rule_path_list = NULL;
@@ -327,7 +289,7 @@ tracker_extract_module_manager_get_matching_rules (const gchar *mimetype)
 }
 
 GStrv
-tracker_extract_module_manager_get_rdf_types (const gchar *mimetype)
+tracker_extract_rules_manager_get_rdf_types (const gchar *mimetype)
 {
 	GList *l, *list;
 	GHashTable *rdf_types;
@@ -336,7 +298,7 @@ tracker_extract_module_manager_get_rdf_types (const gchar *mimetype)
 	gint i;
 
 	if (!initialized &&
-	    !tracker_extract_module_manager_init ()) {
+	    !tracker_extract_rules_manager_init ()) {
 		return NULL;
 	}
 
@@ -377,8 +339,8 @@ tracker_extract_module_manager_get_rdf_types (const gchar *mimetype)
 }
 
 gboolean
-tracker_extract_module_manager_check_fallback_rdf_type (const gchar *mimetype,
-                                                        const gchar *rdf_type)
+tracker_extract_rules_manager_check_fallback_rdf_type (const gchar *mimetype,
+                                                       const gchar *rdf_type)
 {
 	GList *l, *list;
 	gint i;
@@ -387,7 +349,7 @@ tracker_extract_module_manager_check_fallback_rdf_type (const gchar *mimetype,
 	g_return_val_if_fail (rdf_type, FALSE);
 
 	if (!initialized &&
-	    !tracker_extract_module_manager_init ()) {
+	    !tracker_extract_rules_manager_init ()) {
 		return FALSE;
 	}
 
@@ -411,160 +373,35 @@ tracker_extract_module_manager_check_fallback_rdf_type (const gchar *mimetype,
 	return FALSE;
 }
 
-static ModuleInfo *
-load_module (RuleInfo *info)
-{
-	ModuleInfo *module_info = NULL;
-
-	if (!info->module_path) {
-		return &dummy_module;
-	}
-
-	if (modules) {
-		module_info = g_hash_table_lookup (modules, info->module_path);
-	}
-
-	if (!module_info) {
-		GModule *module;
-		GError *init_error = NULL;
-
-		/* Load the module */
-		module = g_module_open (info->module_path, G_MODULE_BIND_LOCAL);
-
-		if (!module) {
-			g_warning ("Could not load module '%s': %s",
-			           info->module_path,
-			           g_module_error ());
-			return NULL;
-		}
-
-		g_module_make_resident (module);
-
-		module_info = g_slice_new0 (ModuleInfo);
-		module_info->module = module;
-
-		if (!g_module_symbol (module, EXTRACTOR_FUNCTION, (gpointer *) &module_info->extract_func)) {
-			g_warning ("Could not load module '%s': Function %s() was not found, is it exported?",
-			           g_module_name (module), EXTRACTOR_FUNCTION);
-			g_slice_free (ModuleInfo, module_info);
-			return NULL;
-		}
-
-		g_module_symbol (module, INIT_FUNCTION, (gpointer *) &module_info->init_func);
-		g_module_symbol (module, SHUTDOWN_FUNCTION, (gpointer *) &module_info->shutdown_func);
-
-		if (module_info->init_func &&
-		    !(module_info->init_func) (&init_error)) {
-			g_critical ("Could not initialize module %s: %s",
-			            g_module_name (module_info->module),
-			            (init_error) ? init_error->message : "No error given");
-
-			g_clear_error (&init_error);
-			g_slice_free (ModuleInfo, module_info);
-			return NULL;
-		}
-
-		/* Add it to the cache */
-		if (G_UNLIKELY (!modules)) {
-			/* Key is an intern string, so
-			 * pointer comparison suffices
-			 */
-			modules = g_hash_table_new (NULL, NULL);
-		}
-
-		g_hash_table_insert (modules, (gpointer) info->module_path, module_info);
-	}
-
-	return module_info;
-}
-
-static gboolean
-initialize_first_module (TrackerMimetypeInfo *info)
-{
-	/* Actually iterates through the list loaded + initialized module */
-	while (info->cur) {
-		info->module = load_module (info->cur->data);
-		if (info->module)
-			return TRUE;
-
-		info->cur = info->cur->next;
-	}
-
-	return FALSE;
-}
-
-/**
- * tracker_extract_module_manager_get_module:
- * @mimetype: a mimetype string
- * @rule_out: (out): Return location for the rule name
- * @extract_func_out: (out): Return location for the extraction function
- *
- * Returns the module, extraction function and rule name for the module
- * that handles @mimetype, or %NULL if there are no modules that handle
- * @mimetype.
- *
- * Returns: (transfer none): (allow-none): #GModule handling the mimetype
- * A #TrackerMimetypeInfo holding the information about the different
- * modules handling @mimetype, or %NULL if no modules handle @mimetype.
- **/
-GModule *
-tracker_extract_module_manager_get_module (const gchar                 *mimetype,
-                                           const gchar                **rule_out,
-                                           TrackerExtractMetadataFunc  *extract_func_out)
-{
-	TrackerMimetypeInfo info = { 0, };
-	GList *mimetype_rules;
-	const gchar *rule = NULL;
-	TrackerExtractMetadataFunc func = NULL;
-	GModule *module = NULL;
-
-	g_return_val_if_fail (mimetype != NULL, NULL);
-
-	mimetype_rules = lookup_rules (mimetype);
-
-	if (!mimetype_rules) {
-		return NULL;
-	}
-
-	info.rules = mimetype_rules;
-	info.cur = info.rules;
-
-	if (initialize_first_module (&info)) {
-		RuleInfo *rule_info = info.cur->data;
-
-		func = info.module->extract_func;
-		module = info.module->module;
-		rule = rule_info->rule_path;
-	}
-
-	if (rule_out)
-		*rule_out = rule;
-	if (extract_func_out)
-		*extract_func_out = func;
-
-	return module;
-}
-
-void
-tracker_module_manager_load_modules (void)
-{
-	RuleInfo *rule_info;
-	guint i;
-
-	g_return_if_fail (initialized == TRUE);
-
-	for (i = 0; i < rules->len; i++) {
-		rule_info = &g_array_index (rules, RuleInfo, i);
-		load_module (rule_info);
-	}
-}
-
-const gchar *
-tracker_extract_module_manager_get_graph (const gchar *mimetype)
+const char *
+tracker_extract_rules_manager_get_module (const gchar *mimetype)
 {
 	GList *l, *list;
 
-	if (!tracker_extract_module_manager_init ()) {
+	g_return_val_if_fail (mimetype != NULL, NULL);
+
+	if (!tracker_extract_rules_manager_init ()) {
+		return NULL;
+	}
+
+	list = lookup_rules (mimetype);
+
+	for (l = list; l; l = l->next) {
+		RuleInfo *r_info = l->data;
+
+		if (r_info->module_path)
+			return r_info->module_path;
+	}
+
+	return NULL;
+}
+
+const gchar *
+tracker_extract_rules_manager_get_graph (const gchar *mimetype)
+{
+	GList *l, *list;
+
+	if (!tracker_extract_rules_manager_init ()) {
 		return NULL;
 	}
 
@@ -581,11 +418,11 @@ tracker_extract_module_manager_get_graph (const gchar *mimetype)
 }
 
 const gchar *
-tracker_extract_module_manager_get_hash (const gchar *mimetype)
+tracker_extract_rules_manager_get_hash (const gchar *mimetype)
 {
 	GList *l, *list;
 
-	if (!tracker_extract_module_manager_init ()) {
+	if (!tracker_extract_rules_manager_init ()) {
 		return NULL;
 	}
 
@@ -599,23 +436,4 @@ tracker_extract_module_manager_get_hash (const gchar *mimetype)
 	}
 
 	return NULL;
-}
-
-void
-tracker_module_manager_shutdown_modules (void)
-{
-	GHashTableIter iter;
-	ModuleInfo *module_info;
-
-	g_return_if_fail (initialized == TRUE);
-
-	if (!modules)
-		return;
-
-	g_hash_table_iter_init (&iter, modules);
-
-	while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &module_info)) {
-		if (module_info->shutdown_func)
-			module_info->shutdown_func ();
-	}
 }

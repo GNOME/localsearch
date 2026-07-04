@@ -308,7 +308,7 @@ tracker_decorator_update (TrackerDecorator   *decorator,
 	batch = tracker_decorator_get_batch (decorator);
 
 	mime_type = tracker_extract_info_get_mimetype (info);
-	hash = tracker_extract_module_manager_get_hash (mime_type);
+	hash = tracker_extract_rules_manager_get_hash (mime_type);
 	graph = tracker_extract_info_get_graph (info);
 	resource = tracker_extract_info_get_resource (info);
 	uri = tracker_extract_info_get_file_id (info);
@@ -347,7 +347,7 @@ tracker_decorator_raise_error (TrackerDecorator *decorator,
 
 		mimetype = g_file_info_get_attribute_string (info,
 		                                             G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
-		hash = tracker_extract_module_manager_get_hash (mimetype);
+		hash = tracker_extract_rules_manager_get_hash (mimetype);
 	}
 
 	batch = tracker_decorator_get_batch (decorator);
@@ -758,7 +758,7 @@ ensure_data (TrackerExtractInfo *info)
 	tracker_resource_add_uri (dataobject, "nie:interpretedAs",
 	                          tracker_resource_get_identifier (resource));
 
-	rdf_types = tracker_extract_module_manager_get_rdf_types (mimetype);
+	rdf_types = tracker_extract_rules_manager_get_rdf_types (mimetype);
 
 	for (i = 0; rdf_types[i] != NULL; i++)
 		tracker_resource_add_uri (resource, "rdf:type", rdf_types[i]);

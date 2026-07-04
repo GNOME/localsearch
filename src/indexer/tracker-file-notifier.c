@@ -406,7 +406,7 @@ update_state (TrackerFileData *data)
 			} else if (data->mimetype) {
 				const gchar *current_hash;
 
-				current_hash = tracker_extract_module_manager_get_hash (data->mimetype);
+				current_hash = tracker_extract_rules_manager_get_hash (data->mimetype);
 
 				if (g_strcmp0 (data->extractor_hash, current_hash) != 0) {
 					data->state = FILE_STATE_EXTRACTOR_UPDATE;

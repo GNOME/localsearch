@@ -360,11 +360,6 @@ do_main (int argc, char *argv[])
 
 	setlocale (LC_ALL, "");
 
-	if (!tracker_extract_module_manager_init ())
-		return EXIT_FAILURE;
-
-	tracker_module_manager_load_modules ();
-
 	/* Set conditions when we use stand alone settings */
 	if (filename) {
 		return run_standalone ();
@@ -449,7 +444,6 @@ do_main (int argc, char *argv[])
 	tracker_miner_stop (TRACKER_MINER (decorator));
 
 	/* Shutdown subsystems */
-	tracker_module_manager_shutdown_modules ();
 	tracker_sparql_connection_close (sparql_connection);
 
 	return EXIT_SUCCESS;

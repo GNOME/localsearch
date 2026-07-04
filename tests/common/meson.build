@@ -2,7 +2,7 @@ libtracker_common_tests = [
     'dbus',
     'extract-info',
     'file-utils',
-    'module-manager',
+    'extract-rules-manager',
     'sched',
     'type-utils',
     'utils',

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
+ * Copyright (C) 2011, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,35 +17,21 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __LIBTRACKER_COMMON_H__
-#define __LIBTRACKER_COMMON_H__
+#pragma once
 
 #include <glib.h>
 
-#ifdef HAVE_POWER
-#include "tracker-power.h"
-#endif
+gboolean tracker_extract_rules_manager_init (void);
 
-#include "tracker-dbus.h"
-#include "tracker-debug.h"
-#include "tracker-enums.h"
-#include "tracker-extract-info.h"
-#include "tracker-file-utils.h"
-#include "tracker-ioprio.h"
+GStrv tracker_extract_rules_manager_get_rdf_types (const char *mimetype);
 
-#ifdef HAVE_LANDLOCK
-#include "tracker-landlock.h"
-#endif
+const char * tracker_extract_rules_manager_get_graph (const char *mimetype);
 
-#include "tracker-miner.h"
-#include "tracker-sched.h"
-#include "tracker-seccomp.h"
-#include "tracker-systemd.h"
-#include "tracker-term-utils.h"
-#include "tracker-type-utils.h"
-#include "tracker-utils.h"
-#include "tracker-locale.h"
-#include "tracker-miners-enum-types.h"
-#include "tracker-extract-rules-manager.h"
+const char * tracker_extract_rules_manager_get_hash  (const char *mimetype);
 
-#endif /* __LIBTRACKER_COMMON_H__ */
+gboolean tracker_extract_rules_manager_check_fallback_rdf_type (const char *mimetype,
+                                                                const char *rdf_type);
+
+const char * tracker_extract_rules_manager_get_module (const char *mimetype);
+
+GList * tracker_extract_rules_manager_get_matching_rules (const char *mimetype);

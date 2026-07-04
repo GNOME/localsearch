@@ -166,6 +166,7 @@ tracker_extract_sources = [
   'tracker-extract-controller.c',
   'tracker-extract-persistence.c',
   'tracker-main.c',
+  'tracker-module-manager.c',
   extract_resources,
 ]
 

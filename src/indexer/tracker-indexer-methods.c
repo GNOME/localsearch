@@ -134,7 +134,7 @@ create_text_file_information_element (TrackerIndexer *indexer,
 	urn = tracker_indexer_get_content_uri (indexer, file);
 	resource = tracker_resource_new (urn);
 
-	rdf_types = tracker_extract_module_manager_get_rdf_types (mime_type);
+	rdf_types = tracker_extract_rules_manager_get_rdf_types (mime_type);
 
 	for (i = 0; rdf_types[i]; i++)
 		tracker_resource_add_uri (resource, "rdf:type", rdf_types[i]);
@@ -239,7 +239,7 @@ tracker_indexer_process_file (TrackerIndexer      *indexer,
 	indexer_add_to_datasource (indexer, file, resource);
 
 	if (mime_type)
-		graph = tracker_extract_module_manager_get_graph (mime_type);
+		graph = tracker_extract_rules_manager_get_graph (mime_type);
 
 	if (mime_type && graph) {
 		TrackerIndexingTree *indexing_tree;
@@ -263,13 +263,13 @@ tracker_indexer_process_file (TrackerIndexer      *indexer,
 
 		indexing_tree = tracker_indexer_get_indexing_tree (indexer);
 
-		if (tracker_extract_module_manager_check_fallback_rdf_type (mime_type,
-		                                                            "nfo:PlainTextDocument") &&
+		if (tracker_extract_rules_manager_check_fallback_rdf_type (mime_type,
+		                                                           "nfo:PlainTextDocument") &&
 		    !tracker_indexing_tree_file_has_allowed_text_extension (indexing_tree, file)) {
 			/* We let disallowed text files have a shallow document nie:InformationElement */
 			information_element = create_text_file_information_element (indexer, file, mime_type);
 			tracker_resource_set_string (resource, "tracker:extractorHash",
-			                             tracker_extract_module_manager_get_hash (mime_type));
+			                             tracker_extract_rules_manager_get_hash (mime_type));
 		} else {
 			/* Insert only the base nie:InformationElement class, for the extractor to get
 			 * the suitable content identifier.
@@ -327,7 +327,7 @@ tracker_indexer_process_file_attributes (TrackerIndexer      *indexer,
 		modified = g_date_time_new_from_unix_utc (0);
 
 	if (mime_type)
-		graph = tracker_extract_module_manager_get_graph (mime_type);
+		graph = tracker_extract_rules_manager_get_graph (mime_type);
 
 	/* Update nfo:fileLastModified */
 	tracker_resource_set_datetime (resource, "nfo:fileLastModified", modified);
@@ -378,7 +378,7 @@ tracker_indexer_finish_directory (TrackerIndexer      *indexer,
 	resource = tracker_resource_new (uri);
 	tracker_resource_add_uri (resource, "rdf:type", "nfo:FileDataObject");
 	tracker_resource_set_string (resource, "tracker:extractorHash",
-	                             tracker_extract_module_manager_get_hash (DIRECTORY_MIME));
+	                             tracker_extract_rules_manager_get_hash (DIRECTORY_MIME));
 
 	folder_resource = create_folder_information_element (indexer, file);
 
