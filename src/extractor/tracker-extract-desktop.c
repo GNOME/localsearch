@@ -77,22 +77,11 @@ static void
 insert_data_from_desktop_file (TrackerResource *resource,
                                const gchar     *metadata_key,
                                GKeyFile        *desktop_file,
-                               const gchar     *key,
-                               const gchar     *locale)
+                               const gchar     *key)
 {
 	gchar *str;
 
-	if (locale) {
-		/* Try to get the key with our desired LANG locale... */
-		str = g_key_file_get_locale_string (desktop_file, GROUP_DESKTOP_ENTRY, key, locale, NULL);
-		/* If our desired locale failed, use the list of LANG locales prepared by GLib
-		 * (will return untranslated string if none of the locales available) */
-		if (!str) {
-			str = g_key_file_get_locale_string (desktop_file, GROUP_DESKTOP_ENTRY, key, NULL, NULL);
-		}
-	} else {
-		str = g_key_file_get_string (desktop_file, GROUP_DESKTOP_ENTRY, key, NULL);
-	}
+	str = g_key_file_get_locale_string (desktop_file, GROUP_DESKTOP_ENTRY, key, NULL, NULL);
 
 	if (str) {
 		tracker_resource_set_string (resource, metadata_key, str);
@@ -112,7 +101,6 @@ process_desktop_file (TrackerResource  *resource,
 	GStrv cats;
 	gsize cats_len;
 	gboolean is_software = FALSE;
-	gchar *lang;
 
 	key_file = get_desktop_key_file (file, &type, &inner_error);
 	if (!key_file) {
@@ -128,25 +116,10 @@ process_desktop_file (TrackerResource  *resource,
 		return TRUE;
 	}
 
-	/* Retrieve LANG locale setup */
-	lang = tracker_locale_get (TRACKER_LOCALE_LANGUAGE);
-
-	/* Try to get the categories with our desired LANG locale... */
-	cats = g_key_file_get_locale_string_list (key_file, GROUP_DESKTOP_ENTRY, "Categories", lang, &cats_len, NULL);
-	if (!cats) {
-		/* If our desired locale failed, use the list of LANG locales prepared by GLib
-		 * (will return untranslated string if none of the locales available) */
-		cats = g_key_file_get_locale_string_list (key_file, GROUP_DESKTOP_ENTRY, "Categories", NULL, &cats_len, NULL);
-	}
+	cats = g_key_file_get_locale_string_list (key_file, GROUP_DESKTOP_ENTRY, "Categories", NULL, &cats_len, NULL);
 
 	if (!name) {
-		/* Try to get the name with our desired LANG locale... */
-		name = g_key_file_get_locale_string (key_file, GROUP_DESKTOP_ENTRY, "Name", lang, NULL);
-		if (!name) {
-			/* If our desired locale failed, use the list of LANG locales prepared by GLib
-			 * (will return untranslated string if none of the locales available) */
-			name = g_key_file_get_locale_string (key_file, GROUP_DESKTOP_ENTRY, "Name", NULL, NULL);
-		}
+		name = g_key_file_get_locale_string (key_file, GROUP_DESKTOP_ENTRY, "Name", NULL, NULL);
 	}
 
 	/* Sanitize name */
@@ -183,7 +156,6 @@ process_desktop_file (TrackerResource  *resource,
 			g_free (type);
 			g_key_file_free (key_file);
 			g_strfreev (cats);
-			g_free (lang);
 			g_free (name);
 			return FALSE;
 		}
@@ -197,7 +169,6 @@ process_desktop_file (TrackerResource  *resource,
 		g_free (type);
 		g_key_file_free (key_file);
 		g_strfreev (cats);
-		g_free (lang);
 		g_free (name);
 		return FALSE;
 	}
@@ -216,13 +187,11 @@ process_desktop_file (TrackerResource  *resource,
 		insert_data_from_desktop_file (resource,
 		                               "nie:comment",
 		                               key_file,
-		                               "Comment",
-		                               lang);
+		                               "Comment");
 		insert_data_from_desktop_file (resource,
 		                               "nfo:softwareCmdLine",
 		                               key_file,
-		                               "Exec",
-		                               lang);
+		                               "Exec");
 
 		icon = g_key_file_get_string (key_file, GROUP_DESKTOP_ENTRY, "Icon", NULL);
 
@@ -284,7 +253,6 @@ process_desktop_file (TrackerResource  *resource,
 	g_strfreev (cats);
 
 	g_free (name);
-	g_free (lang);
 	g_free (type);
 
 	return TRUE;
