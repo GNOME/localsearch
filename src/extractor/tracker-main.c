@@ -191,8 +191,6 @@ run_standalone (void)
 	}
 	output_format = enum_value->value;
 
-	tracker_locale_sanity_check ();
-
 	file = g_file_new_for_commandline_arg (filename);
 
 	if (mime_type) {
@@ -409,8 +407,6 @@ do_main (int argc, char *argv[])
 
 	decorator = tracker_decorator_new (sparql_connection,
 	                                   extract, persistence, root_file);
-
-	tracker_locale_sanity_check ();
 
 	controller = tracker_extract_controller_new (decorator,
 	                                             extract,
