@@ -226,8 +226,8 @@ tracker_writeback_file_write_metadata (TrackerWriteback  *writeback,
 
 	if (!retval) {
 		g_set_error (error,
-		             TRACKER_DBUS_ERROR,
-		             TRACKER_DBUS_ERROR_UNSUPPORTED,
+		             G_DBUS_ERROR,
+		             G_DBUS_ERROR_NOT_SUPPORTED,
 		             "Module does not support writeback for %s",
 		             mime_type);
 

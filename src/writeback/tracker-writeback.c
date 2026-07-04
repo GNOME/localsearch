@@ -335,8 +335,8 @@ io_writeback_job (GTask        *task,
 			data->error = error;
 		} else {
 			g_set_error_literal (&data->error,
-			                     TRACKER_DBUS_ERROR,
-			                     TRACKER_DBUS_ERROR_UNSUPPORTED,
+			                     G_DBUS_ERROR,
+			                     G_DBUS_ERROR_NOT_SUPPORTED,
 			                     "No writeback modules handled "
 			                     "successfully this file");
 		}
@@ -457,8 +457,8 @@ handle_method_call_writeback (TrackerController     *controller,
 		g_object_unref (task);
 	} else {
 		g_dbus_method_invocation_return_error (invocation,
-		                                       TRACKER_DBUS_ERROR,
-		                                       TRACKER_DBUS_ERROR_UNSUPPORTED,
+		                                       G_DBUS_ERROR,
+		                                       G_DBUS_ERROR_NOT_SUPPORTED,
 		                                       "Resource description does not match any writeback modules");
 		tracker_dbus_request_end (request, NULL);
 	}
@@ -530,7 +530,8 @@ bus_name_vanished_cb (GDBusConnection *connection,
 	if (!priv->name_acquired) {
 		GError *error;
 
-		error = g_error_new_literal (TRACKER_DBUS_ERROR, 0,
+		error = g_error_new_literal (G_DBUS_ERROR,
+		                             G_DBUS_ERROR_DISCONNECTED,
 		                             "Could not acquire bus name, "
 		                             "perhaps it's already taken?");
 		controller_notify_main_thread (controller, error);
