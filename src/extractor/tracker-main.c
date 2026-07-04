@@ -96,32 +96,6 @@ static GOptionEntry entries[] = {
 	{ NULL }
 };
 
-static void
-initialize_priority_and_scheduling (void)
-{
-	/* Set CPU priority */
-	tracker_sched_idle ();
-
-	/* Set disk IO priority and scheduling */
-	tracker_ioprio_init ();
-
-	/* Set process priority:
-	 * The nice() function uses attribute "warn_unused_result" and
-	 * so complains if we do not check its returned value. But it
-	 * seems that since glibc 2.2.4, nice() can return -1 on a
-	 * successful call so we have to check value of errno too.
-	 * Stupid...
-	 */
-	TRACKER_NOTE (CONFIG, g_message ("Setting priority nice level to 19"));
-
-	if (nice (19) == -1) {
-		const gchar *str = g_strerror (errno);
-
-		TRACKER_NOTE (CONFIG, g_message ("Couldn't set nice value to 19, %s",
-		                      str ? str : "no error given"));
-	}
-}
-
 #ifndef HAVE_LIBSECCOMP
 static gboolean
 signal_handler (gpointer user_data)
@@ -449,10 +423,6 @@ int
 main (int argc, char *argv[])
 {
 	/* This function is untouchable! Add things to do_main() */
-
-	/* This makes sure we don't steal all the system's resources */
-	initialize_priority_and_scheduling ();
-
 	if (!tracker_seccomp_init (TRUE))
 		g_assert_not_reached ();
 
