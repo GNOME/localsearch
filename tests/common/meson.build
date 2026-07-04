@@ -3,7 +3,6 @@ libtracker_common_tests = [
     'file-utils',
     'extract-rules-manager',
     'sched',
-    'type-utils',
     'utils',
 ]
 

@@ -8,7 +8,6 @@ tracker_miners_common_sources = [
   'tracker-sched.c',
   'tracker-systemd.c',
   'tracker-term-utils.c',
-  'tracker-type-utils.c',
   'tracker-utils.c',
   'tracker-locale.c',
   'tracker-seccomp.c',

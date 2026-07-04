@@ -40,7 +40,6 @@
 #include <gio/gunixmounts.h>
 
 #include "tracker-file-utils.h"
-#include "tracker-type-utils.h"
 
 #define TEXT_SNIFF_SIZE 4096
 

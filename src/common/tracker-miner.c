@@ -25,7 +25,6 @@
 
 #include "tracker-dbus.h"
 #include "tracker-debug.h"
-#include "tracker-type-utils.h"
 
 #include "tracker-miner.h"
 

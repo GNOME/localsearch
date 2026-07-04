@@ -40,7 +40,6 @@
 #include "tracker-seccomp.h"
 #include "tracker-systemd.h"
 #include "tracker-term-utils.h"
-#include "tracker-type-utils.h"
 #include "tracker-utils.h"
 #include "tracker-locale.h"
 #include "tracker-extract-rules-manager.h"
