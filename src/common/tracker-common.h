@@ -41,7 +41,6 @@
 #include "tracker-systemd.h"
 #include "tracker-term-utils.h"
 #include "tracker-utils.h"
-#include "tracker-locale.h"
 #include "tracker-extract-rules-manager.h"
 
 #endif /* __LIBTRACKER_COMMON_H__ */
