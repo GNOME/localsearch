@@ -332,24 +332,6 @@ lookup_rules (TrackerExtractRulesManager *manager,
 	return mimetype_rules;
 }
 
-GList *
-tracker_extract_rules_manager_get_matching_rules (TrackerExtractRulesManager *manager,
-                                                  const gchar                *mimetype)
-{
-	GList *rule_list, *l;
-	GList *rule_path_list = NULL;
-
-	rule_list = lookup_rules (manager, mimetype);
-
-	for (l = rule_list; l; l = l->next) {
-		RuleInfo *info = l->data;
-
-		rule_path_list = g_list_prepend (rule_path_list, (char *)(info->rule_path));
-	}
-
-	return g_list_reverse (rule_path_list);
-}
-
 GStrv
 tracker_extract_rules_manager_get_rdf_types (TrackerExtractRulesManager *manager,
                                              const gchar                *mimetype)

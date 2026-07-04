@@ -48,31 +48,37 @@ static void
 test_extract_rules (void)
 {
 	g_autoptr (TrackerExtractRulesManager) manager = NULL;
-	GList *l;
 	GError *error = NULL;
+	GStrv strv;
 
 	manager = tracker_extract_rules_manager_new (&error);
 	g_assert_no_error (error);
 
-	// The audio/* rule should match this, but the image/* rule should not.
-	l = tracker_extract_rules_manager_get_matching_rules(manager, "audio/mpeg");
+	/* The audio rule should match this, but the image rule should not. */
+	strv = tracker_extract_rules_manager_get_rdf_types (manager, "audio/mpeg");
+	g_assert_cmpint (g_strv_length (strv), ==, 1);
+	g_assert_cmpstr (strv[0], ==, "nfo:Audio");
+	g_assert_nonnull (tracker_extract_rules_manager_get_module (manager, "audio/mpeg"));
 
-	g_assert_cmpint (g_list_length (l), ==, 1);
-	assert_path_basename (l->data, ==, "90-audio-generic.rule");
+	/* The image rule should match this, but the audio rule should not. */
+	strv = tracker_extract_rules_manager_get_rdf_types (manager, "image/png");
+	g_assert_cmpint (g_strv_length (strv), ==, 2);
+	g_assert_true (g_strv_contains ((const char * const *) strv, "nfo:Image"));
+	g_assert_nonnull (tracker_extract_rules_manager_get_module (manager, "image/png"));
 
-	// The image/* rule should match this, but the audio/* rule should not.
-	l = tracker_extract_rules_manager_get_matching_rules(manager, "image/png");
+	/* No rule should match this. */
+	strv = tracker_extract_rules_manager_get_rdf_types (manager, "text/generic");
+	g_assert_cmpint (g_strv_length (strv), ==, 0);
+	g_assert_null (tracker_extract_rules_manager_get_graph (manager, "text/generic"));
+	g_assert_null (tracker_extract_rules_manager_get_hash (manager, "text/generic"));
+	g_assert_null (tracker_extract_rules_manager_get_module (manager, "text/generic"));
 
-	g_assert_cmpint (g_list_length (l), ==, 1);
-	assert_path_basename (l->data, ==, "90-image-generic.rule");
-
-	// No rule should match this.
-	l = tracker_extract_rules_manager_get_matching_rules(manager, "text/generic");
-	g_assert_cmpint (g_list_length (l), ==, 0);
-
-	// The image/x-blocked MIME type is explicitly blocked, so no rule should match.
-	l = tracker_extract_rules_manager_get_matching_rules(manager, "image/x-blocked");
-	g_assert_cmpint (g_list_length (l), ==, 0);
+	/* The image/x-blocked MIME type is explicitly blocked, so no rule should match. */
+	strv = tracker_extract_rules_manager_get_rdf_types (manager, "image/x-blocked");
+	g_assert_cmpint (g_strv_length (strv), ==, 0);
+	g_assert_null (tracker_extract_rules_manager_get_graph (manager, "image/x-blocked"));
+	g_assert_null (tracker_extract_rules_manager_get_hash (manager, "image/x-blocked"));
+	g_assert_null (tracker_extract_rules_manager_get_module (manager, "image/x-blocked"));
 }
 
 int

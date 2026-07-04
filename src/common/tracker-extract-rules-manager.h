@@ -44,6 +44,3 @@ gboolean tracker_extract_rules_manager_check_fallback_rdf_type (TrackerExtractRu
 
 const char * tracker_extract_rules_manager_get_module (TrackerExtractRulesManager *manager,
                                                        const char                 *mimetype);
-
-GList * tracker_extract_rules_manager_get_matching_rules (TrackerExtractRulesManager *manager,
-                                                          const char                 *mimetype);
