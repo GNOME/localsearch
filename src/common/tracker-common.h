@@ -28,7 +28,6 @@
 
 #include "tracker-dbus.h"
 #include "tracker-debug.h"
-#include "tracker-enums.h"
 #include "tracker-file-utils.h"
 #include "tracker-ioprio.h"
 
@@ -44,7 +43,6 @@
 #include "tracker-type-utils.h"
 #include "tracker-utils.h"
 #include "tracker-locale.h"
-#include "tracker-miners-enum-types.h"
 #include "tracker-extract-rules-manager.h"
 
 #endif /* __LIBTRACKER_COMMON_H__ */

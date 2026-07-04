@@ -1,11 +1,3 @@
-enums = gnome.mkenums('tracker-miners-enum-types',
-  sources: 'tracker-enums.h',
-  c_template: 'tracker-miners-enum-types.c.template',
-  h_template: 'tracker-miners-enum-types.h.template',
-)
-
-tracker_miners_common_enum_header = enums[1]
-
 tracker_miners_common_sources = [
   'tracker-dbus.c',
   'tracker-debug.c',
@@ -20,7 +12,6 @@ tracker_miners_common_sources = [
   'tracker-utils.c',
   'tracker-locale.c',
   'tracker-seccomp.c',
-  enums[0], enums[1],
 ]
 
 if have_landlock
@@ -67,7 +58,6 @@ libtracker_miners_common = static_library('tracker-miners-common',
 commoninc = include_directories('.')
 
 tracker_miners_common_dep = declare_dependency(
-  sources: [tracker_miners_common_enum_header],
   link_with: libtracker_miners_common,
   dependencies: tracker_miners_common_dependencies,
   include_directories: [configinc, srcinc, commoninc],

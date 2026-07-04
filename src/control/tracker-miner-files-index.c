@@ -88,32 +88,6 @@ index_finalize (GObject *object)
 	G_OBJECT_CLASS (tracker_miner_files_index_parent_class)->finalize (object);
 }
 
-static TrackerIndexLocationFlags
-parse_index_location_flags (const gchar * const *flags_strv)
-{
-	TrackerIndexLocationFlags flags = 0;
-	GFlagsClass *type_class;
-	GFlagsValue *value;
-
-	type_class = g_type_class_ref (TRACKER_TYPE_INDEX_LOCATION_FLAGS);
-
-	while (*flags_strv) {
-		const gchar *flag_string = *flags_strv;
-
-		value = g_flags_get_value_by_nick (type_class, flag_string);
-
-		if (value != NULL) {
-			flags |= value->value;
-		}
-
-		flags_strv ++;
-	}
-
-	g_type_class_unref (type_class);
-
-	return flags;
-}
-
 static void
 update_indexed_files (TrackerMinerFilesIndex *index)
 {
@@ -130,7 +104,6 @@ tracker_miner_files_index_handle_index_location (TrackerDBusMinerFilesIndex *ske
                                                  TrackerMinerFilesIndex     *index)
 {
 	TrackerDBusRequest *request;
-	TrackerIndexLocationFlags index_flags;
 	g_autoptr (GFile) file = NULL;
 
 	request = tracker_g_dbus_request_begin (invocation, "%s(uri:'%s')", __FUNCTION__, file_uri);
@@ -143,11 +116,10 @@ tracker_miner_files_index_handle_index_location (TrackerDBusMinerFilesIndex *ske
 		update_indexed_files (index);
 	}
 
-	index_flags = parse_index_location_flags (flags);
-
 	tracker_miner_files_peer_listener_add_watch (index->peer_listener,
 	                                             g_dbus_method_invocation_get_sender (invocation),
-	                                             file, graphs, index_flags);
+	                                             file, graphs,
+	                                             TRACKER_INDEX_LOCATION_FLAGS_NONE);
 
 	tracker_dbus_request_end (request, NULL);
 	g_dbus_method_invocation_return_value (invocation, NULL);
