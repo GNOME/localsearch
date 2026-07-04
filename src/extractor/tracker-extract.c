@@ -46,6 +46,7 @@ typedef struct {
 struct _TrackerExtract {
 	GObject parent_instance;
 
+	TrackerExtractRulesManager *rules_manager;
 	TrackerModuleManager *module_manager;
 	GHashTable *statistics_data;
 
@@ -88,6 +89,12 @@ statistics_data_free (StatisticsData *data)
 static void
 tracker_extract_init (TrackerExtract *extract)
 {
+	g_autoptr (GError) error = NULL;
+
+	extract->rules_manager = tracker_extract_rules_manager_new (&error);
+	if (error)
+		g_error ("Failed to load extractor rules: %s", error->message);
+
 	extract->module_manager = tracker_module_manager_new ();
 
 	extract->max_text = DEFAULT_MAX_TEXT;
@@ -272,7 +279,8 @@ extract_task_data_new (TrackerExtract *extract,
 	task->extract = extract;
 	task->max_text = extract->max_text;
 
-	module_path = tracker_extract_rules_manager_get_module (task->mimetype);
+	module_path = tracker_extract_rules_manager_get_module (extract->rules_manager,
+	                                                        task->mimetype);
 
 	if (module_path) {
 		tracker_module_manager_get_func (extract->module_manager,
@@ -447,7 +455,8 @@ tracker_extract_file (TrackerExtract      *extract,
 		return;
 	}
 
-	graph = tracker_extract_rules_manager_get_graph (mimetype);
+	graph = tracker_extract_rules_manager_get_graph (extract->rules_manager,
+	                                                 mimetype);
 
 	if (!graph) {
 		g_autofree char *uri = g_file_get_uri (file);
@@ -505,8 +514,10 @@ tracker_extract_file_sync (TrackerExtract  *object,
 	g_return_val_if_fail (G_IS_FILE (file), NULL);
 	g_return_val_if_fail (content_id != NULL, NULL);
 
-	if (mimetype)
-		graph = tracker_extract_rules_manager_get_graph (mimetype);
+	if (mimetype) {
+		graph = tracker_extract_rules_manager_get_graph (object->rules_manager,
+		                                                 mimetype);
+	}
 
 	if (!graph) {
 		g_autofree char *uri = g_file_get_uri (file);
@@ -551,4 +562,10 @@ tracker_extract_set_max_text (TrackerExtract *extract,
                               gint            max_text)
 {
 	extract->max_text = max_text;
+}
+
+TrackerExtractRulesManager *
+tracker_extract_get_rules_manager (TrackerExtract *extract)
+{
+	return extract->rules_manager;
 }

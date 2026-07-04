@@ -42,34 +42,36 @@ init_rules_manager (void) {
 	test_rules_dir = get_test_rules_dir ();
 	success = g_setenv ("TRACKER_EXTRACTOR_RULES_DIR", test_rules_dir, TRUE);
 	g_assert_true (success);
-
-	success = tracker_extract_rules_manager_init ();
-	g_assert_true (success);
 }
 
 static void
 test_extract_rules (void)
 {
+	g_autoptr (TrackerExtractRulesManager) manager = NULL;
 	GList *l;
+	GError *error = NULL;
+
+	manager = tracker_extract_rules_manager_new (&error);
+	g_assert_no_error (error);
 
 	// The audio/* rule should match this, but the image/* rule should not.
-	l = tracker_extract_rules_manager_get_matching_rules("audio/mpeg");
+	l = tracker_extract_rules_manager_get_matching_rules(manager, "audio/mpeg");
 
 	g_assert_cmpint (g_list_length (l), ==, 1);
 	assert_path_basename (l->data, ==, "90-audio-generic.rule");
 
 	// The image/* rule should match this, but the audio/* rule should not.
-	l = tracker_extract_rules_manager_get_matching_rules("image/png");
+	l = tracker_extract_rules_manager_get_matching_rules(manager, "image/png");
 
 	g_assert_cmpint (g_list_length (l), ==, 1);
 	assert_path_basename (l->data, ==, "90-image-generic.rule");
 
 	// No rule should match this.
-	l = tracker_extract_rules_manager_get_matching_rules("text/generic");
+	l = tracker_extract_rules_manager_get_matching_rules(manager, "text/generic");
 	g_assert_cmpint (g_list_length (l), ==, 0);
 
 	// The image/x-blocked MIME type is explicitly blocked, so no rule should match.
-	l = tracker_extract_rules_manager_get_matching_rules("image/x-blocked");
+	l = tracker_extract_rules_manager_get_matching_rules(manager, "image/x-blocked");
 	g_assert_cmpint (g_list_length (l), ==, 0);
 }
 

@@ -24,6 +24,8 @@
 
 #include <gio/gio.h>
 #include <tinysparql.h>
+
+#include "tracker-common.h"
 #include "tracker-indexing-tree.h"
 #include "tracker-monitor.h"
 
@@ -55,10 +57,11 @@ typedef enum
 	TRACKER_FILE_NOTIFIER_STATUS_CHECKING,
 } TrackerFileNotifierStatus;
 
-TrackerFileNotifier * tracker_file_notifier_new (TrackerIndexingTree     *indexing_tree,
-                                                 TrackerSparqlConnection *connection,
-                                                 TrackerMonitor          *monitor,
-                                                 GFile                   *root);
+TrackerFileNotifier * tracker_file_notifier_new (TrackerIndexingTree        *indexing_tree,
+                                                 TrackerSparqlConnection    *connection,
+                                                 TrackerMonitor             *monitor,
+                                                 TrackerExtractRulesManager *rules_manager,
+                                                 GFile                      *root);
 
 gboolean      tracker_file_notifier_start        (TrackerFileNotifier     *notifier);
 void          tracker_file_notifier_stop         (TrackerFileNotifier     *notifier);

@@ -19,19 +19,31 @@
 
 #pragma once
 
-#include <glib.h>
+#include <gio/gio.h>
 
-gboolean tracker_extract_rules_manager_init (void);
+#define TRACKER_TYPE_EXTRACT_RULES_MANAGER (tracker_extract_rules_manager_get_type ())
+G_DECLARE_FINAL_TYPE (TrackerExtractRulesManager,
+                      tracker_extract_rules_manager,
+                      TRACKER, EXTRACT_RULES_MANAGER,
+                      GObject);
 
-GStrv tracker_extract_rules_manager_get_rdf_types (const char *mimetype);
+TrackerExtractRulesManager * tracker_extract_rules_manager_new (GError **error);
 
-const char * tracker_extract_rules_manager_get_graph (const char *mimetype);
+GStrv tracker_extract_rules_manager_get_rdf_types (TrackerExtractRulesManager *manager,
+                                                   const char                 *mimetype);
 
-const char * tracker_extract_rules_manager_get_hash  (const char *mimetype);
+const char * tracker_extract_rules_manager_get_graph (TrackerExtractRulesManager *manager,
+                                                      const char                 *mimetype);
 
-gboolean tracker_extract_rules_manager_check_fallback_rdf_type (const char *mimetype,
-                                                                const char *rdf_type);
+const char * tracker_extract_rules_manager_get_hash  (TrackerExtractRulesManager *manager,
+                                                      const char                 *mimetype);
 
-const char * tracker_extract_rules_manager_get_module (const char *mimetype);
+gboolean tracker_extract_rules_manager_check_fallback_rdf_type (TrackerExtractRulesManager *manager,
+                                                                const char                 *mimetype,
+                                                                const char                 *rdf_type);
 
-GList * tracker_extract_rules_manager_get_matching_rules (const char *mimetype);
+const char * tracker_extract_rules_manager_get_module (TrackerExtractRulesManager *manager,
+                                                       const char                 *mimetype);
+
+GList * tracker_extract_rules_manager_get_matching_rules (TrackerExtractRulesManager *manager,
+                                                          const char                 *mimetype);

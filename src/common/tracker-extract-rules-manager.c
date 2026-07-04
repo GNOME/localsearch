@@ -25,9 +25,11 @@
 
 #include <tracker-common.h>
 
+static void tracker_extract_rules_manager_initable_iface_init (GInitableIface *iface);
+
 typedef struct {
-	const gchar *rule_path;
-	const gchar *module_path; /* intern string */
+	gchar *rule_path;
+	gchar *module_path;
 	GList *allow_patterns;
 	GList *block_patterns;
 	GStrv fallback_rdf_types;
@@ -35,19 +37,75 @@ typedef struct {
 	gchar *hash;
 } RuleInfo;
 
-static GHashTable *mimetype_map = NULL;
-static gboolean initialized = FALSE;
-static GArray *rules = NULL;
-
 typedef struct {
 	const GList *rules;
 	const GList *cur;
 } TrackerMimetypeInfo;
 
+struct _TrackerExtractRulesManager
+{
+	GObject parent_instance;
+
+	GHashTable *mimetype_map;
+	GArray *rules;
+};
+
+G_DEFINE_FINAL_TYPE_WITH_CODE (TrackerExtractRulesManager,
+                               tracker_extract_rules_manager,
+                               G_TYPE_OBJECT,
+                               G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                      tracker_extract_rules_manager_initable_iface_init))
+
+static void
+rule_info_clear (RuleInfo *rule)
+{
+	g_clear_pointer (&rule->rule_path, g_free);
+	g_clear_pointer (&rule->module_path, g_free);
+	g_clear_pointer (&rule->graph, g_free);
+	g_clear_pointer (&rule->hash, g_free);
+	g_clear_pointer (&rule->fallback_rdf_types, g_strfreev);
+	g_clear_list (&rule->allow_patterns, g_free);
+	g_clear_list (&rule->block_patterns, g_free);
+}
+
+static void
+tracker_extract_rules_manager_finalize (GObject *object)
+{
+	TrackerExtractRulesManager *manager =
+		TRACKER_EXTRACT_RULES_MANAGER (object);
+
+	g_clear_pointer (&manager->mimetype_map, g_hash_table_unref);
+	g_clear_pointer (&manager->rules, g_array_unref);
+
+	G_OBJECT_CLASS (tracker_extract_rules_manager_parent_class)->finalize (object);
+}
+
+static void
+tracker_extract_rules_manager_class_init (TrackerExtractRulesManagerClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+	object_class->finalize = tracker_extract_rules_manager_finalize;
+}
+
+static void
+tracker_extract_rules_manager_init (TrackerExtractRulesManager *manager)
+{
+	manager->mimetype_map =
+		g_hash_table_new_full (g_str_hash,
+		                       g_str_equal,
+		                       (GDestroyNotify) g_free,
+		                       (GDestroyNotify) g_list_free);
+
+	manager->rules = g_array_new (FALSE, TRUE, sizeof (RuleInfo));
+	g_array_set_clear_func (manager->rules, (GDestroyNotify) rule_info_clear);
+}
+
 static gboolean
-load_extractor_rule (GKeyFile    *key_file,
-                     const gchar *rule_path,
-                     GError     **error)
+load_extractor_rule (TrackerExtractRulesManager  *manager,
+                     GKeyFile                    *key_file,
+                     const gchar                 *rule_path,
+                     GError                     **error)
 {
 	GError *local_error = NULL;
 	gchar *module_path, **allow_mimetypes, **block_mimetypes;
@@ -101,9 +159,7 @@ load_extractor_rule (GKeyFile    *key_file,
 	rule.fallback_rdf_types = g_key_file_get_string_list (key_file, "ExtractorRule", "FallbackRdfTypes", NULL, NULL);
 	rule.graph = g_key_file_get_string (key_file, "ExtractorRule", "Graph", NULL);
 	rule.hash = g_key_file_get_string (key_file, "ExtractorRule", "Hash", NULL);
-
-	/* Construct the rule */
-	rule.module_path = g_intern_string (module_path);
+	rule.module_path = g_strdup (module_path);
 
 	for (i = 0; i < n_allow_mimetypes; i++) {
 		GPatternSpec *pattern;
@@ -119,7 +175,7 @@ load_extractor_rule (GKeyFile    *key_file,
 		rule.block_patterns = g_list_prepend (rule.block_patterns, pattern);
 	}
 
-	g_array_append_val (rules, rule);
+	g_array_append_val (manager->rules, rule);
 	g_strfreev (allow_mimetypes);
 	g_strfreev (block_mimetypes);
 	g_free (module_path);
@@ -128,42 +184,37 @@ load_extractor_rule (GKeyFile    *key_file,
 }
 
 gboolean
-tracker_extract_rules_manager_init (void)
+tracker_extract_rules_manager_initable_init (GInitable     *initable,
+                                             GCancellable  *cancellable,
+                                             GError       **error)
 {
+	TrackerExtractRulesManager *manager =
+		TRACKER_EXTRACT_RULES_MANAGER (initable);
 	const gchar *extractors_dir, *name;
+	g_autoptr (GDir) dir = NULL;
 	GList *files = NULL, *l;
-	GError *error = NULL;
-	GDir *dir;
-
-	if (initialized) {
-		return TRUE;
-	}
+	GError *inner_error = NULL;
 
 	extractors_dir = g_getenv ("TRACKER_EXTRACTOR_RULES_DIR");
 	if (G_LIKELY (extractors_dir == NULL)) {
 		extractors_dir = TRACKER_EXTRACTOR_RULES_DIR;
 	}
 
-	dir = g_dir_open (extractors_dir, 0, &error);
-
-	if (!dir) {
-		g_error ("Error opening extractor rules directory: %s", error->message);
-		g_error_free (error);
+	dir = g_dir_open (extractors_dir, 0, error);
+	if (!dir)
 		return FALSE;
-	}
 
 	while ((name = g_dir_read_name (dir)) != NULL) {
-		files = g_list_insert_sorted (files, (gpointer) name, (GCompareFunc) g_strcmp0);
+		files = g_list_insert_sorted (files, g_strdup (name),
+		                              (GCompareFunc) g_strcmp0);
 	}
 
 	TRACKER_NOTE (CONFIG, g_message ("Loading extractor rules... (%s)", extractors_dir));
 
-	rules = g_array_new (FALSE, TRUE, sizeof (RuleInfo));
-
 	for (l = files; l; l = l->next) {
-		GKeyFile *key_file;
+		g_autoptr (GKeyFile) key_file = NULL;
+		g_autofree char *path = NULL;
 		const gchar *name;
-		gchar *path;
 
 		name = l->data;
 
@@ -175,46 +226,54 @@ tracker_extract_rules_manager_init (void)
 		path = g_build_filename (extractors_dir, name, NULL);
 		key_file = g_key_file_new ();
 
-		if (!g_key_file_load_from_file (key_file, path, G_KEY_FILE_NONE, &error) ||
-		    !load_extractor_rule (key_file, path, &error)) {
-			g_warning ("  Could not load extractor rule file '%s': %s", name, error->message);
-			g_clear_error (&error);
-		} else {
-			TRACKER_NOTE (CONFIG, g_message ("  Loaded rule '%s'", name));
-		}
+		if (!g_key_file_load_from_file (key_file, path, G_KEY_FILE_NONE, error) ||
+		    !load_extractor_rule (manager, key_file, path, error))
+			break;
 
-		g_key_file_free (key_file);
-		g_free (path);
+		TRACKER_NOTE (CONFIG, g_message ("  Loaded rule '%s'", name));
+	}
+
+	g_list_free_full (files, g_free);
+
+	if (inner_error) {
+		g_propagate_error (error, inner_error);
+		return FALSE;
 	}
 
 	TRACKER_NOTE (CONFIG, g_message ("Extractor rules loaded"));
-	g_list_free (files);
-	g_dir_close (dir);
-
-	/* Initialize miscellaneous data */
-	mimetype_map = g_hash_table_new_full (g_str_hash,
-	                                      g_str_equal,
-	                                      (GDestroyNotify) g_free,
-	                                      NULL);
-	initialized = TRUE;
 
 	return TRUE;
 }
 
+static void
+tracker_extract_rules_manager_initable_iface_init (GInitableIface *iface)
+{
+	iface->init = tracker_extract_rules_manager_initable_init;
+}
+
+TrackerExtractRulesManager *
+tracker_extract_rules_manager_new (GError **error)
+{
+	return g_initable_new (TRACKER_TYPE_EXTRACT_RULES_MANAGER,
+	                       NULL, error,
+	                       NULL);
+}
+
 static GList *
-lookup_rules (const gchar *mimetype)
+lookup_rules (TrackerExtractRulesManager *manager,
+              const gchar                *mimetype)
 {
 	GList *mimetype_rules = NULL;
 	RuleInfo *info;
 	gchar *reversed;
 	gint len, i;
 
-	if (!rules) {
+	if (!manager->rules) {
 		return NULL;
 	}
 
-	if (mimetype_map) {
-		mimetype_rules = g_hash_table_lookup (mimetype_map, mimetype);
+	if (manager->mimetype_map) {
+		mimetype_rules = g_hash_table_lookup (manager->mimetype_map, mimetype);
 
 		if (mimetype_rules) {
 			return mimetype_rules;
@@ -226,11 +285,11 @@ lookup_rules (const gchar *mimetype)
 	len = strlen (mimetype);
 
 	/* Apply the rules! */
-	for (i = 0; i < rules->len; i++) {
+	for (i = 0; i < manager->rules->len; i++) {
 		GList *l;
 		gboolean matched_allow_pattern = FALSE, matched_block_pattern = FALSE;
 
-		info = &g_array_index (rules, RuleInfo, i);
+		info = &g_array_index (manager->rules, RuleInfo, i);
 
 		for (l = info->allow_patterns; l; l = l->next) {
 #if GLIB_CHECK_VERSION (2, 70, 0)
@@ -263,7 +322,7 @@ lookup_rules (const gchar *mimetype)
 
 	if (mimetype_rules) {
 		mimetype_rules = g_list_reverse (mimetype_rules);
-		g_hash_table_insert (mimetype_map, g_strdup (mimetype), mimetype_rules);
+		g_hash_table_insert (manager->mimetype_map, g_strdup (mimetype), mimetype_rules);
 	}
 
 	g_free (reversed);
@@ -272,12 +331,13 @@ lookup_rules (const gchar *mimetype)
 }
 
 GList *
-tracker_extract_rules_manager_get_matching_rules (const gchar *mimetype)
+tracker_extract_rules_manager_get_matching_rules (TrackerExtractRulesManager *manager,
+                                                  const gchar                *mimetype)
 {
 	GList *rule_list, *l;
 	GList *rule_path_list = NULL;
 
-	rule_list = lookup_rules (mimetype);
+	rule_list = lookup_rules (manager, mimetype);
 
 	for (l = rule_list; l; l = l->next) {
 		RuleInfo *info = l->data;
@@ -289,7 +349,8 @@ tracker_extract_rules_manager_get_matching_rules (const gchar *mimetype)
 }
 
 GStrv
-tracker_extract_rules_manager_get_rdf_types (const gchar *mimetype)
+tracker_extract_rules_manager_get_rdf_types (TrackerExtractRulesManager *manager,
+                                             const gchar                *mimetype)
 {
 	GList *l, *list;
 	GHashTable *rdf_types;
@@ -297,12 +358,7 @@ tracker_extract_rules_manager_get_rdf_types (const gchar *mimetype)
 	GHashTableIter iter;
 	gint i;
 
-	if (!initialized &&
-	    !tracker_extract_rules_manager_init ()) {
-		return NULL;
-	}
-
-	list = lookup_rules (mimetype);
+	list = lookup_rules (manager, mimetype);
 	rdf_types = g_hash_table_new (g_str_hash, g_str_equal);
 
 	for (l = list; l; l = l->next) {
@@ -339,8 +395,9 @@ tracker_extract_rules_manager_get_rdf_types (const gchar *mimetype)
 }
 
 gboolean
-tracker_extract_rules_manager_check_fallback_rdf_type (const gchar *mimetype,
-                                                       const gchar *rdf_type)
+tracker_extract_rules_manager_check_fallback_rdf_type (TrackerExtractRulesManager *manager,
+                                                       const gchar                *mimetype,
+                                                       const gchar                *rdf_type)
 {
 	GList *l, *list;
 	gint i;
@@ -348,12 +405,7 @@ tracker_extract_rules_manager_check_fallback_rdf_type (const gchar *mimetype,
 	g_return_val_if_fail (mimetype, FALSE);
 	g_return_val_if_fail (rdf_type, FALSE);
 
-	if (!initialized &&
-	    !tracker_extract_rules_manager_init ()) {
-		return FALSE;
-	}
-
-	list = lookup_rules (mimetype);
+	list = lookup_rules (manager, mimetype);
 
 	for (l = list; l; l = l->next) {
 		RuleInfo *r_info = l->data;
@@ -374,17 +426,14 @@ tracker_extract_rules_manager_check_fallback_rdf_type (const gchar *mimetype,
 }
 
 const char *
-tracker_extract_rules_manager_get_module (const gchar *mimetype)
+tracker_extract_rules_manager_get_module (TrackerExtractRulesManager *manager,
+                                          const gchar                *mimetype)
 {
 	GList *l, *list;
 
 	g_return_val_if_fail (mimetype != NULL, NULL);
 
-	if (!tracker_extract_rules_manager_init ()) {
-		return NULL;
-	}
-
-	list = lookup_rules (mimetype);
+	list = lookup_rules (manager, mimetype);
 
 	for (l = list; l; l = l->next) {
 		RuleInfo *r_info = l->data;
@@ -397,15 +446,12 @@ tracker_extract_rules_manager_get_module (const gchar *mimetype)
 }
 
 const gchar *
-tracker_extract_rules_manager_get_graph (const gchar *mimetype)
+tracker_extract_rules_manager_get_graph (TrackerExtractRulesManager *manager,
+                                         const gchar                *mimetype)
 {
 	GList *l, *list;
 
-	if (!tracker_extract_rules_manager_init ()) {
-		return NULL;
-	}
-
-	list = lookup_rules (mimetype);
+	list = lookup_rules (manager, mimetype);
 
 	for (l = list; l; l = l->next) {
 		RuleInfo *r_info = l->data;
@@ -418,15 +464,12 @@ tracker_extract_rules_manager_get_graph (const gchar *mimetype)
 }
 
 const gchar *
-tracker_extract_rules_manager_get_hash (const gchar *mimetype)
+tracker_extract_rules_manager_get_hash (TrackerExtractRulesManager *manager,
+                                        const gchar                *mimetype)
 {
 	GList *l, *list;
 
-	if (!tracker_extract_rules_manager_init ()) {
-		return NULL;
-	}
-
-	list = lookup_rules (mimetype);
+	list = lookup_rules (manager, mimetype);
 
 	for (l = list; l; l = l->next) {
 		RuleInfo *r_info = l->data;

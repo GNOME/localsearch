@@ -72,6 +72,7 @@ struct _TrackerIndexer {
 	TrackerFileNotifier *file_notifier;
 	TrackerErrorReport *error_reports;
 	TrackerExtractWatchdog *extract_watchdog;
+	TrackerExtractRulesManager *rules_manager;
 
 #ifdef HAVE_POWER
 	TrackerPower *power;
@@ -709,6 +710,7 @@ fs_finalize (GObject *object)
 	g_clear_object (&indexer->monitor);
 	g_clear_object (&indexer->error_reports);
 	g_clear_object (&indexer->extract_watchdog);
+	g_clear_object (&indexer->rules_manager);
 #ifdef HAVE_POWER
 	g_clear_object (&indexer->power);
 #endif
@@ -720,6 +722,7 @@ static void
 fs_constructed (GObject *object)
 {
 	TrackerIndexer *indexer = TRACKER_INDEXER (object);
+	g_autoptr (GError) error = NULL;
 
 	G_OBJECT_CLASS (tracker_indexer_parent_class)->constructed (object);
 
@@ -734,10 +737,14 @@ fs_constructed (GObject *object)
 	                                                    BUFFER_POOL_LIMIT,
 	                                                    indexer->root);
 
-	/* Create the file notifier */
+	indexer->rules_manager = tracker_extract_rules_manager_new (&error);
+	if (error)
+		g_error ("Failed to load extractor rules: %s", error->message);
+
 	indexer->file_notifier = tracker_file_notifier_new (indexer->indexing_tree,
 	                                                    tracker_miner_get_connection (TRACKER_MINER (object)),
 	                                                    indexer->monitor,
+	                                                    indexer->rules_manager,
 	                                                    indexer->root);
 
 	g_signal_connect (indexer->file_notifier, "file-created",
@@ -1634,6 +1641,12 @@ tracker_indexer_get_indexing_tree (TrackerIndexer *indexer)
 	g_return_val_if_fail (TRACKER_IS_INDEXER (indexer), NULL);
 
 	return indexer->indexing_tree;
+}
+
+TrackerExtractRulesManager *
+tracker_indexer_get_extract_rules_manager (TrackerIndexer *indexer)
+{
+	return indexer->rules_manager;
 }
 
 char *

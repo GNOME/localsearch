@@ -65,4 +65,6 @@ TrackerExtractInfo * tracker_extract_file_sync (TrackerExtract  *object,
                                                 const gchar     *mimetype,
                                                 GError         **error);
 
+TrackerExtractRulesManager * tracker_extract_get_rules_manager (TrackerExtract *extract);
+
 #endif /* __TRACKERD_EXTRACT_H__ */
