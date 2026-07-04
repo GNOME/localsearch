@@ -75,23 +75,9 @@ initialize_priority_and_scheduling (void)
 	/* Set disk IO priority and scheduling */
 	tracker_ioprio_init ();
 
-	/* Set process priority:
-	 * The nice() function uses attribute "warn_unused_result" and
-	 * so complains if we do not check its returned value. But it
-	 * seems that since glibc 2.2.4, nice() can return -1 on a
-	 * successful call so we have to check value of errno too.
-	 * Stupid...
-	 */
-
 	TRACKER_NOTE (CONFIG, g_message ("Setting priority nice level to 19"));
-
-	errno = 0;
-	if (nice (19) == -1 && errno != 0) {
-		const gchar *str = g_strerror (errno);
-
-		g_message ("Couldn't set nice value to 19, %s",
-		           str ? str : "no error given");
-	}
+	if (nice (19) < 0)
+		g_message ("Couldn't set nice value to 19: %m");
 }
 
 static void
