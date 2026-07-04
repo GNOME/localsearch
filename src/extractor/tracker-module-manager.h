@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "tracker-common.h"
+#include "utils/tracker-extract.h"
 
 #define TRACKER_TYPE_MODULE_MANAGER (tracker_module_manager_get_type ())
 G_DECLARE_FINAL_TYPE (TrackerModuleManager,

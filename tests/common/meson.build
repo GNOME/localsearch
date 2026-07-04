@@ -1,6 +1,5 @@
 libtracker_common_tests = [
     'dbus',
-    'extract-info',
     'file-utils',
     'extract-rules-manager',
     'sched',

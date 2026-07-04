@@ -18,6 +18,8 @@
  */
 
 #include "tracker-resource-helpers.h"
+
+#include "tracker-extract-info.h"
 #include "tracker-guarantee.h"
 
 /**

@@ -1,5 +1,6 @@
 libtracker_extract_sources = [
   'tracker-encoding.c',
+  'tracker-extract-info.c',
   'tracker-guarantee.c',
   'tracker-resource-helpers.c',
   'tracker-utils.c',

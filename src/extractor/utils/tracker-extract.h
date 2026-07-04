@@ -24,6 +24,8 @@
 
 #define __LIBTRACKER_EXTRACT_INSIDE__
 
+#include "tracker-extract-info.h"
+
 #include "tracker-data.h"
 #include "tracker-encoding.h"
 #include "tracker-guarantee.h"

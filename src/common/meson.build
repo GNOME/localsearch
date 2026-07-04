@@ -9,7 +9,6 @@ tracker_miners_common_enum_header = enums[1]
 tracker_miners_common_sources = [
   'tracker-dbus.c',
   'tracker-debug.c',
-  'tracker-extract-info.c',
   'tracker-file-utils.c',
   'tracker-ioprio.c',
   'tracker-miner.c',

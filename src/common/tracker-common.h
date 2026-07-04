@@ -29,7 +29,6 @@
 #include "tracker-dbus.h"
 #include "tracker-debug.h"
 #include "tracker-enums.h"
-#include "tracker-extract-info.h"
 #include "tracker-file-utils.h"
 #include "tracker-ioprio.h"
 
