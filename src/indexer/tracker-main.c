@@ -32,6 +32,11 @@
 #include <glib-object.h>
 #include <glib/gi18n.h>
 
+#ifdef __linux__
+#include <linux/ioprio.h>
+#include <sys/syscall.h>
+#endif
+
 #include <tracker-common.h>
 
 #include "tracker-application.h"
@@ -69,11 +74,18 @@ initialize_signal_handler (GApplication *app)
 static void
 initialize_priority_and_scheduling (void)
 {
+#ifdef __linux__
+	int ioprio, ioclass;
+
 	/* Set CPU priority */
 	tracker_sched_idle ();
 
 	/* Set disk IO priority and scheduling */
-	tracker_ioprio_init ();
+	ioprio = 7; /* priority is ignored with idle class */
+	ioclass = IOPRIO_CLASS_IDLE << IOPRIO_CLASS_SHIFT;
+	if (syscall (SYS_ioprio_set, IOPRIO_WHO_PROCESS, 0, ioprio | ioclass) < 0)
+		g_message ("Couldn't set ioprio idle priority: %m");
+#endif
 
 	TRACKER_NOTE (CONFIG, g_message ("Setting priority nice level to 19"));
 	if (nice (19) < 0)
