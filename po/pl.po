@@ -4,7 +4,6 @@
 # Tomasz Dominikowski <dominikowski@gmail.com>, 2007-2008.
 # Piotr Drąg <piotrdrag@gmail.com>, 2009-2025.
 # Aviary.pl <community-poland@mozilla.org>, 2007-2025.
-# Victoria <royal.victoria@proton.me>, 2026.
 # Victoria Niedzielska <victorian@gnome.org>, 2026.
 #
 msgid ""
@@ -12,7 +11,7 @@ msgstr ""
 "Project-Id-Version: localsearch\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/localsearch/issues/\n"
 "POT-Creation-Date: 2026-05-08 16:18+0000\n"
-"PO-Revision-Date: 2026-07-05 16:44+0200\n"
+"PO-Revision-Date: 2026-07-05 16:46+0200\n"
 "Last-Translator: Victoria Niedzielska <victorian@gnome.org>\n"
 "Language-Team: Polish <https://l10n.gnome.org/teams/pl/>\n"
 "Language: pl\n"
