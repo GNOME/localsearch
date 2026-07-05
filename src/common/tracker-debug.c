@@ -30,6 +30,7 @@ static const GDebugKey tracker_miners_debug_keys[] = {
   { "statistics", TRACKER_DEBUG_STATISTICS },
   { "status", TRACKER_DEBUG_STATUS },
   { "sandbox", TRACKER_DEBUG_SANDBOX },
+  { "dbus", TRACKER_DEBUG_DBUS },
 };
 #endif /* G_ENABLE_DEBUG */
 

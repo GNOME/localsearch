@@ -106,6 +106,13 @@ tracker_miner_files_index_handle_index_location (TrackerDBusMinerFilesIndex *ske
 	TrackerDBusRequest *request;
 	g_autoptr (GFile) file = NULL;
 
+#ifdef G_ENABLE_DEBUG
+	if (TRACKER_DEBUG_CHECK (STATISTICS)) {
+		g_autofree char *graphs_str = NULL;
+
+		graphs_str = g_strjoinv (", ", graphs);
+		g_message ("Request to handle index location %s, graphs: %s", file_uri, graphs_str);
+	}
 	request = tracker_g_dbus_request_begin (invocation, "%s(uri:'%s')", __FUNCTION__, file_uri);
 
 	file = g_file_new_for_uri (file_uri);
