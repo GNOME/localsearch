@@ -103,17 +103,16 @@ tracker_miner_files_index_handle_index_location (TrackerDBusMinerFilesIndex *ske
                                                  const gchar * const        *flags,
                                                  TrackerMinerFilesIndex     *index)
 {
-	TrackerDBusRequest *request;
 	g_autoptr (GFile) file = NULL;
 
 #ifdef G_ENABLE_DEBUG
 	if (TRACKER_DEBUG_CHECK (STATISTICS)) {
 		g_autofree char *graphs_str = NULL;
 
-		graphs_str = g_strjoinv (", ", graphs);
+		graphs_str = g_strjoinv (", ", (char **) graphs);
 		g_message ("Request to handle index location %s, graphs: %s", file_uri, graphs_str);
 	}
-	request = tracker_g_dbus_request_begin (invocation, "%s(uri:'%s')", __FUNCTION__, file_uri);
+#endif
 
 	file = g_file_new_for_uri (file_uri);
 
@@ -128,7 +127,6 @@ tracker_miner_files_index_handle_index_location (TrackerDBusMinerFilesIndex *ske
 	                                             file, graphs,
 	                                             TRACKER_INDEX_LOCATION_FLAGS_NONE);
 
-	tracker_dbus_request_end (request, NULL);
 	g_dbus_method_invocation_return_value (invocation, NULL);
 
 	return TRUE;
