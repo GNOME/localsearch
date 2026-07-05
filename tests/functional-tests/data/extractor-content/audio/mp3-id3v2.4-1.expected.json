@@ -90,10 +90,12 @@
 			"tracker:referenceIdentifier": "123456"
 		    }
 		],
-		"nfo:hasHash": {
-		    "@type": "nfo:FileHash",
-		    "nfo:hashAlgorithm": "chromaprint",
-		    "nfo:hashValue": "111222"
+		"nie:isStoredAs": {
+		    "nfo:hasHash": {
+			"@type": "nfo:FileHash",
+			"nfo:hashAlgorithm": "chromaprint",
+			"nfo:hashValue": "111222"
+		    }
 		}
 	    }
 	]

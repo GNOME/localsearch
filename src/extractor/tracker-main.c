@@ -144,12 +144,14 @@ run_standalone (void)
 	g_autoptr (TrackerExtract) extract = NULL;
 	g_autoptr (GFile) file = NULL;
 	g_autoptr (GError) error = NULL;
+	g_autoptr (GFileInfo) file_info = NULL;
 	g_autofree gchar *uri = NULL, *mime = NULL;
 	TrackerResource *resource = NULL;
 	GEnumClass *enum_class;
 	GEnumValue *enum_value;
 	TrackerRdfFormat output_format;
 	TrackerExtractInfo *info;
+	const char *attrs;
 
 	if (!output_format_name) {
 		output_format_name = "turtle";
@@ -167,21 +169,22 @@ run_standalone (void)
 
 	file = g_file_new_for_commandline_arg (filename);
 
-	if (mime_type) {
+	attrs = (mime_type) ?
+		G_FILE_ATTRIBUTE_UNIX_INODE :
+		G_FILE_ATTRIBUTE_UNIX_INODE "," G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE;
+
+	file_info = g_file_query_info (file,
+	                               attrs,
+	                               G_FILE_QUERY_INFO_NONE,
+	                               NULL,
+	                               &error);
+	if (!file_info)
+		goto error;
+
+	if (mime_type)
 		mime = g_strdup (mime_type);
-	} else {
-		g_autoptr (GFileInfo) file_info = NULL;
-
-		file_info = g_file_query_info (file,
-		                               G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-		                               G_FILE_QUERY_INFO_NONE,
-		                               NULL,
-		                               &error);
-		if (!file_info)
-			goto error;
-
+	else
 		mime = g_strdup (g_file_info_get_content_type (file_info));
-	}
 
 	uri = g_file_get_uri (file);
 
@@ -194,14 +197,17 @@ run_standalone (void)
 	resource = tracker_extract_info_get_resource (info);
 
 	if (resource) {
+		g_autofree char *root_id = NULL, *inode = NULL, *content_id = NULL;
+
+		root_id = tracker_content_identifier_root_for_file (file);
+		inode = g_file_info_get_attribute_as_string (file_info, G_FILE_ATTRIBUTE_UNIX_INODE);
+		content_id = g_strconcat ("urn:fileid:", root_id, ":", inode, NULL);
+
+		tracker_resource_set_identifier (resource, content_id);
+
 		if (output_format != TRACKER_RDF_FORMAT_JSON_LD) {
 			TrackerNamespaceManager *namespaces;
 			g_autofree char *turtle = NULL;
-
-			/* If this was going into the tracker-store we'd generate a unique ID
-			 * here, so that the data persisted across file renames.
-			 */
-			tracker_resource_set_identifier (resource, uri);
 
 			G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 			namespaces = tracker_namespace_manager_get_default ();
@@ -212,11 +218,6 @@ run_standalone (void)
 		} else {
 			/* JSON-LD extraction */
 			g_autofree char *json = NULL;
-
-			/* If this was going into the tracker-store we'd generate a unique ID
-			 * here, so that the data persisted across file renames.
-			 */
-			tracker_resource_set_identifier (resource, uri);
 
 			/* We are using "deprecated" API here as the pretty printed output is
 			 * nicer than with `tracker_resource_print_rdf()`, which uses the

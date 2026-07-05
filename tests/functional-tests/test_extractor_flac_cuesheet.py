@@ -35,43 +35,45 @@ class FlacCuesheetTest(fixtures.TrackerExtractTestCase):
         audio_uri = audio_path.as_uri()
         return {
             "@type": ["nmm:MusicPiece", "nfo:Audio"],
-            "nmm:trackNumber": 2,
-            "nfo:audioOffset": 257.69333333333333,
+            "nmm:trackNumber": 1,
+            "nfo:audioOffset": 0.0,
             "nmm:performer": {"@id": "urn:artist:My%20Bloody%20Valentine"},
+            "nie:title": "Only Shallow",
+            "nfo:duration": 257,
             "nie:isStoredAs": {
                 "@id": audio_uri,
-                "@type": ["nfo:Audio", "nmm:MusicPiece", "nfo:Audio"],
-                "nmm:trackNumber": 1,
-                "nfo:audioOffset": 0.0,
-                "nmm:performer": {"@id": "urn:artist:My%20Bloody%20Valentine"},
-                "nfo:channels": 1,
-                "nie:isStoredAs": {"@id": audio_uri},
-                "nfo:sampleRate": 44100,
-                "nie:title": "Only Shallow",
-                "nmm:musicAlbum": {
-                    "@id": "urn:album:Loveless:My%20Bloody%20Valentine:1991-01-01"
+                "nie:interpretedAs": {
+                    "@type": ["nfo:Audio", "nmm:MusicPiece", "nfo:Audio"],
+                    "nmm:trackNumber": 2,
+                    "nfo:audioOffset": 257.69333333333333,
+                    "nmm:performer": {"@id": "urn:artist:My%20Bloody%20Valentine"},
+                    "nfo:channels": 1,
+                    "nie:isStoredAs": {"@id": audio_uri},
+                    "nfo:sampleRate": 44100,
+                    "nie:title": "Loomer",
+                    "nfo:duration": 102,
+                    "nmm:musicAlbum": {
+                        "@id": "urn:album:Loveless:My%20Bloody%20Valentine:1991-01-01",
+                        "nie:title": "Loveless",
+                        "nmm:albumTrackCount": 2,
+                        "@type": "nmm:MusicAlbum",
+                        "nmm:albumArtist": {"@id": "urn:artist:My%20Bloody%20Valentine"},
+                    },
+                    "nmm:musicAlbumDisc": {
+                        "@id": "urn:album-disc:Loveless:My%20Bloody%20Valentine:1991-01-01:Disc1",
+                        "nmm:setNumber": 1,
+                        "nmm:albumDiscAlbum": {
+                            "@id": "urn:album:Loveless:My%20Bloody%20Valentine:1991-01-01"
+                        },
+                        "@type": "nmm:MusicAlbumDisc",
+                    },
                 },
-                "nmm:musicAlbumDisc": {
-                    "@id": "urn:album-disc:Loveless:My%20Bloody%20Valentine:1991-01-01:Disc1"
-                },
-                "nfo:duration": 257,
             },
-            "nie:title": "Loomer",
-            "nfo:duration": 102,
             "nmm:musicAlbum": {
-                "@id": "urn:album:Loveless:My%20Bloody%20Valentine:1991-01-01",
-                "nie:title": "Loveless",
-                "nmm:albumTrackCount": 2,
-                "@type": "nmm:MusicAlbum",
-                "nmm:albumArtist": {"@id": "urn:artist:My%20Bloody%20Valentine"},
+                "@id": "urn:album:Loveless:My%20Bloody%20Valentine:1991-01-01"
             },
             "nmm:musicAlbumDisc": {
-                "@id": "urn:album-disc:Loveless:My%20Bloody%20Valentine:1991-01-01:Disc1",
-                "nmm:setNumber": 1,
-                "nmm:albumDiscAlbum": {
-                    "@id": "urn:album:Loveless:My%20Bloody%20Valentine:1991-01-01"
-                },
-                "@type": "nmm:MusicAlbumDisc",
+                "@id": "urn:album-disc:Loveless:My%20Bloody%20Valentine:1991-01-01:Disc1"
             },
         }
 

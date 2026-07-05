@@ -139,8 +139,9 @@ tracker_writeback_file_write_metadata (TrackerWriteback  *writeback,
 	GFile *file, *tmp_file;
 	GFileInfo *file_info;
 	const gchar * const *content_types;
-	const gchar *mime_type, *url;
+	const gchar *mime_type, *url = NULL;
 	guint n;
+	g_autoptr (GList) values = NULL;
 	GError *n_error = NULL;
 
 	writeback_file_class = TRACKER_WRITEBACK_FILE_GET_CLASS (writeback);
@@ -169,7 +170,19 @@ tracker_writeback_file_write_metadata (TrackerWriteback  *writeback,
 	}
 
 	/* Get the file from the resource */
-	url = tracker_resource_get_first_string (resource, "nie:isStoredAs");
+	values = tracker_resource_get_values (resource, "nie:isStoredAs");
+
+	if (values) {
+		if (G_VALUE_HOLDS_STRING (values->data)) {
+			url = g_value_get_string (values->data);
+		} else if (G_VALUE_HOLDS_OBJECT (values->data)) {
+			TrackerResource *file_resource;
+
+			file_resource = g_value_get_object (values->data);
+			url = tracker_resource_get_identifier (file_resource);
+		}
+	}
+
 	if (!url) {
 		g_set_error (error,
 		             G_IO_ERROR,
