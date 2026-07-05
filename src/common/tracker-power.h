@@ -24,30 +24,17 @@
 
 G_BEGIN_DECLS
 
-#define TRACKER_TYPE_POWER         (tracker_power_get_type ())
-#define TRACKER_POWER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), TRACKER_TYPE_POWER, TrackerPower))
-#define TRACKER_POWER_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST ((k), TRACKER_TYPE_POWER, TrackerPowerClass))
-#define TRACKER_IS_POWER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), TRACKER_TYPE_POWER))
-#define TRACKER_IS_POWER_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), TRACKER_TYPE_POWER))
-#define TRACKER_POWER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), TRACKER_TYPE_POWER, TrackerPowerClass))
+#define TRACKER_TYPE_POWER (tracker_power_get_type ())
+G_DECLARE_FINAL_TYPE (TrackerPower,
+                      tracker_power,
+                      TRACKER, POWER,
+                      GObject)
 
-typedef struct _TrackerPower TrackerPower;
-typedef struct _TrackerPowerClass TrackerPowerClass;
+TrackerPower * tracker_power_new (void);
 
-struct _TrackerPower {
-	GObject parent;
-};
+gboolean tracker_power_get_on_battery (TrackerPower *power);
 
-struct _TrackerPowerClass {
-	GObjectClass parent_class;
-};
-
-GType         tracker_power_get_type               (void) G_GNUC_CONST;
-
-TrackerPower *tracker_power_new                    (void);
-
-gboolean      tracker_power_get_on_battery         (TrackerPower *power);
-gboolean      tracker_power_get_on_low_battery     (TrackerPower *power);
+gboolean tracker_power_get_on_low_battery (TrackerPower *power);
 
 G_END_DECLS
 
