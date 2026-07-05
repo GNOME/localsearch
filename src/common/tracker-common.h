@@ -29,6 +29,7 @@
 #include "tracker-dbus.h"
 #include "tracker-debug.h"
 #include "tracker-file-utils.h"
+#include "tracker-identifier.h"
 
 #ifdef HAVE_LANDLOCK
 #include "tracker-landlock.h"

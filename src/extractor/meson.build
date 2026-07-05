@@ -141,7 +141,7 @@ foreach module : modules
     install_dir: tracker_extract_modules_dir,
     install_rpath: tracker_internal_libs_dir)
 
-  hash = run_command('calculate-hash.sh', [sources] + files_extract, check: true)
+  hash = run_command('calculate-hash.sh', [sources] + files_extract + files_identifier, check: true)
 
   foreach rule : rules
     configure_file(input: rule,

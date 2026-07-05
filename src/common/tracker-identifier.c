@@ -21,7 +21,7 @@
 
 #include "config-miners.h"
 
-#include "tracker-indexing-tree-methods.h"
+#include "tracker-identifier.h"
 
 #include <glib/gstdio.h>
 
@@ -41,17 +41,16 @@
 	bytes[12], bytes[13], bytes[14], bytes[15]
 
 char *
-tracker_indexing_tree_get_root_id (TrackerIndexingTree *tree,
-                                   GFile               *root)
+tracker_content_identifier_root_for_file (GFile *file)
 {
 	g_autofree char *path = NULL, *expanded = NULL;
 	char *id = NULL;
 	g_autofd int fd;
 
-	path = g_file_get_path (root);
+	path = g_file_get_path (file);
 	expanded = realpath (path, NULL);
 
-	fd = open (expanded ? expanded : path, O_RDONLY | O_DIRECTORY);
+	fd = open (expanded ? expanded : path, O_RDONLY);
 
 #ifdef HAVE_BTRFS_IOCTL
 	{

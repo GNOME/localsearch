@@ -19,9 +19,6 @@
  * Author: Carlos Garnacho <carlosg@gnome.org>
  */
 
-#include "tracker-indexing-tree.h"
-
 #include <gio/gio.h>
 
-char * tracker_indexing_tree_get_root_id (TrackerIndexingTree *tree,
-                                          GFile               *root);
+char * tracker_content_identifier_root_for_file (GFile *file);

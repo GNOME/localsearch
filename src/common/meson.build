@@ -1,3 +1,5 @@
+files_identifier = files ('tracker-identifier.c')
+
 tracker_miners_common_sources = [
   'tracker-dbus.c',
   'tracker-debug.c',
@@ -8,6 +10,7 @@ tracker_miners_common_sources = [
   'tracker-term-utils.c',
   'tracker-utils.c',
   'tracker-seccomp.c',
+  files_identifier,
 ]
 
 if have_landlock

@@ -1,6 +1,5 @@
 files_extract = files(
     'tracker-indexer-methods.c',
-    'tracker-indexing-tree-methods.c',
 )
 
 miner_fs_enums = gnome.mkenums_simple('tracker-miner-enum-types',
