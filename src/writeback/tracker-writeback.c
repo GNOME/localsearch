@@ -38,7 +38,6 @@ typedef struct {
 	TrackerController *controller;
 	GCancellable *cancellable;
 	GDBusMethodInvocation *invocation;
-	TrackerDBusRequest *request;
 	TrackerResource *resource;
 	GList *writeback_handlers;
 	GError *error;
@@ -184,8 +183,7 @@ static WritebackData *
 writeback_data_new (TrackerController       *controller,
                     GList                   *writeback_handlers,
                     TrackerResource         *resource,
-                    GDBusMethodInvocation   *invocation,
-                    TrackerDBusRequest      *request)
+                    GDBusMethodInvocation   *invocation)
 {
 	WritebackData *data;
 
@@ -195,7 +193,6 @@ writeback_data_new (TrackerController       *controller,
 	data->resource = g_object_ref (resource);
 	data->invocation = invocation;
 	data->writeback_handlers = writeback_handlers;
-	data->request = request;
 
 	return data;
 }
@@ -288,12 +285,12 @@ perform_writeback_cb (gpointer user_data)
 	priv->ongoing_tasks = g_list_remove (priv->ongoing_tasks, data);
 
 	if (data->error == NULL) {
+		TRACKER_NOTE (DBUS, g_message ("Writeback operation performed successfully"));
 		g_dbus_method_invocation_return_value (data->invocation, NULL);
 	} else {
+		TRACKER_NOTE (DBUS, g_message ("Writeback operation finished with error: %s", data->error->message));
 		g_dbus_method_invocation_return_gerror (data->invocation, data->error);
 	}
-
-	tracker_dbus_request_end (data->request, NULL);
 
 	g_mutex_lock (&priv->mutex);
 	priv->current = NULL;
@@ -388,7 +385,6 @@ handle_method_call_writeback (TrackerController     *controller,
                               GVariant              *parameters)
 {
 	TrackerControllerPrivate *priv;
-	TrackerDBusRequest *request;
 	TrackerResource *resource;
 	GHashTableIter iter;
 	gpointer key, value;
@@ -398,7 +394,15 @@ handle_method_call_writeback (TrackerController     *controller,
 	priv = tracker_controller_get_instance_private (controller);
 
 	reset_shutdown_timeout (controller);
-	request = tracker_dbus_request_begin (NULL, "%s", __FUNCTION__);
+
+#ifdef G_ENABLE_DEBUG
+	if (TRACKER_DEBUG_CHECK (STATISTICS)) {
+		g_autofree char *str = NULL;
+
+		str = g_variant_print (parameters, TRUE);
+		g_message ("Received Writeback request, parameters: %s", str);
+	}
+#endif
 
 	resource = tracker_resource_deserialize (g_variant_get_child_value (parameters, 0));
 	if (!resource) {
@@ -406,7 +410,7 @@ handle_method_call_writeback (TrackerController     *controller,
 		                                       G_DBUS_ERROR,
 		                                       G_DBUS_ERROR_INVALID_ARGS,
 		                                       "GVariant does not serialize to a resource");
-		tracker_dbus_request_end (request, NULL);
+		TRACKER_NOTE (DBUS, g_message ("Variant did not serialize to a resource"));
 		return;
 	}
 
@@ -416,7 +420,7 @@ handle_method_call_writeback (TrackerController     *controller,
 		                                       G_DBUS_ERROR,
 		                                       G_DBUS_ERROR_INVALID_ARGS,
 		                                       "Resource does not define rdf:type");
-		tracker_dbus_request_end (request, NULL);
+		TRACKER_NOTE (DBUS, g_message ("Resource does not define rdf:type"));
 		return;
 	}
 
@@ -447,8 +451,7 @@ handle_method_call_writeback (TrackerController     *controller,
 		data = writeback_data_new (controller,
 		                           writeback_handlers,
 		                           resource,
-		                           invocation,
-		                           request);
+		                           invocation);
 		task = g_task_new (controller, data->cancellable, NULL, NULL);
 
 		/* No need to free data here, it's done in the callback. */
@@ -460,7 +463,7 @@ handle_method_call_writeback (TrackerController     *controller,
 		                                       G_DBUS_ERROR,
 		                                       G_DBUS_ERROR_NOT_SUPPORTED,
 		                                       "Resource description does not match any writeback modules");
-		tracker_dbus_request_end (request, NULL);
+		TRACKER_NOTE (DBUS, g_message ("No writeback handler"));
 	}
 
 	g_object_unref (resource);
