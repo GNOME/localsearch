@@ -615,13 +615,10 @@ oasis_content_characters (void          *ctx,
 			return;
 		}
 
-		if (tracker_text_validate_utf8 ((const gchar *) ch,
-		                                MIN ((gsize) len, (gsize) data->bytes_pending),
-		                                &data->content,
-		                                &written_bytes)) {
-			data->bytes_pending -= written_bytes;
-		}
-
+		tracker_text_validate_utf8 ((const gchar *) ch,
+		                            MIN ((gsize) len, (gsize) data->bytes_pending),
+		                            &data->content,
+		                            &written_bytes);
 		data->bytes_pending -= written_bytes;
 		break;
 
