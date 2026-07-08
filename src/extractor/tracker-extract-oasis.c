@@ -47,6 +47,7 @@ typedef enum {
 	ODT_TAG_TYPE_CREATED,
 	ODT_TAG_TYPE_GENERATOR,
 	ODT_TAG_TYPE_WORD_TEXT,
+	ODT_TAG_TYPE_WORD_TEXT_SECTION,
 	ODT_TAG_TYPE_WORD_TABLE_CELL,
 	ODT_TAG_TYPE_SLIDE_TEXT,
 	ODT_TAG_TYPE_SPREADSHEET_TEXT,
@@ -238,7 +239,12 @@ extract_oasis_content (const gchar     *uri,
 
 	if (!error || g_error_matches (error, maximum_size_error_quark, 0)) {
 		content = g_string_free (info.content, FALSE);
-		tracker_resource_set_string (metadata, "nie:plainTextContent", content);
+
+		if (file_type == FILE_TYPE_ODT)
+			content = g_strchomp (content);
+
+		tracker_resource_set_string (metadata, "nie:plainTextContent",
+		                             content);
 	} else {
 		g_warning ("Got error parsing XML file: %s\n", error->message);
 		g_string_free (info.content, TRUE);
@@ -535,11 +541,17 @@ oasis_content_start_element_ns (void           *ctx,
 			return;
 		}
 
-		/* Regular text containers in ODT */
+		/* Headings and paragraphs */
 		if (g_ascii_strcasecmp (qname, "text:p") == 0 ||
-		    g_ascii_strcasecmp (qname, "text:h") == 0 ||
-		    g_ascii_strcasecmp (qname, "text:a") == 0 ||
-		    g_ascii_strcasecmp (qname, "text:span") == 0) {
+		    g_ascii_strcasecmp (qname, "text:h") == 0) {
+			g_queue_push_head (data->tag_stack, GINT_TO_POINTER (ODT_TAG_TYPE_WORD_TEXT_SECTION));
+			return;
+		}
+
+		/* Regular text containers in ODT */
+		if (g_ascii_strcasecmp (qname, "text:a") == 0 ||
+		    g_ascii_strcasecmp (qname, "text:span") == 0 ||
+		    g_ascii_strcasecmp (qname, "text:soft-page-break") == 0) {
 			g_queue_push_head (data->tag_stack, GINT_TO_POINTER (ODT_TAG_TYPE_WORD_TEXT));
 			return;
 		} else if (g_ascii_strcasecmp (qname, "table:table-cell") == 0) {
@@ -593,6 +605,7 @@ oasis_content_characters (void          *ctx,
 	current = GPOINTER_TO_INT (g_queue_peek_head (data->tag_stack));
 	switch (current) {
 	case ODT_TAG_TYPE_WORD_TEXT:
+	case ODT_TAG_TYPE_WORD_TEXT_SECTION:
 	case ODT_TAG_TYPE_WORD_TABLE_CELL:
 	case ODT_TAG_TYPE_SLIDE_TEXT:
 	case ODT_TAG_TYPE_SPREADSHEET_TEXT:
@@ -626,7 +639,8 @@ oasis_content_end_element_ns (void          *ctx,
 	ODTContentParseInfo *data = ctx;
 	ODTTagType current = GPOINTER_TO_INT (g_queue_peek_head (data->tag_stack));
 
-	if (current == ODT_TAG_TYPE_WORD_TABLE_CELL ||
+	if (current == ODT_TAG_TYPE_WORD_TEXT_SECTION ||
+	    current == ODT_TAG_TYPE_WORD_TABLE_CELL ||
 	    current == ODT_TAG_TYPE_SPREADSHEET_TEXT ||
 	    current == ODT_TAG_TYPE_GRAPHICS_TEXT ||
 	    current == ODT_TAG_TYPE_SLIDE_TEXT) {
