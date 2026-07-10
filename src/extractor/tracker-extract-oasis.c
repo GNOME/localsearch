@@ -496,6 +496,21 @@ oasis_metadata_end_element_ns (void          *ctx,
 /* ------------------------- CONTENT (content.xml) SAX ----------------------------------- */
 
 static void
+ensure_content_trailing_whitespace (ODTContentParseInfo *data)
+{
+	if (data->bytes_pending > 0 && data->content->len > 0) {
+		gchar last = data->content->str[data->content->len - 1];
+
+		if (last != ' ' && last != '\n' && last != '\t' && last != '\r') {
+			g_string_append_c (data->content, ' ');
+			data->bytes_pending--;
+		}
+	} else if (data->bytes_pending == 0) {
+		data->limit_reached = TRUE;
+	}
+}
+
+static void
 oasis_content_start_element_ns (void           *ctx,
                                 const xmlChar  *localname,
                                 const xmlChar  *prefix,
@@ -515,22 +530,7 @@ oasis_content_start_element_ns (void           *ctx,
 		if (g_ascii_strcasecmp (qname, "text:s") == 0 ||
 		    g_ascii_strcasecmp (qname, "text:tab") == 0 ||
 		    g_ascii_strcasecmp (qname, "text:line-break") == 0) {
-
-			if (data->bytes_pending > 0) {
-				if (data->content->len > 0) {
-					gchar last = data->content->str[data->content->len - 1];
-					if (last != ' ' && last != '\n' && last != '\t' && last != '\r') {
-						g_string_append_c (data->content, ' ');
-						data->bytes_pending--;
-					}
-				} else {
-					g_string_append_c (data->content, ' ');
-					data->bytes_pending--;
-				}
-			} else {
-				data->limit_reached = TRUE;
-			}
-
+			ensure_content_trailing_whitespace (data);
 			g_queue_push_head (data->tag_stack, GINT_TO_POINTER (ODT_TAG_TYPE_WORD_TEXT));
 			return;
 		}
@@ -630,18 +630,8 @@ oasis_content_end_element_ns (void          *ctx,
 	    current == ODT_TAG_TYPE_SPREADSHEET_TEXT ||
 	    current == ODT_TAG_TYPE_GRAPHICS_TEXT ||
 	    current == ODT_TAG_TYPE_SLIDE_TEXT) {
-
-		if (data->bytes_pending > 0 && data->content->len > 0) {
-			gchar last = data->content->str[data->content->len - 1];
-			if (last != ' ' && last != '\n' && last != '\t' && last != '\r') {
-				g_string_append_c (data->content, ' ');
-				data->bytes_pending--;
-			}
-		} else if (data->bytes_pending == 0) {
-			data->limit_reached = TRUE;
-		}
+		ensure_content_trailing_whitespace (data);
 	}
 
-	/* Pop current element */
 	g_queue_pop_head (data->tag_stack);
 }
