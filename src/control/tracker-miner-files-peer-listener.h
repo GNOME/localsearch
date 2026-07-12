@@ -26,25 +26,11 @@
 #include <gio/gio.h>
 #include <tracker-common.h>
 
-#define TRACKER_TYPE_MINER_FILES_PEER_LISTENER            (tracker_miner_files_peer_listener_get_type ())
-#define TRACKER_MINER_FILES_PEER_LISTENER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), TRACKER_TYPE_MINER_FILES_PEER_LISTENER, TrackerMinerFilesPeerListener))
-#define TRACKER_MINER_FILES_PEER_LISTENER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), TRACKER_TYPE_DBUS_MINER_FILES_PEER_LISTENER, TrackerMinerFilesPeerListenerClass))
-#define TRACKER_IS_MINER_FILES_PEER_LISTENER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), TRACKER_TYPE_MINER_FILES_PEER_LISTENER))
-#define TRACKER_IS_MINER_FILES_PEER_LISTENER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRACKER_TYPE_MINER_FILES_PEER_LISTENER))
-#define TRACKER_MINER_FILES_PEER_LISTENER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), TRACKER_TYPE_MINER_FILES_PEER_LISTENER, TrackerMinerFilesPeerListenerClass))
-
-typedef struct _TrackerMinerFilesPeerListener TrackerMinerFilesPeerListener;
-typedef struct _TrackerMinerFilesPeerListenerClass TrackerMinerFilesPeerListenerClass;
-
-struct _TrackerMinerFilesPeerListener {
-	GObject parent_instance;
-};
-
-struct _TrackerMinerFilesPeerListenerClass {
-	GObjectClass parent_class;
-};
-
-GType tracker_miner_files_peer_listener_get_type     (void) G_GNUC_CONST;
+#define TRACKER_TYPE_MINER_FILES_PEER_LISTENER (tracker_miner_files_peer_listener_get_type ())
+G_DECLARE_FINAL_TYPE (TrackerMinerFilesPeerListener,
+                      tracker_miner_files_peer_listener,
+                      TRACKER, MINER_FILES_PEER_LISTENER,
+                      GObject)
 
 TrackerMinerFilesPeerListener *
          tracker_miner_files_peer_listener_new          (GDBusConnection               *connection);
@@ -54,14 +40,9 @@ void     tracker_miner_files_peer_listener_add_watch    (TrackerMinerFilesPeerLi
                                                          GFile                         *file,
                                                          const gchar * const           *graphs,
                                                          TrackerIndexLocationFlags      flags);
-void     tracker_miner_files_peer_listener_remove_watch (TrackerMinerFilesPeerListener *listener,
-                                                         const gchar                   *dbus_name,
-                                                         GFile                         *file);
 
 void     tracker_miner_files_peer_listener_remove_dbus_name (TrackerMinerFilesPeerListener *listener,
                                                              const gchar                   *dbus_name);
-void     tracker_miner_files_peer_listener_remove_file      (TrackerMinerFilesPeerListener *listener,
-                                                             GFile                         *file);
 gboolean tracker_miner_files_peer_listener_is_file_watched  (TrackerMinerFilesPeerListener *listener,
                                                              GFile                         *file);
 
