@@ -227,7 +227,7 @@ tracker_miner_files_index_initable_init (GInitable     *initable,
 	                                       error))
 		return FALSE;
 
-	files_index->full_path = full_path;
+	files_index->full_path = g_steal_pointer (&full_path);
 
 	files_index->peer_listener = tracker_miner_files_peer_listener_new (files_index->d_connection);
 	g_signal_connect (files_index->peer_listener, "unwatch-file",
