@@ -22,5 +22,4 @@ src/extractor/tracker-main.c
 src/indexer/tracker-application.c
 src/indexer/tracker-endpoint-helper.c
 src/indexer/tracker-main.c
-src/indexer/tracker-miner-files.c
 src/writeback/tracker-main.c
