@@ -10,19 +10,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tracker master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/localsearch/-/issues\n"
-"POT-Creation-Date: 2026-01-16 18:54+0000\n"
-"PO-Revision-Date: 2026-01-16 23:43+0100\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/localsearch/issues/\n"
+"POT-Creation-Date: 2026-07-20 10:44+0000\n"
+"PO-Revision-Date: 2026-07-23 00:55+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
-"%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
+"n%100==4 ? 3 : 0);\n"
 "n%100==4 ? 3: 0);\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 3.8\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: data/org.freedesktop.Tracker.Extract.gschema.xml:23
@@ -217,15 +217,15 @@ msgstr "Začasno prekini indeksiranje"
 msgid "Erase the indexed data"
 msgstr "Izbriši indeksirane podatke"
 
-#: src/cli/main.c:74 src/cli/tracker-search.c:418
+#: src/cli/main.c:74 src/cli/tracker-search.c:415
 msgid "Search for content"
 msgstr "Iskanje vsebine"
 
-#: src/cli/main.c:75 src/cli/tracker-status.c:721
+#: src/cli/main.c:75 src/cli/tracker-status.c:722
 msgid "Provide status and statistics on the data indexed"
 msgstr "Pokaže stanje in statistiko indeksiranih podatkov"
 
-#: src/cli/main.c:76 src/cli/tracker-tag.c:414
+#: src/cli/main.c:76 src/cli/tracker-tag.c:411
 msgid "Add, remove and list tags"
 msgstr "Dodajanje, odstranjevanje in izpisovanje oznak"
 
@@ -248,7 +248,7 @@ msgstr ""
 msgid "“%s” is not a localsearch command. See “localsearch --help”"
 msgstr "»%s« ni ukaz programa localsearch. Glejte »localsearch --help«"
 
-#: src/cli/tracker-cli-utils.c:176 src/cli/tracker-status.c:376
+#: src/cli/tracker-cli-utils.c:194 src/cli/tracker-status.c:376
 msgid "Message"
 msgstr "Sporočilo"
 
@@ -266,7 +266,7 @@ msgstr "ZAPIS"
 #: src/cli/tracker-index.c:60 src/cli/tracker-index.c:61
 #: src/cli/tracker-info.c:84 src/cli/tracker-info.c:85
 #: src/cli/tracker-reset.c:52 src/extractor/tracker-main.c:76
-#: src/extractor/tracker-main.c:91 src/indexer/tracker-application.c:62
+#: src/extractor/tracker-main.c:91 src/indexer/tracker-application.c:66
 msgid "FILE"
 msgstr "DATOTEKA"
 
@@ -280,8 +280,8 @@ msgstr "Razširjanje metapodatkov krajevnih datotek"
 
 #: src/cli/tracker-extract.c:138 src/cli/tracker-index.c:387
 #: src/cli/tracker-info.c:540 src/cli/tracker-inhibit.c:113
-#: src/cli/tracker-reset.c:207 src/cli/tracker-search.c:431
-#: src/cli/tracker-status.c:726 src/cli/tracker-tag.c:419
+#: src/cli/tracker-reset.c:207 src/cli/tracker-search.c:428
+#: src/cli/tracker-status.c:727 src/cli/tracker-tag.c:416
 msgid "Unrecognized options"
 msgstr "Nepoznane možnosti"
 
@@ -349,7 +349,7 @@ msgstr "Preveri, če je DATOTEKA primerna za indeksiranje"
 msgid "Removable device mount point to query"
 msgstr "Točka pritrditve odstranljive naprave za poizvedbo"
 
-#: src/cli/tracker-info.c:357 src/cli/tracker-search.c:373
+#: src/cli/tracker-info.c:357 src/cli/tracker-search.c:370
 #: src/cli/tracker-status.c:158 src/cli/tracker-status.c:276
 msgid "Could not connect to LocalSearch"
 msgstr "Povezave s LocalSearch ni mogoče vzpostaviti"
@@ -552,12 +552,12 @@ msgstr "IZRAZ"
 msgid "Could not get LocalSearch statistics"
 msgstr "Ni mogoče dobiti statistike LocalSearch"
 
-#: src/cli/tracker-status.c:434
+#: src/cli/tracker-status.c:429
 #, c-format
 msgid "Currently indexed"
 msgstr "Trenutno vpisano v kazalo"
 
-#: src/cli/tracker-status.c:437 src/cli/tracker-tag.c:180
+#: src/cli/tracker-status.c:432 src/cli/tracker-tag.c:179
 #, c-format
 msgid "%d file"
 msgid_plural "%d files"
@@ -566,7 +566,7 @@ msgstr[1] "%d datoteka"
 msgstr[2] "%d datoteki"
 msgstr[3] "%d datoteke"
 
-#: src/cli/tracker-status.c:443
+#: src/cli/tracker-status.c:438
 #, c-format
 msgid "%d folder"
 msgid_plural "%d folders"
@@ -575,23 +575,23 @@ msgstr[1] "%d mapa"
 msgstr[2] "%d mapi"
 msgstr[3] "%d mape"
 
-#: src/cli/tracker-status.c:457
+#: src/cli/tracker-status.c:452
 msgid "Remaining space on database partition"
 msgstr "Preostali prostor na razdelku podatkovne zbirke"
 
-#: src/cli/tracker-status.c:467 src/cli/tracker-status.c:619
+#: src/cli/tracker-status.c:462 src/cli/tracker-status.c:614
 msgid "Indexer is paused"
 msgstr "Indeksator je začasno zaustavljen"
 
-#: src/cli/tracker-status.c:468
+#: src/cli/tracker-status.c:463
 msgid "Data is still being indexed"
 msgstr "Podatki se še vpisujejo v kazala"
 
-#: src/cli/tracker-status.c:470
+#: src/cli/tracker-status.c:465
 msgid "Indexer is idle"
 msgstr "Indeksator je nedejaven"
 
-#: src/cli/tracker-status.c:477
+#: src/cli/tracker-status.c:472
 #, c-format
 msgid "%d recorded failure"
 msgid_plural "%d recorded failures"
@@ -600,19 +600,19 @@ msgstr[1] "Zabeleženo je %d spodletelo opravilo"
 msgstr[2] "Zabeleženi sta %d spodleteli opravili"
 msgstr[3] "Zabeležena so %d spodletela opravila"
 
-#: src/cli/tracker-status.c:507
+#: src/cli/tracker-status.c:502
 msgid "No reports found"
 msgstr "Ni najdenih poročil"
 
-#: src/cli/tracker-status.c:678
+#: src/cli/tracker-status.c:679
 msgid "Could not get SPARQL connection"
 msgstr "Ni mogoče pridobiti povezave SPARQL"
 
-#: src/cli/tracker-status.c:687
+#: src/cli/tracker-status.c:688
 msgid "Now listening to database updates"
 msgstr "Poslušanje posodobitev zbirke podatkov"
 
-#: src/cli/tracker-status.c:688
+#: src/cli/tracker-status.c:689
 msgid "Press Ctrl+C to stop"
 msgstr "Za zaustavitev pritisnite tipki CTRL+C"
 
@@ -656,51 +656,51 @@ msgstr "DATOTEKA …"
 msgid "Could not get files related to tag"
 msgstr "Datotek povezanih z oznako ni mogoče dobiti"
 
-#: src/cli/tracker-tag.c:151 src/cli/tracker-tag.c:335
+#: src/cli/tracker-tag.c:150 src/cli/tracker-tag.c:334
 msgid "Could not get all tags"
 msgstr "Ni mogoče idobiti vseh oznak"
 
-#: src/cli/tracker-tag.c:156
+#: src/cli/tracker-tag.c:155
 msgid "Tags (shown by name)"
 msgstr "Oznake (prikazane po imenu)"
 
-#: src/cli/tracker-tag.c:217
+#: src/cli/tracker-tag.c:216
 msgid "Could not add tag"
 msgstr "Ni mogoče dodati oznake"
 
-#: src/cli/tracker-tag.c:222
+#: src/cli/tracker-tag.c:221
 msgid "Tag was added successfully"
 msgstr "Oznaka je bila uspešno dodana"
 
-#: src/cli/tracker-tag.c:248
+#: src/cli/tracker-tag.c:247
 msgid "Could not add tag to files"
 msgstr "Oznake ni mogoče dodati datotekam"
 
-#: src/cli/tracker-tag.c:253
+#: src/cli/tracker-tag.c:252
 msgid "Tagged"
 msgstr "Označena"
 
-#: src/cli/tracker-tag.c:278 src/cli/tracker-tag.c:306
+#: src/cli/tracker-tag.c:277 src/cli/tracker-tag.c:305
 msgid "Could not remove tag"
 msgstr "Ni mogoče odstraniti oznake"
 
-#: src/cli/tracker-tag.c:283 src/cli/tracker-tag.c:311
+#: src/cli/tracker-tag.c:282 src/cli/tracker-tag.c:310
 msgid "Tag was removed successfully"
 msgstr "Oznaka je bila uspešno odstranjena"
 
-#: src/cli/tracker-tag.c:360
+#: src/cli/tracker-tag.c:357
 msgid "Could not establish a connection to LocalSearch"
 msgstr "Povezave z LocalSearch ni mogoče vzpostaviti"
 
-#: src/cli/tracker-tag.c:424
+#: src/cli/tracker-tag.c:421
 msgid "The --list option is required for --show-files"
 msgstr "Možnost --list je zahtevana za --show-files"
 
-#: src/cli/tracker-tag.c:426
+#: src/cli/tracker-tag.c:423
 msgid "Add and delete actions can not be used together"
 msgstr "Dejanj dodajanja in brisanja ni mogoče uporabljati skupaj"
 
-#: src/cli/tracker-tag.c:428
+#: src/cli/tracker-tag.c:425
 msgid "The --description option can only be used with --add"
 msgstr "Možnost --description je mogoče uporabiti le skupaj z --add"
 
@@ -768,15 +768,15 @@ msgstr[1] " %2.2d sekunda"
 msgstr[2] " %2.2d sekundi"
 msgstr[3] " %2.2d sekunde"
 
-#: src/control/tracker-main.c:61 src/extractor/tracker-main.c:94
-#: src/indexer/tracker-application.c:69 src/writeback/tracker-main.c:50
+#: src/control/tracker-main.c:56 src/extractor/tracker-main.c:94
+#: src/indexer/tracker-application.c:73 src/writeback/tracker-main.c:50
 msgid "Displays version information"
 msgstr "Pokaže podrobnosti različice"
 
 #. Translators: this messagge will apper immediately after the
 #. * usage string - Usage: COMMAND <THIS_MESSAGE>
 #.
-#: src/control/tracker-main.c:136 src/indexer/tracker-endpoint-helper.c:77
+#: src/control/tracker-main.c:116 src/indexer/tracker-endpoint-helper.c:77
 msgid "— start the tracker index proxy"
 msgstr "– zažene ozadnji program tracker"
 
@@ -830,63 +830,67 @@ msgstr ""
 "konča"
 
 #: src/indexer/tracker-application.c:61
+msgid "Skips metadata extraction from file content"
+msgstr "Preskoči izluščenje metapodatkov iz vsebine datoteke"
+
+#: src/indexer/tracker-application.c:65
 msgid "Checks if FILE is eligible for being mined based on configuration"
 msgstr ""
 "Preveri, če je DATOTEKA primerna za podatkovno rudarjenje na podlagi "
 "nastavitev"
 
-#: src/indexer/tracker-application.c:65
+#: src/indexer/tracker-application.c:69
 msgid "Avoids changes in the filesystem"
 msgstr "Izogni se spremembam datotečnega sistema"
 
-#: src/indexer/tracker-application.c:1262
+#: src/indexer/tracker-application.c:1279
 #, c-format
 msgid "Data object “%s” currently exists"
 msgstr "Podatkovni predmet »%s« trenutno obstaja"
 
-#: src/indexer/tracker-application.c:1263
+#: src/indexer/tracker-application.c:1280
 #, c-format
 msgid "Data object “%s” currently does not exist"
 msgstr "Podatkovni predmet »%s« trenutno ne obstaja"
 
-#: src/indexer/tracker-application.c:1289
+#: src/indexer/tracker-application.c:1306
 #, c-format
 msgid "Parent directory “%s” is NOT eligible to be indexed (based on filters)"
 msgstr "Glavna mapa »%s« NI primerna za vpis v kazalo (na podlagi pravil)"
 
-#: src/indexer/tracker-application.c:1295
+#: src/indexer/tracker-application.c:1311
 #, c-format
 msgid "Parent directory “%s” is NOT eligible to be indexed (hidden file)"
 msgstr "Glavna mapa »%s« NI primerna za vpis v kazalo (skrita datoteka)"
 
-#: src/indexer/tracker-application.c:1301
+#: src/indexer/tracker-application.c:1317
 #, c-format
 msgid ""
 "Parent directory “%s” is NOT eligible to be indexed (based on content "
 "filters)"
 msgstr "Glavna mapa »%s« NI primerna za vpis v kazalo"
 
-#: src/indexer/tracker-application.c:1316
+#: src/indexer/tracker-application.c:1332
 msgid "Directory is NOT eligible to be indexed (based on filters)"
 msgstr "Mapa »%s« NI primerna za vpis v kazalo (na podlagi pravil)"
 
-#: src/indexer/tracker-application.c:1320
+#: src/indexer/tracker-application.c:1336
 msgid "File is NOT eligible to be indexed (based on filters)"
 msgstr "Datoteka NI primerna za vpis v kazalo (na podlagi pravil)"
 
-#: src/indexer/tracker-application.c:1323
+#: src/indexer/tracker-application.c:1338
 msgid "File is NOT eligible to be indexed (hidden file)"
 msgstr "Datoteka NI primerna za vpis v kazalo (skrita datoteka)"
 
-#: src/indexer/tracker-application.c:1325
+#: src/indexer/tracker-application.c:1340
 msgid "File is NOT eligible to be indexed (not an indexed folder)"
 msgstr "Datoteka NI primerna za vnos v kazalo (mapa ni v naboru poti)"
 
-#: src/indexer/tracker-application.c:1333
+#: src/indexer/tracker-application.c:1348
 msgid "Directory is eligible to be indexed"
 msgstr "Mapa je primerna za vnos v kazalo"
 
-#: src/indexer/tracker-application.c:1334
+#: src/indexer/tracker-application.c:1349
 msgid "File is eligible to be indexed"
 msgstr "Datoteka je primerna za vnos v kazalo"
 
