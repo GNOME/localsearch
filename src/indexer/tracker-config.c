@@ -115,18 +115,29 @@ dir_mapping_get (GSList   *dirs,
 	return g_slist_reverse (evaluated_dirs);
 }
 
+static GSList *
+strv_to_gslist (GStrv strv)
+{
+	GSList *list = NULL;
+	int i;
+
+	for (i = 0; strv && strv[i]; i++) {
+		list = g_slist_prepend (list, g_strdup (strv[i]));
+	}
+
+	return g_slist_reverse (list);
+}
+
 static void
 update_directories (TrackerConfig *config)
 {
-	GStrv strv;
+	g_auto (GStrv) recursive = NULL, single = NULL;
 
-	strv = g_settings_get_strv (G_SETTINGS (config), "index-recursive-directories");
-	config->index_recursive_directories_unfiltered = tracker_string_list_to_gslist (strv, -1);
-	g_strfreev (strv);
+	recursive = g_settings_get_strv (G_SETTINGS (config), "index-recursive-directories");
+	config->index_recursive_directories_unfiltered = strv_to_gslist (recursive);
 
-	strv = g_settings_get_strv (G_SETTINGS (config), "index-single-directories");
-	config->index_single_directories_unfiltered = tracker_string_list_to_gslist (strv, -1);
-	g_strfreev (strv);
+	single = g_settings_get_strv (G_SETTINGS (config), "index-single-directories");
+	config->index_single_directories_unfiltered = strv_to_gslist (single);
 
 	rebuild_filtered_lists (config);
 }

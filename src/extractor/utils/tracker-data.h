@@ -22,7 +22,7 @@
 
 #include <tinysparql.h>
 
-#include <tracker-common.h>
+#include "tracker-extract-info.h"
 
 G_BEGIN_DECLS
 

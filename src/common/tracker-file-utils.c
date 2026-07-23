@@ -40,7 +40,6 @@
 #include <gio/gunixmounts.h>
 
 #include "tracker-file-utils.h"
-#include "tracker-type-utils.h"
 
 #define TEXT_SNIFF_SIZE 4096
 
@@ -361,7 +360,7 @@ tracker_path_list_filter_duplicates (GSList      *roots,
 	GSList *l1, *l2;
 	GSList *new_list;
 
-	new_list = tracker_gslist_copy_with_string_data (roots);
+	new_list = g_slist_copy_deep (roots, (GCopyFunc) g_strdup, NULL);
 	l1 = new_list;
 
 	while (l1) {

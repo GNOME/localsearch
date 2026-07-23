@@ -1,4 +1,4 @@
-#include <tracker-common.h>
+#include "tracker-extract.h"
 
 #include <gio/gio.h>
 

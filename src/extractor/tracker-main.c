@@ -96,32 +96,6 @@ static GOptionEntry entries[] = {
 	{ NULL }
 };
 
-static void
-initialize_priority_and_scheduling (void)
-{
-	/* Set CPU priority */
-	tracker_sched_idle ();
-
-	/* Set disk IO priority and scheduling */
-	tracker_ioprio_init ();
-
-	/* Set process priority:
-	 * The nice() function uses attribute "warn_unused_result" and
-	 * so complains if we do not check its returned value. But it
-	 * seems that since glibc 2.2.4, nice() can return -1 on a
-	 * successful call so we have to check value of errno too.
-	 * Stupid...
-	 */
-	TRACKER_NOTE (CONFIG, g_message ("Setting priority nice level to 19"));
-
-	if (nice (19) == -1) {
-		const gchar *str = g_strerror (errno);
-
-		TRACKER_NOTE (CONFIG, g_message ("Couldn't set nice value to 19, %s",
-		                      str ? str : "no error given"));
-	}
-}
-
 #ifndef HAVE_LIBSECCOMP
 static gboolean
 signal_handler (gpointer user_data)
@@ -170,12 +144,14 @@ run_standalone (void)
 	g_autoptr (TrackerExtract) extract = NULL;
 	g_autoptr (GFile) file = NULL;
 	g_autoptr (GError) error = NULL;
+	g_autoptr (GFileInfo) file_info = NULL;
 	g_autofree gchar *uri = NULL, *mime = NULL;
 	TrackerResource *resource = NULL;
 	GEnumClass *enum_class;
 	GEnumValue *enum_value;
 	TrackerRdfFormat output_format;
 	TrackerExtractInfo *info;
+	const char *attrs;
 
 	if (!output_format_name) {
 		output_format_name = "turtle";
@@ -191,25 +167,24 @@ run_standalone (void)
 	}
 	output_format = enum_value->value;
 
-	tracker_locale_sanity_check ();
-
 	file = g_file_new_for_commandline_arg (filename);
 
-	if (mime_type) {
+	attrs = (mime_type) ?
+		G_FILE_ATTRIBUTE_UNIX_INODE :
+		G_FILE_ATTRIBUTE_UNIX_INODE "," G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE;
+
+	file_info = g_file_query_info (file,
+	                               attrs,
+	                               G_FILE_QUERY_INFO_NONE,
+	                               NULL,
+	                               &error);
+	if (!file_info)
+		goto error;
+
+	if (mime_type)
 		mime = g_strdup (mime_type);
-	} else {
-		g_autoptr (GFileInfo) file_info = NULL;
-
-		file_info = g_file_query_info (file,
-		                               G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-		                               G_FILE_QUERY_INFO_NONE,
-		                               NULL,
-		                               &error);
-		if (!file_info)
-			goto error;
-
+	else
 		mime = g_strdup (g_file_info_get_content_type (file_info));
-	}
 
 	uri = g_file_get_uri (file);
 
@@ -222,14 +197,17 @@ run_standalone (void)
 	resource = tracker_extract_info_get_resource (info);
 
 	if (resource) {
+		g_autofree char *root_id = NULL, *inode = NULL, *content_id = NULL;
+
+		root_id = tracker_content_identifier_root_for_file (file);
+		inode = g_file_info_get_attribute_as_string (file_info, G_FILE_ATTRIBUTE_UNIX_INODE);
+		content_id = g_strconcat ("urn:fileid:", root_id, ":", inode, NULL);
+
+		tracker_resource_set_identifier (resource, content_id);
+
 		if (output_format != TRACKER_RDF_FORMAT_JSON_LD) {
 			TrackerNamespaceManager *namespaces;
 			g_autofree char *turtle = NULL;
-
-			/* If this was going into the tracker-store we'd generate a unique ID
-			 * here, so that the data persisted across file renames.
-			 */
-			tracker_resource_set_identifier (resource, uri);
 
 			G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 			namespaces = tracker_namespace_manager_get_default ();
@@ -240,11 +218,6 @@ run_standalone (void)
 		} else {
 			/* JSON-LD extraction */
 			g_autofree char *json = NULL;
-
-			/* If this was going into the tracker-store we'd generate a unique ID
-			 * here, so that the data persisted across file renames.
-			 */
-			tracker_resource_set_identifier (resource, uri);
 
 			/* We are using "deprecated" API here as the pretty printed output is
 			 * nicer than with `tracker_resource_print_rdf()`, which uses the
@@ -360,11 +333,6 @@ do_main (int argc, char *argv[])
 
 	setlocale (LC_ALL, "");
 
-	if (!tracker_extract_module_manager_init ())
-		return EXIT_FAILURE;
-
-	tracker_module_manager_load_modules ();
-
 	/* Set conditions when we use stand alone settings */
 	if (filename) {
 		return run_standalone ();
@@ -415,8 +383,6 @@ do_main (int argc, char *argv[])
 	decorator = tracker_decorator_new (sparql_connection,
 	                                   extract, persistence, root_file);
 
-	tracker_locale_sanity_check ();
-
 	controller = tracker_extract_controller_new (decorator,
 	                                             extract,
 	                                             connection,
@@ -449,7 +415,6 @@ do_main (int argc, char *argv[])
 	tracker_miner_stop (TRACKER_MINER (decorator));
 
 	/* Shutdown subsystems */
-	tracker_module_manager_shutdown_modules ();
 	tracker_sparql_connection_close (sparql_connection);
 
 	return EXIT_SUCCESS;
@@ -459,10 +424,6 @@ int
 main (int argc, char *argv[])
 {
 	/* This function is untouchable! Add things to do_main() */
-
-	/* This makes sure we don't steal all the system's resources */
-	initialize_priority_and_scheduling ();
-
 	if (!tracker_seccomp_init (TRUE))
 		g_assert_not_reached ();
 

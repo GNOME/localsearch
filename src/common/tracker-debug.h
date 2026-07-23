@@ -32,6 +32,7 @@ typedef enum {
   TRACKER_DEBUG_STATISTICS          = 1 <<  5,
   TRACKER_DEBUG_STATUS              = 1 <<  6,
   TRACKER_DEBUG_SANDBOX             = 1 <<  7,
+  TRACKER_DEBUG_DBUS                = 1 <<  8,
 } TrackerDebugFlag;
 
 #ifdef G_ENABLE_DEBUG

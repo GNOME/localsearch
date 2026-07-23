@@ -755,7 +755,12 @@ class TrackerWritebackTest(TrackerMinerTest):
         """
         resource = self.__create_resource(data)
         resource.add_uri("rdf:type", rdf_type)
-        resource.add_uri("nie:isStoredAs", path.as_uri())
+
+        file_resource = resource.get_first_relation('nie:isStoredAs')
+        if file_resource is not None:
+            file_resource.set_identifier(path.as_uri())
+        else:
+            resource.add_uri("nie:isStoredAs", path.as_uri())
         return resource
 
     def __compare_data(self, result, data):

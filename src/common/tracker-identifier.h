@@ -1,31 +1,24 @@
 /*
- * Copyright (C) 2011, Nokia <ivan.frade@nokia.com>
+ * Copyright (C) 2025, Red Hat Inc.
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
+ * You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
+ *
+ * Author: Carlos Garnacho <carlosg@gnome.org>
  */
 
-#ifndef __TRACKER_ENUMS_H__
-#define __TRACKER_ENUMS_H__
+#include <gio/gio.h>
 
-G_BEGIN_DECLS
-
-typedef enum {
-	TRACKER_INDEX_LOCATION_FLAGS_NONE = 0,
-} TrackerIndexLocationFlags;
-
-G_END_DECLS
-
-#endif /* __TRACKER_ENUMS_H__ */
+char * tracker_content_identifier_root_for_file (GFile *file);

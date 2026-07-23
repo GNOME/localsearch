@@ -105,8 +105,8 @@ class WritebackAudioTest(fixtures.TrackerWritebackTest):
     def test_mp3_hasHash (self):
         self._writeback_test (
             "writeback-test-5.mp3",
-            {"nfo:hasHash" : {"nfo:hashAlgorithm": "chromaprint",
-                              "nfo:hashValue": "test_hash"}})
+            {"nie:isStoredAs": {"nfo:hasHash" : {"nfo:hashAlgorithm": "chromaprint",
+                                                 "nfo:hashValue": "test_hash"}}})
 
     def test_mp3_music_album(self):
         self._writeback_test(
@@ -182,8 +182,8 @@ class WritebackAudioTest(fixtures.TrackerWritebackTest):
     def test_ogg_hasHash (self):
         self._writeback_test (
             "writeback-test-6.ogg",
-            {"nfo:hasHash" : {"nfo:hashAlgorithm": "chromaprint",
-                              "nfo:hashValue": "test_hash"}})
+            {"nie:isStoredAs": {"nfo:hasHash" : {"nfo:hashAlgorithm": "chromaprint",
+                                                 "nfo:hashValue": "test_hash"}}})
 
     @unittest.skipUnless(
         configuration.have_mediainfo_with_consistent_disc_info(),
@@ -262,8 +262,8 @@ class WritebackAudioTest(fixtures.TrackerWritebackTest):
     def test_flac_hasHash (self):
         self._writeback_test (
             "writeback-test-7.flac",
-            {"nfo:hasHash" : {"nfo:hashAlgorithm": "chromaprint",
-                              "nfo:hashValue": "test_hash"}})
+            {"nie:isStoredAs": {"nfo:hasHash" : {"nfo:hashAlgorithm": "chromaprint",
+                                                 "nfo:hashValue": "test_hash"}}})
 
     @unittest.skipUnless(
         configuration.have_mediainfo_with_consistent_disc_info(),
@@ -345,8 +345,8 @@ class WritebackAudioTest(fixtures.TrackerWritebackTest):
     def test_aac_hasHash (self):
         self._writeback_test (
             "writeback-test-8.mp4",
-            {"nfo:hasHash" : {"nfo:hashAlgorithm": "chromaprint",
-                              "nfo:hashValue": "test_hash"}})
+            {"nie:isStoredAs": {"nfo:hasHash" : {"nfo:hashAlgorithm": "chromaprint",
+                                                 "nfo:hashValue": "test_hash"}}})
 
     @unittest.skip('gstreamer does not write the tag')
     def test_aac_music_album(self):

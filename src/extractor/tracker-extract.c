@@ -27,6 +27,7 @@
 
 #include "tracker-extract.h"
 #include "tracker-main.h"
+#include "tracker-module-manager.h"
 
 G_DEFINE_QUARK (TrackerExtractError, tracker_extract_error)
 
@@ -45,6 +46,8 @@ typedef struct {
 struct _TrackerExtract {
 	GObject parent_instance;
 
+	TrackerExtractRulesManager *rules_manager;
+	TrackerModuleManager *module_manager;
 	GHashTable *statistics_data;
 
 	gint max_text;
@@ -86,6 +89,14 @@ statistics_data_free (StatisticsData *data)
 static void
 tracker_extract_init (TrackerExtract *extract)
 {
+	g_autoptr (GError) error = NULL;
+
+	extract->rules_manager = tracker_extract_rules_manager_new (&error);
+	if (error)
+		g_error ("Failed to load extractor rules: %s", error->message);
+
+	extract->module_manager = tracker_module_manager_new ();
+
 	extract->max_text = DEFAULT_MAX_TEXT;
 
 #ifdef G_ENABLE_DEBUG
@@ -170,6 +181,8 @@ tracker_extract_finalize (GObject *object)
 	}
 #endif
 
+	g_clear_object (&extract->module_manager);
+
 	G_OBJECT_CLASS (tracker_extract_parent_class)->finalize (object);
 }
 
@@ -250,6 +263,7 @@ extract_task_data_new (TrackerExtract *extract,
                        const gchar    *graph)
 {
 	TrackerExtractTaskData *task;
+	const char *module_path;
 
 	task = g_new0 (TrackerExtractTaskData, 1);
 	g_set_object (&task->file, file);
@@ -265,9 +279,16 @@ extract_task_data_new (TrackerExtract *extract,
 	task->extract = extract;
 	task->max_text = extract->max_text;
 
-	task->module = tracker_extract_module_manager_get_module (task->mimetype,
-	                                                          NULL,
-	                                                          &task->func);
+	module_path = tracker_extract_rules_manager_get_module (extract->rules_manager,
+	                                                        task->mimetype);
+
+	if (module_path) {
+		tracker_module_manager_get_func (extract->module_manager,
+		                                 module_path,
+		                                 &task->func,
+		                                 &task->module,
+		                                 NULL);
+	}
 
 	if (!RUNNING_ON_VALGRIND) {
 		if (deadline_seconds < 0) {
@@ -434,7 +455,8 @@ tracker_extract_file (TrackerExtract      *extract,
 		return;
 	}
 
-	graph = tracker_extract_module_manager_get_graph (mimetype);
+	graph = tracker_extract_rules_manager_get_graph (extract->rules_manager,
+	                                                 mimetype);
 
 	if (!graph) {
 		g_autofree char *uri = g_file_get_uri (file);
@@ -492,8 +514,10 @@ tracker_extract_file_sync (TrackerExtract  *object,
 	g_return_val_if_fail (G_IS_FILE (file), NULL);
 	g_return_val_if_fail (content_id != NULL, NULL);
 
-	if (mimetype)
-		graph = tracker_extract_module_manager_get_graph (mimetype);
+	if (mimetype) {
+		graph = tracker_extract_rules_manager_get_graph (object->rules_manager,
+		                                                 mimetype);
+	}
 
 	if (!graph) {
 		g_autofree char *uri = g_file_get_uri (file);
@@ -538,4 +562,10 @@ tracker_extract_set_max_text (TrackerExtract *extract,
                               gint            max_text)
 {
 	extract->max_text = max_text;
+}
+
+TrackerExtractRulesManager *
+tracker_extract_get_rules_manager (TrackerExtract *extract)
+{
+	return extract->rules_manager;
 }

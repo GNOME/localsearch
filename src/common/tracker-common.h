@@ -28,24 +28,18 @@
 
 #include "tracker-dbus.h"
 #include "tracker-debug.h"
-#include "tracker-enums.h"
-#include "tracker-extract-info.h"
 #include "tracker-file-utils.h"
-#include "tracker-ioprio.h"
+#include "tracker-identifier.h"
 
 #ifdef HAVE_LANDLOCK
 #include "tracker-landlock.h"
 #endif
 
 #include "tracker-miner.h"
-#include "tracker-sched.h"
 #include "tracker-seccomp.h"
 #include "tracker-systemd.h"
 #include "tracker-term-utils.h"
-#include "tracker-type-utils.h"
 #include "tracker-utils.h"
-#include "tracker-locale.h"
-#include "tracker-miners-enum-types.h"
-#include "tracker-module-manager.h"
+#include "tracker-extract-rules-manager.h"
 
 #endif /* __LIBTRACKER_COMMON_H__ */

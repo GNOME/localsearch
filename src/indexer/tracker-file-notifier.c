@@ -35,6 +35,7 @@ enum {
 	PROP_CONNECTION,
 	PROP_MONITOR,
 	PROP_ROOT,
+	PROP_RULES_MANAGER,
 	N_PROPS,
 };
 
@@ -78,7 +79,7 @@ typedef struct {
 	GDateTime *store_mtime;
 	GDateTime *disk_mtime;
 	gchar *extractor_hash;
-	gchar *mimetype;
+	gchar *current_hash;
 } TrackerFileData;
 
 typedef struct {
@@ -111,6 +112,7 @@ struct _TrackerFileNotifier
 	TrackerIndexingTree *indexing_tree;
 	TrackerSparqlConnection *connection;
 
+	TrackerExtractRulesManager *rules_manager;
 	TrackerMonitor *monitor;
 	GFile *root;
 
@@ -165,6 +167,9 @@ tracker_file_notifier_set_property (GObject      *object,
 	case PROP_ROOT:
 		notifier->root = g_value_dup_object (value);
 		break;
+	case PROP_RULES_MANAGER:
+		notifier->rules_manager = g_value_dup_object (value);
+		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -178,7 +183,7 @@ file_data_free (TrackerFileData *file_data)
 	g_clear_pointer (&file_data->store_mtime, g_date_time_unref);
 	g_clear_pointer (&file_data->disk_mtime, g_date_time_unref);
 	g_free (file_data->extractor_hash);
-	g_free (file_data->mimetype);
+	g_free (file_data->current_hash);
 	g_slice_free (TrackerFileData, file_data);
 }
 
@@ -403,14 +408,8 @@ update_state (TrackerFileData *data)
 		if (data->in_store) {
 			if (!g_date_time_equal (data->store_mtime, data->disk_mtime)) {
 				data->state = FILE_STATE_UPDATE;
-			} else if (data->mimetype) {
-				const gchar *current_hash;
-
-				current_hash = tracker_extract_module_manager_get_hash (data->mimetype);
-
-				if (g_strcmp0 (data->extractor_hash, current_hash) != 0) {
-					data->state = FILE_STATE_EXTRACTOR_UPDATE;
-				}
+			} else if (g_strcmp0 (data->extractor_hash, data->current_hash) != 0) {
+				data->state = FILE_STATE_EXTRACTOR_UPDATE;
 			}
 		} else {
 			data->state = FILE_STATE_CREATE;
@@ -467,13 +466,18 @@ _insert_store_info (TrackerIndexRoot *root,
                     const gchar      *mimetype,
                     GDateTime        *datetime)
 {
+	TrackerFileNotifier *notifier = root->notifier;
 	TrackerFileData *file_data;
+	const char *current_hash = NULL;
+
+	current_hash = tracker_extract_rules_manager_get_hash (notifier->rules_manager,
+	                                                       mimetype);
 
 	file_data = ensure_file_data (root, file);
 	file_data->in_store = TRUE;
 	file_data->is_dir_in_store = file_type == G_FILE_TYPE_DIRECTORY;
 	file_data->extractor_hash = g_strdup (extractor_hash);
-	file_data->mimetype = g_strdup (mimetype);
+	file_data->current_hash = g_strdup (current_hash);
 	file_data->store_mtime = g_date_time_ref (datetime);
 	update_state (file_data);
 
@@ -1679,6 +1683,12 @@ tracker_file_notifier_class_init (TrackerFileNotifierClass *klass)
 		                     G_PARAM_WRITABLE |
 		                     G_PARAM_CONSTRUCT_ONLY |
 		                     G_PARAM_STATIC_STRINGS);
+	props[PROP_RULES_MANAGER] =
+		g_param_spec_object ("rules-manager", NULL, NULL,
+		                     TRACKER_TYPE_EXTRACT_RULES_MANAGER,
+		                     G_PARAM_WRITABLE |
+		                     G_PARAM_CONSTRUCT_ONLY |
+		                     G_PARAM_STATIC_STRINGS);
 
 	g_object_class_install_properties (object_class, N_PROPS, props);
 }
@@ -1690,10 +1700,11 @@ tracker_file_notifier_init (TrackerFileNotifier *notifier)
 }
 
 TrackerFileNotifier *
-tracker_file_notifier_new (TrackerIndexingTree     *indexing_tree,
-                           TrackerSparqlConnection *connection,
-                           TrackerMonitor          *monitor,
-                           GFile                   *root)
+tracker_file_notifier_new (TrackerIndexingTree        *indexing_tree,
+                           TrackerSparqlConnection    *connection,
+                           TrackerMonitor             *monitor,
+                           TrackerExtractRulesManager *rules_manager,
+                           GFile                      *root)
 {
 	g_return_val_if_fail (TRACKER_IS_INDEXING_TREE (indexing_tree), NULL);
 
@@ -1701,6 +1712,7 @@ tracker_file_notifier_new (TrackerIndexingTree     *indexing_tree,
 	                     "indexing-tree", indexing_tree,
 	                     "connection", connection,
 	                     "monitor", monitor,
+	                     "rules-manager", rules_manager,
 	                     "root", root,
 	                     NULL);
 }

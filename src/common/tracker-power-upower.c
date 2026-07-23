@@ -24,16 +24,16 @@
 
 #include "tracker-power.h"
 
-#define GET_PRIV(obj) (tracker_power_get_instance_private (TRACKER_POWER (obj)))
+struct _TrackerPower {
+	GObject parent_instance;
 
-typedef struct {
 	UpClient  *client;
 #ifndef HAVE_UP_CLIENT_GET_ON_LOW_BATTERY
 	UpDevice  *composite_device;
 #endif
 	gboolean   on_battery;
 	gboolean   on_low_battery;
-} TrackerPowerPrivate;
+};
 
 static void     tracker_power_initable_iface_init (GInitableIface *iface);
 static void     tracker_power_finalize            (GObject         *object);
@@ -49,11 +49,13 @@ static void     tracker_power_client_changed_cb   (UpClient        *client,
 enum {
 	PROP_0,
 	PROP_ON_BATTERY,
-	PROP_ON_LOW_BATTERY
+	PROP_ON_LOW_BATTERY,
+	N_PROPS,
 };
 
+static GParamSpec *props[N_PROPS] = { 0, };
+
 G_DEFINE_TYPE_WITH_CODE (TrackerPower, tracker_power, G_TYPE_OBJECT,
-                         G_ADD_PRIVATE (TrackerPower)
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, tracker_power_initable_iface_init));
 
 static void
@@ -66,21 +68,18 @@ tracker_power_class_init (TrackerPowerClass *klass)
 	object_class->finalize     = tracker_power_finalize;
 	object_class->get_property = tracker_power_get_property;
 
-	g_object_class_install_property (object_class,
-	                                 PROP_ON_BATTERY,
-	                                 g_param_spec_boolean ("on-battery",
-	                                                       "Battery in use",
-	                                                       "Whether the battery is being used",
-	                                                       FALSE,
-	                                                       G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+	props[PROP_ON_BATTERY] =
+		g_param_spec_boolean ("on-battery", NULL, NULL,
+		                      FALSE,
+		                      G_PARAM_READABLE |
+		                      G_PARAM_STATIC_STRINGS);
+	props[PROP_ON_LOW_BATTERY] =
+		g_param_spec_boolean ("on-low-battery", NULL, NULL,
+		                      FALSE,
+		                      G_PARAM_READABLE |
+		                      G_PARAM_STATIC_STRINGS);
 
-	g_object_class_install_property (object_class,
-	                                 PROP_ON_LOW_BATTERY,
-	                                 g_param_spec_boolean ("on-low-battery",
-	                                                       "Battery low",
-	                                                       "Whether the battery is low",
-	                                                       FALSE,
-	                                                       G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+	g_object_class_install_properties (object_class, N_PROPS, props);
 }
 
 #ifndef HAVE_UP_CLIENT_GET_ON_LOW_BATTERY
@@ -89,13 +88,13 @@ on_on_battery_changed (UpClient     *client,
                        GParamSpec   *pspec,
                        TrackerPower *power)
 {
-	TrackerPowerPrivate *priv = GET_PRIV (power);
 	gboolean on_battery;
 
-	on_battery = up_client_get_on_battery (priv->client);
-	if (on_battery != priv->on_battery) {
-		priv->on_battery = on_battery;
-		g_object_notify (G_OBJECT (power), "on-battery");
+	on_battery = up_client_get_on_battery (power->client);
+	if (on_battery != power->on_battery) {
+		power->on_battery = on_battery;
+		g_object_notify_by_pspec (G_OBJECT (power),
+		                          props[PROP_ON_BATTERY]);
 	}
 }
 
@@ -104,15 +103,15 @@ on_warning_level_changed (UpDevice     *device,
                           GParamSpec   *pspec,
                           TrackerPower *power)
 {
-	TrackerPowerPrivate *priv = GET_PRIV (power);
 	UpDeviceLevel warning_level;
 	gboolean on_low_battery;
 
-	g_object_get (priv->composite_device, "warning-level", &warning_level, NULL);
+	g_object_get (power->composite_device, "warning-level", &warning_level, NULL);
 	on_low_battery = warning_level >= UP_DEVICE_LEVEL_LOW;
-	if (on_low_battery != priv->on_low_battery) {
-		priv->on_low_battery = on_low_battery;
-		g_object_notify (G_OBJECT (power), "on-low-battery");
+	if (on_low_battery != power->on_low_battery) {
+		power->on_low_battery = on_low_battery;
+		g_object_notify_by_pspec (G_OBJECT (power),
+		                          props[PROP_ON_LOW_BATTERY]);
 	}
 }
 #endif /* !HAVE_UP_CLIENT_GET_ON_LOW_BATTERY */
@@ -126,32 +125,28 @@ tracker_power_initable_init (GInitable     *initable,
                              GCancellable  *cancellable,
                              GError       **error)
 {
-	TrackerPower *power;
-	TrackerPowerPrivate *priv;
-
-	power = TRACKER_POWER (initable);
-	priv = GET_PRIV (power);
+	TrackerPower *power = TRACKER_POWER (initable);
 
 	/* connect to a UPower instance */
-	priv->client = up_client_new ();
+	power->client = up_client_new ();
 
-	if (priv->client == NULL) {
+	if (power->client == NULL) {
 		g_set_error (error, G_IO_ERROR, G_IO_ERROR_DBUS_ERROR, "Unable to connect to UPower");
 		return FALSE;
 	}
 
 #ifdef HAVE_UP_CLIENT_GET_ON_LOW_BATTERY
-	g_signal_connect (priv->client, "changed",
+	g_signal_connect (power->client, "changed",
 	                  G_CALLBACK (tracker_power_client_changed_cb), power);
-	tracker_power_client_changed_cb (priv->client, power);
+	tracker_power_client_changed_cb (power->client, power);
 #else
-	g_signal_connect (priv->client, "notify::on-battery",
+	g_signal_connect (power->client, "notify::on-battery",
 	                  G_CALLBACK (on_on_battery_changed), power);
-	on_on_battery_changed (priv->client, NULL, power);
-	priv->composite_device = up_client_get_display_device (priv->client);
-	g_signal_connect (priv->composite_device, "notify::warning-level",
+	on_on_battery_changed (power->client, NULL, power);
+	power->composite_device = up_client_get_display_device (power->client);
+	g_signal_connect (power->composite_device, "notify::warning-level",
 		              G_CALLBACK (on_warning_level_changed), power);
-	on_warning_level_changed (priv->composite_device, NULL, power);
+	on_warning_level_changed (power->composite_device, NULL, power);
 #endif /* HAVE_UP_CLIENT_GET_ON_LOW_BATTERY */
 
 	return TRUE;
@@ -160,15 +155,13 @@ tracker_power_initable_init (GInitable     *initable,
 static void
 tracker_power_finalize (GObject *object)
 {
-	TrackerPowerPrivate *priv;
-
-	priv = GET_PRIV (object);
+	TrackerPower *power = TRACKER_POWER (object);
 
 #ifndef HAVE_UP_CLIENT_GET_ON_LOW_BATTERY
-	g_clear_object (&priv->composite_device);
+	g_clear_object (&power->composite_device);
 #endif /* HAVE_UP_CLIENT_GET_ON_LOW_BATTERY */
 
-	g_clear_object (&priv->client);
+	g_clear_object (&power->client);
 
 	(G_OBJECT_CLASS (tracker_power_parent_class)->finalize) (object);
 }
@@ -179,16 +172,14 @@ tracker_power_get_property (GObject    *object,
                             GValue     *value,
                             GParamSpec *pspec)
 {
-	TrackerPowerPrivate *priv;
-
-	priv = GET_PRIV (object);
+	TrackerPower *power = TRACKER_POWER (object);
 
 	switch (param_id) {
 	case PROP_ON_BATTERY:
-		g_value_set_boolean (value, priv->on_battery);
+		g_value_set_boolean (value, power->on_battery);
 		break;
 	case PROP_ON_LOW_BATTERY:
-		g_value_set_boolean (value, priv->on_low_battery);
+		g_value_set_boolean (value, power->on_low_battery);
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
@@ -201,24 +192,23 @@ static void
 tracker_power_client_changed_cb (UpClient     *client,
                                  TrackerPower *power)
 {
-	TrackerPowerPrivate *priv;
 	gboolean on_battery;
 	gboolean on_low_battery;
 
-	priv = GET_PRIV (power);
-
 	/* get the on-battery state */
-	on_battery = up_client_get_on_battery (priv->client);
-	if (on_battery != priv->on_battery) {
-		priv->on_battery = on_battery;
-		g_object_notify (G_OBJECT (power), "on-battery");
+	on_battery = up_client_get_on_battery (power->client);
+	if (on_battery != power->on_battery) {
+		power->on_battery = on_battery;
+		g_object_notify_by_pspec (G_OBJECT (power),
+		                          props[PROP_ON_BATTERY])
 	}
 
 	/* get the on-low-battery state */
-	on_low_battery = up_client_get_on_low_battery (priv->client);
-	if (on_low_battery != priv->on_low_battery) {
-		priv->on_low_battery = on_low_battery;
-		g_object_notify (G_OBJECT (power), "on-low-battery");
+	on_low_battery = up_client_get_on_low_battery (power->client);
+	if (on_low_battery != power->on_low_battery) {
+		power->on_low_battery = on_low_battery;
+		g_object_notify_by_pspec (G_OBJECT (power),
+		                          props[PROP_ON_LOW_BATTERY])
 	}
 }
 #endif /* HAVE_UP_CLIENT_GET_ON_LOW_BATTERY */
@@ -239,7 +229,7 @@ tracker_power_initable_iface_init (GInitableIface *iface)
 TrackerPower *
 tracker_power_new ()
 {
-	GError *error = NULL;
+	g_autoptr (GError) error = NULL;
 	TrackerPower *object;
 
 	object = g_initable_new (TRACKER_TYPE_POWER, NULL, &error, NULL);
@@ -262,13 +252,13 @@ tracker_power_new ()
 gboolean
 tracker_power_get_on_battery (TrackerPower *power)
 {
-	TrackerPowerPrivate *priv;
+	gboolean on_battery;
 
 	g_return_val_if_fail (TRACKER_IS_POWER (power), TRUE);
 
-	priv = GET_PRIV (power);
+	g_object_get (G_OBJECT (power), "on-battery", &on_battery, NULL);
 
-	return priv->on_battery;
+	return on_battery;
 }
 
 /**
@@ -282,11 +272,11 @@ tracker_power_get_on_battery (TrackerPower *power)
 gboolean
 tracker_power_get_on_low_battery (TrackerPower *power)
 {
-	TrackerPowerPrivate *priv;
+	gboolean on_low_battery;
 
 	g_return_val_if_fail (TRACKER_IS_POWER (power), TRUE);
 
-	priv = GET_PRIV (power);
+	g_object_get (G_OBJECT (power), "on-low-battery", &on_low_battery, NULL);
 
-	return priv->on_low_battery;
+	return on_low_battery;
 }

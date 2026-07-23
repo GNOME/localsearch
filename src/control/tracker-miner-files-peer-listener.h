@@ -26,6 +26,10 @@
 #include <gio/gio.h>
 #include <tracker-common.h>
 
+typedef enum {
+        TRACKER_INDEX_LOCATION_FLAGS_NONE = 0,
+} TrackerIndexLocationFlags;
+
 #define TRACKER_TYPE_MINER_FILES_PEER_LISTENER (tracker_miner_files_peer_listener_get_type ())
 G_DECLARE_FINAL_TYPE (TrackerMinerFilesPeerListener,
                       tracker_miner_files_peer_listener,

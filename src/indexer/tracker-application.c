@@ -1212,9 +1212,10 @@ tracker_application_dbus_register (GApplication     *application,
 
 	/* Request legacy DBus name */
 	legacy_dbus_name = g_strconcat (DOMAIN_PREFIX, ".", LEGACY_DBUS_NAME_SUFFIX, NULL);
-
-	if (!tracker_dbus_request_name (dbus_conn, legacy_dbus_name, error))
-		return FALSE;
+	app->legacy_name_id =
+		g_bus_own_name_on_connection (dbus_conn, legacy_dbus_name,
+		                              G_BUS_NAME_OWNER_FLAGS_NONE,
+		                              NULL, NULL, NULL, NULL);
 
 	if (!tracker_term_is_tty ()) {
 		app->systemd_proxy = g_dbus_proxy_new_for_bus_sync (TRACKER_IPC_BUS,
@@ -1230,10 +1231,13 @@ tracker_application_dbus_register (GApplication     *application,
 }
 
 static void
-tracker_application_dbus_unregister (GApplication    *app,
+tracker_application_dbus_unregister (GApplication    *application,
 				     GDBusConnection *dbus_conn,
 				     const char      *object_path)
 {
+	TrackerApplication *app = TRACKER_APPLICATION (application);
+
+	g_bus_unown_name (app->legacy_name_id);
 }
 
 static gint

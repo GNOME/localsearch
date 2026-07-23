@@ -32,6 +32,13 @@
 #include <glib-object.h>
 #include <glib/gi18n.h>
 
+#include <pthread.h>
+
+#ifdef __linux__
+#include <linux/ioprio.h>
+#include <sys/syscall.h>
+#endif
+
 #include <tracker-common.h>
 
 #include "tracker-application.h"
@@ -69,29 +76,36 @@ initialize_signal_handler (GApplication *app)
 static void
 initialize_priority_and_scheduling (void)
 {
+#ifdef __linux__
+	struct sched_param sp = { 0, };
+	int ioprio, ioclass, policy;
+
 	/* Set CPU priority */
-	tracker_sched_idle ();
+	TRACKER_NOTE (CONFIG, g_message ("Setting scheduler policy to SCHED_IDLE"));
+	if (pthread_getschedparam (pthread_self (), &policy, &sp) >= 0) {
+		/* Although pthread_setschedparam() should exist on any POSIX compliant OS,
+		 * the SCHED_IDLE policy is Linux-specific. The POSIX standard only requires
+		 * the existence of realtime and 'other' policies.
+		 *
+		 * We could set the priority to 0. On FreeBSD the default priority is already
+		 * 0, and this may be true on other platforms, so we currently don't bother.
+		 * See https://gitlab.gnome.org/GNOME/tracker-miners/merge_requests/140 for
+		 * more discussion.
+		 */
+		if (pthread_setschedparam (pthread_self(), SCHED_IDLE, &sp) < 0)
+			g_message ("Couldn't set idle scheduler policy: %m");
+	}
 
 	/* Set disk IO priority and scheduling */
-	tracker_ioprio_init ();
-
-	/* Set process priority:
-	 * The nice() function uses attribute "warn_unused_result" and
-	 * so complains if we do not check its returned value. But it
-	 * seems that since glibc 2.2.4, nice() can return -1 on a
-	 * successful call so we have to check value of errno too.
-	 * Stupid...
-	 */
+	ioprio = 7; /* priority is ignored with idle class */
+	ioclass = IOPRIO_CLASS_IDLE << IOPRIO_CLASS_SHIFT;
+	if (syscall (SYS_ioprio_set, IOPRIO_WHO_PROCESS, 0, ioprio | ioclass) < 0)
+		g_message ("Couldn't set ioprio idle priority: %m");
+#endif
 
 	TRACKER_NOTE (CONFIG, g_message ("Setting priority nice level to 19"));
-
-	errno = 0;
-	if (nice (19) == -1 && errno != 0) {
-		const gchar *str = g_strerror (errno);
-
-		g_message ("Couldn't set nice value to 19, %s",
-		           str ? str : "no error given");
-	}
+	if (nice (19) < 0)
+		g_message ("Couldn't set nice value to 19: %m");
 }
 
 static void

@@ -23,8 +23,6 @@
 
 #include "tracker-indexing-tree.h"
 
-#include "tracker-indexing-tree-methods.h"
-
 #include <tracker-common.h>
 
 /**
@@ -699,10 +697,8 @@ tracker_indexing_tree_get_root (TrackerIndexingTree    *tree,
 	if (!folder)
 		return NULL;
 
-	if (!folder->id) {
-		folder->id = tracker_indexing_tree_get_root_id (tree,
-								folder->file);
-	}
+	if (!folder->id)
+		folder->id = tracker_content_identifier_root_for_file (folder->file);
 
 	if (id)
 		*id = folder->id;
