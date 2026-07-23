@@ -9,9 +9,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tracker\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/localsearch/-/issues\n"
-"POT-Creation-Date: 2026-01-16 18:54+0000\n"
-"PO-Revision-Date: 2026-01-29 11:55+0100\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/localsearch/issues/\n"
+"POT-Creation-Date: 2026-07-20 10:44+0000\n"
+"PO-Revision-Date: 2026-07-23 12:08+0200\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -20,9 +20,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);\n"
-"X-Generator: Gtranslator 48.0\n"
+"X-Generator: Gtranslator 50.0\n"
 "X-Launchpad-Export-Date: 2009-10-03 17:40+0000\n"
 "X-Project-Style: gnome\n"
+"X-DL-VCS-Web: https://gitlab.gnome.org/GNOME/localsearch\n"
+"X-DL-Lang: ro\n"
+"X-DL-Module: LocalSearch\n"
+"X-DL-Branch: main\n"
+"X-DL-Domain: po\n"
+"X-DL-State: Translating\n"
 
 #: data/org.freedesktop.Tracker.Extract.gschema.xml:23
 msgid "Max bytes to extract"
@@ -101,7 +107,7 @@ msgstr "Limita minimă a spațiului de pe disc"
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:44
 msgid "Crawling interval"
-msgstr "Interval de indexare"
+msgstr "Intervalul de indexare"
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:51
 msgid "Removable devices’ data permanence threshold"
@@ -125,7 +131,7 @@ msgstr "Indexează dispozitivele detașabile"
 msgid ""
 "Set to true to enable indexing mounted directories for removable devices."
 msgstr ""
-"Stabilește la „true” (adevărat) pentru a permite indexarea dosarelor de pe "
+"Stabilește la „true” (adevărat) pentru a permite indexarea dosarelor din "
 "dispozitivele de stocare detașabile atunci când sunt conectate."
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:70
@@ -134,11 +140,11 @@ msgstr "Indexează discurile optice"
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:76
 msgid "Index when running on battery"
-msgstr "Indexează când se rulează pe baterie"
+msgstr "Indexează când se folosește bateria"
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:82
 msgid "Perform initial indexing when running on battery"
-msgstr "Execută indexarea inițială când rulează prima dată de pe baterie"
+msgstr "Efectuează indexarea inițială chiar și în cazul utilizării bateriei"
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:88
 msgid "Directories to index recursively"
@@ -173,8 +179,8 @@ msgid ""
 msgstr ""
 "Lista dosarelor de indexat fără a inspecta subdosarele, Valorile speciale "
 "includ: „&DESKTOP”, „&DOCUMENTS”, „&DOWNLOAD”, „&MUSIC”, „&PICTURES”, "
-"„&PUBLIC_SHARE”, „&TEMPLATES”, „&VIDEOS”. Vedeți /etc/xdg/user-dirs.defaults "
-"și $HOME/.config/user-dirs.default"
+"„&PUBLIC_SHARE”, „&TEMPLATES”, „&VIDEOS”. A se vedea /etc/xdg/user-"
+"dirs.defaults și $HOME/.config/user-dirs.default"
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:116
 msgid "Ignored files"
@@ -182,7 +188,7 @@ msgstr "Fișiere ignorate"
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:117
 msgid "List of file patterns to avoid"
-msgstr "Lista modelelor de evitat"
+msgstr "Lista modelelor de fișiere excluse"
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:122
 msgid "Ignored directories"
@@ -198,7 +204,7 @@ msgstr "Au fost ignorate dosarele cu conținut"
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:129
 msgid "Avoid any directory containing a file blocklisted here"
-msgstr "Evită orice director care conține un fișier blocat la listare aici"
+msgstr "Evită orice dosar care conține un fișier aflat în lista de excludere"
 
 #: src/cli/main.c:68
 msgid "Show help on subcommands"
@@ -224,17 +230,17 @@ msgstr "Oprește temporar indexarea"
 msgid "Erase the indexed data"
 msgstr "Șterge datele indexate"
 
-#: src/cli/main.c:74 src/cli/tracker-search.c:418
+#: src/cli/main.c:74 src/cli/tracker-search.c:415
 msgid "Search for content"
 msgstr "Caută după conținut"
 
-#: src/cli/main.c:75 src/cli/tracker-status.c:721
+#: src/cli/main.c:75 src/cli/tracker-status.c:722
 msgid "Provide status and statistics on the data indexed"
 msgstr "Furnizează starea și statisticile privind datele indexate"
 
-#: src/cli/main.c:76 src/cli/tracker-tag.c:414
+#: src/cli/main.c:76 src/cli/tracker-tag.c:411
 msgid "Add, remove and list tags"
-msgstr "Adaugă, elimină sau listează etichete"
+msgstr "Adaugă, elimină și afișează etichete"
 
 #: src/cli/main.c:77
 msgid "Sandbox for a testing environment"
@@ -247,7 +253,7 @@ msgstr "Comenzile localsearch disponibile sunt:"
 #: src/cli/main.c:141
 msgid "See “localsearch help <command>” to read about a specific subcommand."
 msgstr ""
-"Consultați „localsearch help <command>” pentru a citi despre o subcomandă "
+"A se vedea „localsearch help <command>” pentru a citi despre o subcomandă "
 "specifică."
 
 #: src/cli/main.c:184
@@ -255,7 +261,7 @@ msgstr ""
 msgid "“%s” is not a localsearch command. See “localsearch --help”"
 msgstr "„%s” nu este o comandă localsearch. Consultați „localsearch --help”"
 
-#: src/cli/tracker-cli-utils.c:176 src/cli/tracker-status.c:376
+#: src/cli/tracker-cli-utils.c:194 src/cli/tracker-status.c:376
 msgid "Message"
 msgstr "Mesaj"
 
@@ -273,7 +279,7 @@ msgstr "FORMAT"
 #: src/cli/tracker-index.c:60 src/cli/tracker-index.c:61
 #: src/cli/tracker-info.c:84 src/cli/tracker-info.c:85
 #: src/cli/tracker-reset.c:52 src/extractor/tracker-main.c:76
-#: src/extractor/tracker-main.c:91 src/indexer/tracker-application.c:62
+#: src/extractor/tracker-main.c:91 src/indexer/tracker-application.c:66
 msgid "FILE"
 msgstr "FIȘIER"
 
@@ -283,22 +289,22 @@ msgstr "Nu s-a putut rula tracker-extract: "
 
 #: src/cli/tracker-extract.c:131
 msgid "Extract metadata from a file"
-msgstr "Extrage datele meta dintr-un fișier"
+msgstr "Extrage metadatele dintr-un fișier"
 
 #: src/cli/tracker-extract.c:138 src/cli/tracker-index.c:387
 #: src/cli/tracker-info.c:540 src/cli/tracker-inhibit.c:113
-#: src/cli/tracker-reset.c:207 src/cli/tracker-search.c:431
-#: src/cli/tracker-status.c:726 src/cli/tracker-tag.c:419
+#: src/cli/tracker-reset.c:207 src/cli/tracker-search.c:428
+#: src/cli/tracker-status.c:727 src/cli/tracker-tag.c:416
 msgid "Unrecognized options"
 msgstr "Opțiuni nerecunoscute"
 
 #: src/cli/tracker-index.c:51
 msgid "Adds FILE as an indexed location"
-msgstr "Adaugă FIȘIER ca o locație indexată"
+msgstr "Adaugă FIȘIERUL în indexul de căutare"
 
 #: src/cli/tracker-index.c:54
 msgid "Removes FILE from indexed locations"
-msgstr "Elimină FIȘIER de la locațiile indexate"
+msgstr "Șterge FIȘIERUL din indexul de căutare"
 
 #: src/cli/tracker-index.c:57
 msgid "Makes indexing recursive"
@@ -307,7 +313,7 @@ msgstr "Face indexarea recursivă"
 #: src/cli/tracker-index.c:205
 #, c-format
 msgid "“%s” is not a directory"
-msgstr "„%s” nu este un director"
+msgstr "„%s” nu este un dosar"
 
 #. TRANSLATORS: These are commandline options
 #: src/cli/tracker-index.c:281
@@ -334,7 +340,7 @@ msgstr "Recursivă"
 
 #: src/cli/tracker-index.c:396
 msgid "Please specify one or more locations to index."
-msgstr "Specificați una sau mai multe locații de indexat."
+msgstr "Trebuie specificată cel puțin o cale pentru indexare."
 
 #: src/cli/tracker-info.c:67
 msgid "Show full namespaces (i.e. don’t use nie:title, use full URLs)"
@@ -348,14 +354,14 @@ msgstr "Arată conținutul în text simplu dacă este disponibil pentru resurse"
 
 #: src/cli/tracker-info.c:78
 msgid "Checks if FILE is eligible for being indexed"
-msgstr "Verifică dacă FIȘIER este eligibil pentru indexare"
+msgstr "Verifică dacă FIȘIERUL este eligibil pentru indexare"
 
 #: src/cli/tracker-info.c:81 src/cli/tracker-search.c:189
 #: src/cli/tracker-status.c:80
 msgid "Removable device mount point to query"
 msgstr "Calea dispozitivului detașabil de utilizat"
 
-#: src/cli/tracker-info.c:357 src/cli/tracker-search.c:373
+#: src/cli/tracker-info.c:357 src/cli/tracker-search.c:370
 #: src/cli/tracker-status.c:158 src/cli/tracker-status.c:276
 msgid "Could not connect to LocalSearch"
 msgstr "Nu s-a putut conecta la LocalSearch"
@@ -375,7 +381,7 @@ msgstr "Nu s-a putut obține o stare eligibilă: "
 #: src/cli/tracker-info.c:451 src/extractor/tracker-main.c:189
 #, c-format
 msgid "Unsupported serialization format “%s”\n"
-msgstr "Format de serializare nesuportat „%s”\n"
+msgstr "Format de serializare neacceptat „%s”\n"
 
 #: src/cli/tracker-inhibit.c:39
 msgid "List inhibitions"
@@ -433,7 +439,7 @@ msgstr "Se șterge…"
 msgid ""
 "The indexed data for this file has been deleted and will be reindexed again."
 msgstr ""
-"Datele indexate pentru acest fișier au fost șterse și vor fi reindexate din "
+"Datele indexate pentru acest fișier au fost șterse și vor fi indexate din "
 "nou."
 
 #: src/cli/tracker-reset.c:223
@@ -512,7 +518,7 @@ msgstr "Limitează numărul de rezultate afișate"
 
 #: src/cli/tracker-search.c:177 src/cli/tracker-tag.c:91
 msgid "Offset the results"
-msgstr "Decalează rezultatele"
+msgstr "Sari peste primele rezultate"
 
 #: src/cli/tracker-search.c:181
 msgid "Show URNs for results"
@@ -520,8 +526,7 @@ msgstr "Arată URN-urile pentru rezultate"
 
 #: src/cli/tracker-search.c:185
 msgid "Return all non-existing matches too (i.e. include unmounted volumes)"
-msgstr ""
-"Întoarce și toate potrivirile non-existente (de ex. include volume nemontate)"
+msgstr "Include și rezultatele inexistente (de ex. include volume nemontate)"
 
 #: src/cli/tracker-search.c:193
 msgid "Show help options"
@@ -537,7 +542,7 @@ msgstr "TERMENI"
 
 #: src/cli/tracker-status.c:68
 msgid "Follow status changes as they happen"
-msgstr "Urmărește schimbările de stare cum se produc"
+msgstr "Urmărește cum se produc schimbările de stare"
 
 #: src/cli/tracker-status.c:72
 msgid "Show statistics for current index / data set"
@@ -548,8 +553,8 @@ msgid ""
 "Watch changes to the database in real time (e.g. resources or files being "
 "added)"
 msgstr ""
-"Priviți modificările la baza de date în timp real (de ex. resursele sau "
-"fișierele care se adaugă)"
+"Monitorizează modificările bazei de date în timp real (de ex. resurse sau "
+"fișiere adăugate)"
 
 #: src/cli/tracker-status.c:86
 msgid "EXPRESSION"
@@ -560,20 +565,20 @@ msgstr "EXPRESIE"
 msgid "Could not get LocalSearch statistics"
 msgstr "Nu s-au putut obține statisticile LocalSearch"
 
-#: src/cli/tracker-status.c:434
+#: src/cli/tracker-status.c:429
 #, c-format
 msgid "Currently indexed"
 msgstr "Indexat acum"
 
-#: src/cli/tracker-status.c:437 src/cli/tracker-tag.c:180
+#: src/cli/tracker-status.c:432 src/cli/tracker-tag.c:179
 #, c-format
 msgid "%d file"
 msgid_plural "%d files"
-msgstr[0] "%d dosar"
-msgstr[1] "%d dosare"
-msgstr[2] "%d de dosare"
+msgstr[0] "%d fișier"
+msgstr[1] "%d fișiere"
+msgstr[2] "%d de fișiere"
 
-#: src/cli/tracker-status.c:443
+#: src/cli/tracker-status.c:438
 #, c-format
 msgid "%d folder"
 msgid_plural "%d folders"
@@ -581,23 +586,23 @@ msgstr[0] "%d dosar"
 msgstr[1] "%d dosare"
 msgstr[2] "%d de dosare"
 
-#: src/cli/tracker-status.c:457
+#: src/cli/tracker-status.c:452
 msgid "Remaining space on database partition"
 msgstr "Spațiu rămas pe partiția bazei de date"
 
-#: src/cli/tracker-status.c:467 src/cli/tracker-status.c:619
+#: src/cli/tracker-status.c:462 src/cli/tracker-status.c:614
 msgid "Indexer is paused"
 msgstr "Indexarea este întreruptă"
 
-#: src/cli/tracker-status.c:468
+#: src/cli/tracker-status.c:463
 msgid "Data is still being indexed"
 msgstr "Datele se indexează încă"
 
-#: src/cli/tracker-status.c:470
+#: src/cli/tracker-status.c:465
 msgid "Indexer is idle"
 msgstr "Indexarea este inactivă"
 
-#: src/cli/tracker-status.c:477
+#: src/cli/tracker-status.c:472
 #, c-format
 msgid "%d recorded failure"
 msgid_plural "%d recorded failures"
@@ -605,19 +610,19 @@ msgstr[0] "%d eșec înregistrat"
 msgstr[1] "%d eșecuri înregistrate"
 msgstr[2] "%d de eșecuri înregistrate"
 
-#: src/cli/tracker-status.c:507
+#: src/cli/tracker-status.c:502
 msgid "No reports found"
 msgstr "Nu au fost găsite rapoarte"
 
-#: src/cli/tracker-status.c:678
+#: src/cli/tracker-status.c:679
 msgid "Could not get SPARQL connection"
 msgstr "Nu s-a putut obține o conexiune SPARQL"
 
-#: src/cli/tracker-status.c:687
+#: src/cli/tracker-status.c:688
 msgid "Now listening to database updates"
 msgstr "Se monitorizează actualizările bazei de date"
 
-#: src/cli/tracker-status.c:688
+#: src/cli/tracker-status.c:689
 msgid "Press Ctrl+C to stop"
 msgstr "Apasă Ctrl+C pentru a stopa"
 
@@ -639,13 +644,13 @@ msgstr ""
 
 #: src/cli/tracker-tag.c:76 src/cli/tracker-tag.c:80
 msgid "TAG"
-msgstr "TAG"
+msgstr "ETICHETĂ"
 
 #: src/cli/tracker-tag.c:79
 msgid "Delete a tag (if FILEs are omitted, TAG is removed for all files)"
 msgstr ""
-"Șterge o etichetă (dacă FILEs sunt omise, TAG este eliminat pentru toate "
-"fișierele)"
+"Șterge o etichetă (dacă FIȘIERELE sunt omise, ETICHETA este eliminată pentru "
+"toate fișierele)"
 
 #: src/cli/tracker-tag.c:83
 msgid "Description for a tag (this is only used with --add)"
@@ -653,61 +658,61 @@ msgstr "Descrierea pentru o etichetă (aceasta este folosită numai cu --add)"
 
 #: src/cli/tracker-tag.c:84
 msgid "STRING"
-msgstr "STRING"
+msgstr "ȘIR_TEXT"
 
 #: src/cli/tracker-tag.c:96
 msgid "FILE…"
-msgstr "FILE…"
+msgstr "FIȘIER…"
 
 #: src/cli/tracker-tag.c:119
 msgid "Could not get files related to tag"
 msgstr "Nu s-au putut obține fișierele legate de etichetă"
 
-#: src/cli/tracker-tag.c:151 src/cli/tracker-tag.c:335
+#: src/cli/tracker-tag.c:150 src/cli/tracker-tag.c:334
 msgid "Could not get all tags"
 msgstr "Nu s-au putut obține toate etichetele"
 
-#: src/cli/tracker-tag.c:156
+#: src/cli/tracker-tag.c:155
 msgid "Tags (shown by name)"
 msgstr "Etichete (arătate după nume)"
 
-#: src/cli/tracker-tag.c:217
+#: src/cli/tracker-tag.c:216
 msgid "Could not add tag"
 msgstr "Nu s-a putut adăuga eticheta"
 
-#: src/cli/tracker-tag.c:222
+#: src/cli/tracker-tag.c:221
 msgid "Tag was added successfully"
 msgstr "Eticheta a fost adăugată cu succes"
 
-#: src/cli/tracker-tag.c:248
+#: src/cli/tracker-tag.c:247
 msgid "Could not add tag to files"
 msgstr "Nu s-a putut adăuga eticheta la fișiere"
 
-#: src/cli/tracker-tag.c:253
+#: src/cli/tracker-tag.c:252
 msgid "Tagged"
 msgstr "Etichetat"
 
-#: src/cli/tracker-tag.c:278 src/cli/tracker-tag.c:306
+#: src/cli/tracker-tag.c:277 src/cli/tracker-tag.c:305
 msgid "Could not remove tag"
 msgstr "Nu s-a putut elimina eticheta"
 
-#: src/cli/tracker-tag.c:283 src/cli/tracker-tag.c:311
+#: src/cli/tracker-tag.c:282 src/cli/tracker-tag.c:310
 msgid "Tag was removed successfully"
 msgstr "Eticheta a fost eliminată cu succes"
 
-#: src/cli/tracker-tag.c:360
+#: src/cli/tracker-tag.c:357
 msgid "Could not establish a connection to LocalSearch"
 msgstr "Nu s-a putut stabili o conexiune la LocalSearch"
 
-#: src/cli/tracker-tag.c:424
+#: src/cli/tracker-tag.c:421
 msgid "The --list option is required for --show-files"
 msgstr "Opțiunea --list este necesară pentru --show-files"
 
-#: src/cli/tracker-tag.c:426
+#: src/cli/tracker-tag.c:423
 msgid "Add and delete actions can not be used together"
 msgstr "Acțiunile adaugă și șterge nu pot fi folosite împreună"
 
-#: src/cli/tracker-tag.c:428
+#: src/cli/tracker-tag.c:425
 msgid "The --description option can only be used with --add"
 msgstr "Opțiunea --description poate fi folosită numai cu --add"
 
@@ -771,17 +776,17 @@ msgstr[0] " %2.2d secundă"
 msgstr[1] " %2.2d secunde"
 msgstr[2] " %2.2d de secunde"
 
-#: src/control/tracker-main.c:61 src/extractor/tracker-main.c:94
-#: src/indexer/tracker-application.c:69 src/writeback/tracker-main.c:50
+#: src/control/tracker-main.c:56 src/extractor/tracker-main.c:94
+#: src/indexer/tracker-application.c:73 src/writeback/tracker-main.c:50
 msgid "Displays version information"
 msgstr "Afișează informații despre versiune"
 
 #. Translators: this messagge will apper immediately after the
 #. * usage string - Usage: COMMAND <THIS_MESSAGE>
 #.
-#: src/control/tracker-main.c:136 src/indexer/tracker-endpoint-helper.c:77
+#: src/control/tracker-main.c:116 src/indexer/tracker-endpoint-helper.c:77
 msgid "— start the tracker index proxy"
-msgstr "— pornește proxy-ul de index de urmăritor"
+msgstr "— pornește proxy-ul de indexare tracker"
 
 #: src/extractor/tracker-main.c:75
 msgid "File to extract metadata for"
@@ -797,7 +802,7 @@ msgstr "MIME"
 
 #: src/extractor/tracker-main.c:86 src/indexer/tracker-endpoint-helper.c:40
 msgid "Socket file descriptor for peer-to-peer communication"
-msgstr "Descriptor de fișier socket pentru comunicare peer-to-peer"
+msgstr "Descriptorul de fișier al socket-ului pentru comunicarea peer-to-peer"
 
 #: src/extractor/tracker-main.c:87 src/indexer/tracker-endpoint-helper.c:41
 msgid "FD"
@@ -820,7 +825,7 @@ msgstr "Extragerea de metadate a eșuat"
 #. usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>
 #: src/extractor/tracker-main.c:333
 msgid "— Extract file meta data"
-msgstr "— Extrage metadate de fișier"
+msgstr "— Extrage metadatele fișierului"
 
 #: src/extractor/tracker-main.c:347
 msgid "Filename and mime type must be provided together"
@@ -829,72 +834,74 @@ msgstr "Numele fișierului și tipul MIME trebuie specificate împreună"
 #: src/indexer/tracker-application.c:57
 msgid "Runs until all configured locations are indexed and then exits"
 msgstr ""
-"Rulează până când toate locațiile configurate sunt indexate iar apoi se "
-"închide"
+"Se execută până când toate căile stabilite sunt indexate și apoi se închide"
 
 #: src/indexer/tracker-application.c:61
-msgid "Checks if FILE is eligible for being mined based on configuration"
-msgstr ""
-"Verifică dacă FIȘIER este eligibil pentru a fi minerit conform configurației"
+msgid "Skips metadata extraction from file content"
+msgstr "Omite extragerea metadatelor din conținutul fișierului"
 
 #: src/indexer/tracker-application.c:65
-msgid "Avoids changes in the filesystem"
-msgstr "Evită modificările în sistemul de fișiere"
+msgid "Checks if FILE is eligible for being mined based on configuration"
+msgstr ""
+"Verifică dacă FIȘIERUL este eligibil pentru indexare, în baza configurației"
 
-#: src/indexer/tracker-application.c:1262
+#: src/indexer/tracker-application.c:69
+msgid "Avoids changes in the filesystem"
+msgstr "Evită schimbările în sistemul de fișiere"
+
+#: src/indexer/tracker-application.c:1279
 #, c-format
 msgid "Data object “%s” currently exists"
 msgstr "Obiectul de date „%s” există deja"
 
-#: src/indexer/tracker-application.c:1263
+#: src/indexer/tracker-application.c:1280
 #, c-format
 msgid "Data object “%s” currently does not exist"
 msgstr "Obiectul de date „%s” nu există în mod curent"
 
-#: src/indexer/tracker-application.c:1289
+#: src/indexer/tracker-application.c:1306
 #, c-format
 msgid "Parent directory “%s” is NOT eligible to be indexed (based on filters)"
 msgstr ""
-"Directorul superior „%s” NU este eligibil pentru a fi indexat (bazat pe "
-"filtre)"
+"Dosarul părinte „%s” NU este eligibil pentru a fi indexat (bazat pe filtre)"
 
-#: src/indexer/tracker-application.c:1295
+#: src/indexer/tracker-application.c:1311
 #, c-format
 msgid "Parent directory “%s” is NOT eligible to be indexed (hidden file)"
 msgstr ""
-"Directorul superior „%s” NU este eligibil pentru a fi indexat (fișier ascuns)"
+"Dosarul părinte „%s” NU este eligibil pentru a fi indexat (fișier ascuns)"
 
-#: src/indexer/tracker-application.c:1301
+#: src/indexer/tracker-application.c:1317
 #, c-format
 msgid ""
 "Parent directory “%s” is NOT eligible to be indexed (based on content "
 "filters)"
 msgstr ""
-"Directorul superior „%s” NU este eligibil pentru a fi indexat (bazat pe "
-"filtre de conținut)"
+"Dosarul părinte „%s” NU este eligibil pentru a fi indexat (bazat pe filtre "
+"de conținut)"
 
-#: src/indexer/tracker-application.c:1316
+#: src/indexer/tracker-application.c:1332
 msgid "Directory is NOT eligible to be indexed (based on filters)"
-msgstr "Directorul NU este eligibil pentru a fi indexat (bazat pe filtre)"
+msgstr "Dosarul NU este eligibil pentru a fi indexat (bazat pe filtre)"
 
-#: src/indexer/tracker-application.c:1320
+#: src/indexer/tracker-application.c:1336
 msgid "File is NOT eligible to be indexed (based on filters)"
 msgstr "Fișierul NU este eligibil pentru a fi indexat (bazat pe filtre)"
 
-#: src/indexer/tracker-application.c:1323
+#: src/indexer/tracker-application.c:1338
 msgid "File is NOT eligible to be indexed (hidden file)"
 msgstr "Fișierul NU este eligibil pentru a fi indexat (fișier ascuns)"
 
-#: src/indexer/tracker-application.c:1325
+#: src/indexer/tracker-application.c:1340
 msgid "File is NOT eligible to be indexed (not an indexed folder)"
 msgstr ""
 "Fișierul NU este eligibil pentru a fi indexat (nu este un dosar indexat)"
 
-#: src/indexer/tracker-application.c:1333
+#: src/indexer/tracker-application.c:1348
 msgid "Directory is eligible to be indexed"
-msgstr "Directorul este eligibil pentru a fi indexat"
+msgstr "Dosarul este eligibil pentru a fi indexat"
 
-#: src/indexer/tracker-application.c:1334
+#: src/indexer/tracker-application.c:1349
 msgid "File is eligible to be indexed"
 msgstr "Fișierul este eligibil pentru a fi indexat"
 
@@ -910,8 +917,8 @@ msgstr "DIR"
 msgid ""
 "Logging, 0 = errors only, 1 = minimal, 2 = detailed and 3 = debug (default=0)"
 msgstr ""
-"Jurnalizare, 0 = doar erori, 1 = minimal, 2 = detaliat și 3 = depanare "
-"(implicit=0)"
+"Jurnalizare, 0 = doar erori, 1 = minimă, 2 = detaliată și 3 = depanare "
+"(prestabilit=0)"
 
 #: src/writeback/tracker-main.c:61
 msgid "Disable shutting down after 30 seconds of inactivity"
@@ -922,4 +929,4 @@ msgstr "Dezactivează oprirea după 30 de secunde de inactivitate"
 #.
 #: src/writeback/tracker-main.c:93
 msgid "— start the tracker writeback service"
-msgstr "— pornește serviciul de scriere înapoi de tracker"
+msgstr "— pornește serviciul tracker writeback"
