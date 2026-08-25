@@ -28,6 +28,12 @@
 
 #include "libtracker-miners-common/tracker-debug.h"
 
+#if !GLIB_CHECK_VERSION (2, 84, 0)
+#define g_unix_mount_entry_at g_unix_mount_at
+#define g_unix_mount_entry_get_fs_type g_unix_mount_get_fs_type
+#define g_unix_mount_entry_free g_unix_mount_free
+#endif
+
 /**
  * SECTION:tracker-storage
  * @short_description: Removable storage and mount point convenience API
@@ -457,13 +463,13 @@ mount_guess_content_type (GMount   *mount,
 		 * EEK, once in a while, I have to write crack, oh well
 		 */
 		if (mount_path &&
-		    (entry = g_unix_mount_at (mount_path, NULL)) != NULL) {
+		    (entry = g_unix_mount_entry_at (mount_path, NULL)) != NULL) {
 			const gchar *filesystem_type;
 			gchar *device_path = NULL;
 			GVolume *volume;
 
 			volume = g_mount_get_volume (mount);
-			filesystem_type = g_unix_mount_get_fs_type (entry);
+			filesystem_type = g_unix_mount_entry_get_fs_type (entry);
 			g_debug ("  Using filesystem type:'%s'",
 			         filesystem_type);
 
@@ -518,7 +524,7 @@ mount_guess_content_type (GMount   *mount,
 
 			g_free (device_path);
 			g_free (mount_path);
-			g_unix_mount_free (entry);
+			g_unix_mount_entry_free (entry);
 		} else {
 			g_debug ("  No GUnixMountEntry found, needed for detecting if optical media... :(");
 			g_free (mount_path);

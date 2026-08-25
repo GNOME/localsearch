@@ -51,6 +51,13 @@
 #include "tracker-file-utils.h"
 #include "tracker-type-utils.h"
 
+#if !GLIB_CHECK_VERSION (2, 84, 0)
+#define g_unix_mount_entries_get g_unix_mounts_get
+#define g_unix_mount_entry_get_device_path g_unix_mount_get_device_path
+#define g_unix_mount_entry_get_mount_path g_unix_mount_get_mount_path
+#define g_unix_mount_entry_free g_unix_mount_free
+#endif
+
 #define TEXT_SNIFF_SIZE 4096
 
 int
@@ -773,7 +780,7 @@ update_mounts (TrackerUnixMountCache *cache)
 
 	g_array_set_size (cache->mounts, 0);
 
-	mounts = g_unix_mounts_get (NULL);
+	mounts = g_unix_mount_entries_get (NULL);
 
 	for (l = mounts; l; l = l->next) {
 		GUnixMountEntry *entry = l->data;
@@ -781,7 +788,7 @@ update_mounts (TrackerUnixMountCache *cache)
 		g_autofree gchar *id = NULL, *subvol = NULL;
 		UnixMountInfo mount;
 
-		devname = g_unix_mount_get_device_path (entry);
+		devname = g_unix_mount_entry_get_device_path (entry);
 		id = blkid_get_tag_value (cache->id_cache, "UUID", devname);
 		if (!id && strchr (devname, G_DIR_SEPARATOR) != NULL)
 			id = g_strdup (devname);
@@ -789,7 +796,7 @@ update_mounts (TrackerUnixMountCache *cache)
 		if (!id)
 			continue;
 
-		mount.mount_point = g_strdup (g_unix_mount_get_mount_path (entry));
+		mount.mount_point = g_strdup (g_unix_mount_entry_get_mount_path (entry));
 		mount.file = g_file_new_for_path (mount.mount_point);
 		mount.id = g_steal_pointer (&id);
 		g_array_append_val (cache->mounts, mount);
@@ -798,7 +805,7 @@ update_mounts (TrackerUnixMountCache *cache)
 	g_array_sort (cache->mounts, sort_by_mount);
 
 	g_rw_lock_writer_unlock (&cache->lock);
-	g_list_free_full (mounts, (GDestroyNotify) g_unix_mount_free);
+	g_list_free_full (mounts, (GDestroyNotify) g_unix_mount_entry_free);
 }
 
 static void
