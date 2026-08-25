@@ -289,7 +289,21 @@ tracker_extract_get_metadata (TrackerExtractInfo  *info,
 	pd.n_bytes_remaining = tracker_extract_info_get_max_text (info);
 
 	filename = g_file_get_path (file);
+#if LIBXML_VERSION >= 21400
+	{
+		htmlParserCtxtPtr ctxt;
+
+		ctxt = htmlNewSAXParserCtxt (&handler, &pd);
+		if (ctxt) {
+			doc = htmlCtxtReadFile (ctxt, filename, NULL, 0);
+			htmlFreeParserCtxt (ctxt);
+		} else {
+			doc = NULL;
+		}
+	}
+#else
 	doc = htmlSAXParseFile (filename, NULL, &handler, &pd);
+#endif
 	g_free (filename);
 
 	if (doc) {
