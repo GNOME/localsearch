@@ -379,18 +379,19 @@ static gchar *
 get_shorthand (GHashTable  *prefixes,
                const gchar *namespace)
 {
-	gchar *hash;
+	const gchar *hash;
 
 	hash = strrchr (namespace, '#');
 
 	if (hash) {
-		gchar *property;
+		const gchar *property;
 		const gchar *prefix;
+		g_autofree gchar *ns = NULL;
 
 		property = hash + 1;
-		*hash = '\0';
+		ns = g_strndup (namespace, hash - namespace);
 
-		prefix = g_hash_table_lookup (prefixes, namespace);
+		prefix = g_hash_table_lookup (prefixes, ns);
 
 		return g_strdup_printf ("%s:%s", prefix, property);
 	}
