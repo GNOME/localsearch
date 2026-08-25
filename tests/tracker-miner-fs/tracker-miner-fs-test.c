@@ -217,7 +217,8 @@ perform_file_operation (TrackerMinerFSTestFixture *fixture,
 		call = g_strdup_printf ("%s %s", command, path);
 	}
 
-	system (call);
+	if (system (call) == -1)
+		g_critical ("Could not run command: %s", call);
 
 	g_free (call);
 	g_free (path);
