@@ -455,7 +455,7 @@ tracker_path_list_filter_duplicates (GSList      *roots,
 		}
 
 		if (G_LIKELY (!reset)) {
-			p = strrchr (path, G_DIR_SEPARATOR);
+			p = (gchar *) strrchr (path, G_DIR_SEPARATOR);
 
 			/* Make sure the path doesn't have the '/' suffix. */
 			if (p && !p[1]) {
@@ -693,8 +693,8 @@ tracker_filename_casecmp_without_extension (const gchar *a,
 	g_return_val_if_fail (a != NULL, FALSE);
 	g_return_val_if_fail (b != NULL, FALSE);
 
-	pa = strrchr (a, '.');
-	pb = strrchr (b, '.');
+	pa = (gchar *) strrchr (a, '.');
+	pb = (gchar *) strrchr (b, '.');
 
 	/* Did we find a "." */
 	if (pa) {

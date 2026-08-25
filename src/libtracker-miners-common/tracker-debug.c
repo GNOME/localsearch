@@ -34,7 +34,7 @@ static const GDebugKey tracker_miners_debug_keys[] = {
 #endif /* G_ENABLE_DEBUG */
 
 static gpointer
-parse_debug_flags ()
+parse_debug_flags (gpointer data)
 {
 	const gchar *env_string;
 	guint flags = 0;
