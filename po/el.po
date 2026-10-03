@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/localsearch/-/issues\n"
-"POT-Creation-Date: 2026-01-16 18:54+0000\n"
-"PO-Revision-Date: 2026-02-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/localsearch/issues/\n"
+"POT-Creation-Date: 2026-09-13 21:41+0000\n"
+"PO-Revision-Date: 2026-10-03 14:14+0300\n"
 "Last-Translator: Efstathios Iosifidis <eiosifidis@gmail.com>\n"
 "Language-Team: Ελληνικά <>\n"
 "Language: el\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.9\n"
 "X-Project-Style: gnome\n"
 
 #: data/org.freedesktop.Tracker.Extract.gschema.xml:23
@@ -206,11 +206,11 @@ msgstr "Εμφάνιση βοήθειας για υποεντολές"
 msgid "Show metadata extractor output"
 msgstr "Εμφάνιση αποτελεσμάτων εξαγωγέα μεταδεδομένων"
 
-#: src/cli/main.c:70 src/cli/tracker-index.c:382
+#: src/cli/main.c:70 src/cli/tracker-index.c:392
 msgid "List and change indexed folders"
 msgstr "Λίστα και αλλαγή φακέλων με ευρετήριο"
 
-#: src/cli/main.c:71 src/cli/tracker-info.c:533
+#: src/cli/main.c:71 src/cli/tracker-info.c:523
 msgid "Retrieve information available for files and resources"
 msgstr "Ανάκτηση πληροφοριών διαθέσιμων για αρχεία και πόρους"
 
@@ -218,42 +218,42 @@ msgstr "Ανάκτηση πληροφοριών διαθέσιμων για αρ
 msgid "Inhibit indexing temporarily"
 msgstr "Προσωρινή απενεργοποίηση δημιουργίας ευρετηρίου"
 
-#: src/cli/main.c:73 src/cli/tracker-reset.c:202
+#: src/cli/main.c:73 src/cli/tracker-reset.c:203
 msgid "Erase the indexed data"
 msgstr "Διαγραφή δεδομένων με ευρετήριο"
 
-#: src/cli/main.c:74 src/cli/tracker-search.c:418
+#: src/cli/main.c:74 src/cli/main.c:75 src/cli/tracker-search.c:405
 msgid "Search for content"
 msgstr "Αναζήτηση περιεχομένου"
 
-#: src/cli/main.c:75 src/cli/tracker-status.c:721
+#: src/cli/main.c:76 src/cli/tracker-status.c:649
 msgid "Provide status and statistics on the data indexed"
 msgstr "Παροχή κατάστασης και στατιστικών για τα δεδομένα με ευρετήριο"
 
-#: src/cli/main.c:76 src/cli/tracker-tag.c:414
+#: src/cli/main.c:77 src/cli/tracker-tag.c:395
 msgid "Add, remove and list tags"
 msgstr "Προσθήκη, αφαίρεση και λίστα ετικετών"
 
-#: src/cli/main.c:77
+#: src/cli/main.c:78
 msgid "Sandbox for a testing environment"
 msgstr "Sandbox για περιβάλλον δοκιμών"
 
-#: src/cli/main.c:122
+#: src/cli/main.c:123
 msgid "Available localsearch commands are:"
 msgstr "Οι διαθέσιμες εντολές localsearch είναι:"
 
-#: src/cli/main.c:141
+#: src/cli/main.c:142
 msgid "See “localsearch help <command>” to read about a specific subcommand."
 msgstr ""
 "Δείτε «localsearch help <command>» για πληροφορίες σχετικά με μια "
 "συγκεκριμένη υποεντολή."
 
-#: src/cli/main.c:184
+#: src/cli/main.c:185
 #, c-format
 msgid "“%s” is not a localsearch command. See “localsearch --help”"
 msgstr "Το «%s» δεν είναι εντολή localsearch. Δείτε «localsearch --help»"
 
-#: src/cli/tracker-cli-utils.c:176 src/cli/tracker-status.c:376
+#: src/cli/tracker-cli-utils.c:189 src/cli/tracker-status.c:312
 msgid "Message"
 msgstr "Μήνυμα"
 
@@ -271,7 +271,7 @@ msgstr "ΜΟΡΦΗ"
 #: src/cli/tracker-index.c:60 src/cli/tracker-index.c:61
 #: src/cli/tracker-info.c:84 src/cli/tracker-info.c:85
 #: src/cli/tracker-reset.c:52 src/extractor/tracker-main.c:76
-#: src/extractor/tracker-main.c:91 src/indexer/tracker-application.c:62
+#: src/extractor/tracker-main.c:91 src/indexer/tracker-application.c:66
 msgid "FILE"
 msgstr "ΑΡΧΕΙΟ"
 
@@ -283,10 +283,10 @@ msgstr "Αδυναμία εκτέλεσης του tracker-extract: "
 msgid "Extract metadata from a file"
 msgstr "Εξάγει μεταδεδομένα από αρχείο"
 
-#: src/cli/tracker-extract.c:138 src/cli/tracker-index.c:387
-#: src/cli/tracker-info.c:540 src/cli/tracker-inhibit.c:113
-#: src/cli/tracker-reset.c:207 src/cli/tracker-search.c:431
-#: src/cli/tracker-status.c:726 src/cli/tracker-tag.c:419
+#: src/cli/tracker-extract.c:138 src/cli/tracker-index.c:397
+#: src/cli/tracker-info.c:530 src/cli/tracker-inhibit.c:113
+#: src/cli/tracker-reset.c:208 src/cli/tracker-search.c:418
+#: src/cli/tracker-status.c:654 src/cli/tracker-tag.c:400
 msgid "Unrecognized options"
 msgstr "Άγνωστες επιλογές"
 
@@ -302,35 +302,35 @@ msgstr "Αφαιρεί το FILE από τις ευρετηριοποιημέν�
 msgid "Makes indexing recursive"
 msgstr "Η ευρετηριοποίηση γίνεται αναδρομικά"
 
-#: src/cli/tracker-index.c:205
+#: src/cli/tracker-index.c:213
 #, c-format
 msgid "“%s” is not a directory"
 msgstr "Ο «%s» δεν είναι κατάλογος"
 
 #. TRANSLATORS: These are commandline options
-#: src/cli/tracker-index.c:281
+#: src/cli/tracker-index.c:291
 msgid "Either --add or --remove must be provided"
 msgstr "Πρέπει να παρέχεται είτε το --add είτε το --remove"
 
 #. TRANSLATORS: These are commandline options
-#: src/cli/tracker-index.c:285
+#: src/cli/tracker-index.c:295
 msgid "--add and --remove are mutually exclusive"
 msgstr "Το --add και το --remove αλληλοαποκλείονται"
 
 #. TRANSLATORS: These are commandline options
-#: src/cli/tracker-index.c:295
+#: src/cli/tracker-index.c:305
 msgid "--recursive requires --add"
 msgstr "Το --recursive απαιτεί το --add"
 
-#: src/cli/tracker-index.c:353 src/cli/tracker-status.c:375
+#: src/cli/tracker-index.c:363 src/cli/tracker-status.c:311
 msgid "Path"
 msgstr "Διαδρομή"
 
-#: src/cli/tracker-index.c:354
+#: src/cli/tracker-index.c:364
 msgid "Recursive"
 msgstr "Αναδρομικά"
 
-#: src/cli/tracker-index.c:396
+#: src/cli/tracker-index.c:406
 msgid "Please specify one or more locations to index."
 msgstr ""
 "Παρακαλούμε προσδιορίστε μια ή περισσότερες τοποθεσίες προς ευρετηριοποίηση."
@@ -349,29 +349,29 @@ msgstr "Εμφάνιση περιεχομένου απλού κειμένου α
 msgid "Checks if FILE is eligible for being indexed"
 msgstr "Ελέγχει αν το ΑΡΧΕΙΟ είναι κατάλληλο για ευρετηρίαση"
 
-#: src/cli/tracker-info.c:81 src/cli/tracker-search.c:189
+#: src/cli/tracker-info.c:81 src/cli/tracker-search.c:190
 #: src/cli/tracker-status.c:80
 msgid "Removable device mount point to query"
 msgstr "Αφαιρούμενο σημείο προσάρτησης συσκευής προς ερώτηση"
 
-#: src/cli/tracker-info.c:357 src/cli/tracker-search.c:373
-#: src/cli/tracker-status.c:158 src/cli/tracker-status.c:276
+#: src/cli/tracker-info.c:347 src/cli/tracker-search.c:358
+#: src/cli/tracker-status.c:662
 msgid "Could not connect to LocalSearch"
 msgstr "Αδυναμία σύνδεσης με το LocalSearch"
 
-#: src/cli/tracker-info.c:405
+#: src/cli/tracker-info.c:395
 msgid "Unable to retrieve data for URI"
 msgstr "Αδυναμία ανάκτησης των δεδομένων για το URI"
 
-#: src/cli/tracker-info.c:412
+#: src/cli/tracker-info.c:402
 msgid "No metadata available for that URI"
 msgstr "Δεν είναι διαθέσιμα μεταδεδομένα για αυτό το URI"
 
-#: src/cli/tracker-info.c:422 src/cli/tracker-info.c:499
+#: src/cli/tracker-info.c:412 src/cli/tracker-info.c:489
 msgid "Could not get eligible status: "
 msgstr "Αδυναμία λήψης κατάστασης καταλληλότητας: "
 
-#: src/cli/tracker-info.c:451 src/extractor/tracker-main.c:189
+#: src/cli/tracker-info.c:441 src/extractor/tracker-main.c:165
 #, c-format
 msgid "Unsupported serialization format “%s”\n"
 msgstr "Μη υποστηριζόμενη μορφή σειριοποίησης “%s“\n"
@@ -435,7 +435,7 @@ msgstr ""
 "Τα αρχειοθετημένα δεδομένα για το αρχείο αυτό θα διαγραφούν και θα "
 "αρχειοθετηθούν ξανά."
 
-#: src/cli/tracker-reset.c:223
+#: src/cli/tracker-reset.c:224
 msgid "The LocalSearch indexed data is about to be deleted, proceed? [y/N]"
 msgstr ""
 "Τα δεδομένα με ευρετήριο του LocalSearch πρόκειται να διαγραφούν, συνέχεια; "
@@ -445,97 +445,97 @@ msgstr ""
 #. * A partial or full match will be considered an affirmative answer,
 #. * it is intentionally lowercase, so please keep it like this.
 #.
-#: src/cli/tracker-reset.c:231
+#: src/cli/tracker-reset.c:232
 msgid "yes"
 msgstr "ναι"
 
-#: src/cli/tracker-search.c:115
+#: src/cli/tracker-search.c:116
 msgid "Results"
 msgstr "Αποτελέσματα"
 
 # #-#-#-#-#  anjuta.HEAD.el.po (anjuta 0.1.9)  #-#-#-#-#
 #
-#: src/cli/tracker-search.c:116 src/cli/tracker-search.c:117
-#: src/cli/tracker-search.c:119 src/cli/tracker-search.c:122
-#: src/cli/tracker-search.c:123 src/cli/tracker-search.c:124
+#: src/cli/tracker-search.c:117 src/cli/tracker-search.c:118
+#: src/cli/tracker-search.c:120 src/cli/tracker-search.c:123
+#: src/cli/tracker-search.c:124 src/cli/tracker-search.c:125
 msgid "Files"
 msgstr "Αρχεία"
 
-#: src/cli/tracker-search.c:118
+#: src/cli/tracker-search.c:119
 msgid "Folders"
 msgstr "Φάκελοι"
 
-#: src/cli/tracker-search.c:120
+#: src/cli/tracker-search.c:121
 msgid "Albums"
 msgstr "Άλμπουμ"
 
-#: src/cli/tracker-search.c:121
+#: src/cli/tracker-search.c:122
 msgid "Artists"
 msgstr "Καλλιτέχνες"
 
-#: src/cli/tracker-search.c:132
+#: src/cli/tracker-search.c:133
 msgid "Search for files"
 msgstr "Αναζήτηση για αρχεία"
 
-#: src/cli/tracker-search.c:136
+#: src/cli/tracker-search.c:137
 msgid "Search for folders"
 msgstr "Αναζήτηση για φακέλους"
 
-#: src/cli/tracker-search.c:140
+#: src/cli/tracker-search.c:141
 msgid "Search for audio files"
 msgstr "Αναζήτηση για αρχεία ήχου"
 
-#: src/cli/tracker-search.c:144
+#: src/cli/tracker-search.c:145
 msgid "Search for music albums"
 msgstr "Αναζήτηση για μουσικά άλμπουμ"
 
-#: src/cli/tracker-search.c:148
+#: src/cli/tracker-search.c:149
 msgid "Search for music artists"
 msgstr "Αναζήτηση για καλλιτέχνες μουσικής"
 
-#: src/cli/tracker-search.c:152
+#: src/cli/tracker-search.c:153
 msgid "Search for image files"
 msgstr "Αναζήτηση για αρχεία εικόνων"
 
-#: src/cli/tracker-search.c:156
+#: src/cli/tracker-search.c:157
 msgid "Search for video files"
 msgstr "Αναζήτηση αρχεία βίντεο"
 
-#: src/cli/tracker-search.c:160
+#: src/cli/tracker-search.c:161
 msgid "Search for document files"
 msgstr "Αναζήτηση για αρχεία εγγράφων"
 
-#: src/cli/tracker-search.c:164
+#: src/cli/tracker-search.c:165
 msgid "Search for software files"
 msgstr "Αναζήτηση για αρχεία λογισμικού"
 
-#: src/cli/tracker-search.c:173 src/cli/tracker-tag.c:87
+#: src/cli/tracker-search.c:174 src/cli/tracker-tag.c:87
 msgid "Limit the number of results shown"
 msgstr "Περιορισμός αριθμού των αποτελεσμάτων που θα εμφανίζονται"
 
-#: src/cli/tracker-search.c:177 src/cli/tracker-tag.c:91
+#: src/cli/tracker-search.c:178 src/cli/tracker-tag.c:91
 msgid "Offset the results"
 msgstr "Μετατόπιση των αποτελεσμάτων"
 
-#: src/cli/tracker-search.c:181
+#: src/cli/tracker-search.c:182
 msgid "Show URNs for results"
 msgstr "Εμφάνιση URN για τα αποτελέσματα"
 
-#: src/cli/tracker-search.c:185
+#: src/cli/tracker-search.c:186
 msgid "Return all non-existing matches too (i.e. include unmounted volumes)"
 msgstr ""
 "Να επιστραφούν όλες οι μη υπάρχουσες συμφωνίες επίσης (δηλ. συμπερίληψη μη "
 "προσαρτημένων τόμων)"
 
-#: src/cli/tracker-search.c:193
+#: src/cli/tracker-search.c:194
 msgid "Show help options"
 msgstr "Εμφάνιση επιλογών βοήθειας"
 
-#: src/cli/tracker-search.c:200 src/cli/tracker-status.c:85
+#: src/cli/tracker-search.c:201 src/cli/tracker-status.c:85
 msgid "search terms"
 msgstr "όροι αναζήτησης"
 
-#: src/cli/tracker-search.c:201
+#: src/cli/tracker-search.c:202
 msgid "TERMS"
 msgstr "ΟΡΟΙ"
 
@@ -559,66 +559,62 @@ msgstr ""
 msgid "EXPRESSION"
 msgstr "ΕΚΦΡΑΣΗ"
 
-#: src/cli/tracker-status.c:172 src/cli/tracker-status.c:295
-#: src/cli/tracker-status.c:317
+#: src/cli/tracker-status.c:138 src/cli/tracker-status.c:231
+#: src/cli/tracker-status.c:253
 msgid "Could not get LocalSearch statistics"
 msgstr "Αδυναμία λήψης των στατιστικών του LocalSearch"
 
-#: src/cli/tracker-status.c:434
+#: src/cli/tracker-status.c:365
 #, c-format
 msgid "Currently indexed"
 msgstr "Τρέχον ευρετήριο"
 
-#: src/cli/tracker-status.c:437 src/cli/tracker-tag.c:180
+#: src/cli/tracker-status.c:368 src/cli/tracker-tag.c:177
 #, c-format
 msgid "%d file"
 msgid_plural "%d files"
 msgstr[0] "%d αρχείο"
 msgstr[1] "%d αρχεία"
 
-#: src/cli/tracker-status.c:443
+#: src/cli/tracker-status.c:374
 #, c-format
 msgid "%d folder"
 msgid_plural "%d folders"
 msgstr[0] "%d φάκελος"
 msgstr[1] "%d φάκελοι"
 
-#: src/cli/tracker-status.c:457
+#: src/cli/tracker-status.c:388
 msgid "Remaining space on database partition"
 msgstr "Υπολειπόμενος χώρος στην κατάτμηση βάσης δεδομένων"
 
-#: src/cli/tracker-status.c:467 src/cli/tracker-status.c:619
+#: src/cli/tracker-status.c:398 src/cli/tracker-status.c:550
 msgid "Indexer is paused"
 msgstr "Ο ευρετηριαστής είναι σε παύση"
 
-#: src/cli/tracker-status.c:468
+#: src/cli/tracker-status.c:399
 msgid "Data is still being indexed"
 msgstr "Τα δεδομένα ευρετηριοποιούνται ακόμα"
 
-#: src/cli/tracker-status.c:470
+#: src/cli/tracker-status.c:401
 msgid "Indexer is idle"
 msgstr "Ο ευρετηριαστής είναι αδρανής"
 
-#: src/cli/tracker-status.c:477
+#: src/cli/tracker-status.c:408
 #, c-format
 msgid "%d recorded failure"
 msgid_plural "%d recorded failures"
 msgstr[0] "%d καταγεγραμμένη αποτυχία"
 msgstr[1] "%d καταγεγραμμένες αποτυχίες"
 
-#: src/cli/tracker-status.c:507
+#: src/cli/tracker-status.c:438
 msgid "No reports found"
 msgstr "Δεν βρέθηκαν αναφορές"
 
-#: src/cli/tracker-status.c:678
-msgid "Could not get SPARQL connection"
-msgstr "Αδύνατη η σύνδεση με το SPARQL"
-
-#: src/cli/tracker-status.c:687
+#: src/cli/tracker-status.c:614
 msgid "Now listening to database updates"
 msgstr "Τώρα ακούει για ενημερώσεις βάσης δεδομένων"
 
-#: src/cli/tracker-status.c:688
+#: src/cli/tracker-status.c:615
 msgid "Press Ctrl+C to stop"
 msgstr "Πατήστε Ctrl+C για να σταματήσετε"
 
@@ -664,52 +660,52 @@ msgstr "ΑΡΧΕΙΟ…"
 msgid "Could not get files related to tag"
 msgstr "Αδυναμία λήψης τα αρχείων σχετικών με την ετικέτα"
 
-#: src/cli/tracker-tag.c:151 src/cli/tracker-tag.c:335
+#: src/cli/tracker-tag.c:149 src/cli/tracker-tag.c:323
 msgid "Could not get all tags"
 msgstr "Αδυναμία λήψης όλων των ετικετών"
 
-#: src/cli/tracker-tag.c:156
+#: src/cli/tracker-tag.c:153
 msgid "Tags (shown by name)"
 msgstr "Ετικέτες (εμφανίζονται κατά όνομα)"
 
-#: src/cli/tracker-tag.c:217
+#: src/cli/tracker-tag.c:213
 msgid "Could not add tag"
 msgstr "Αδυναμία προσθήκης ετικέτας"
 
-#: src/cli/tracker-tag.c:222
+#: src/cli/tracker-tag.c:217
 msgid "Tag was added successfully"
 msgstr "Η ετικέτα προστέθηκε με επιτυχία"
 
-#: src/cli/tracker-tag.c:248
+#: src/cli/tracker-tag.c:242
 msgid "Could not add tag to files"
 msgstr "Αδυναμία προσθήκης ετικέτας στα αρχεία"
 
-#: src/cli/tracker-tag.c:253
+#: src/cli/tracker-tag.c:246
 msgid "Tagged"
 msgstr "Με ετικέτα"
 
-#: src/cli/tracker-tag.c:278 src/cli/tracker-tag.c:306
+#: src/cli/tracker-tag.c:270 src/cli/tracker-tag.c:296
 msgid "Could not remove tag"
 msgstr "Αδυναμία αφαίρεσης ετικέτας"
 
-#: src/cli/tracker-tag.c:283 src/cli/tracker-tag.c:311
+#: src/cli/tracker-tag.c:274 src/cli/tracker-tag.c:300
 msgid "Tag was removed successfully"
 msgstr "Η ετικέτα αφαιρέθηκε με επιτυχία"
 
-#: src/cli/tracker-tag.c:360
+#: src/cli/tracker-tag.c:345
 msgid "Could not establish a connection to LocalSearch"
 msgstr "Αδυναμία σύνδεσης με το LocalSearch"
 
-#: src/cli/tracker-tag.c:424
+#: src/cli/tracker-tag.c:405
 msgid "The --list option is required for --show-files"
 msgstr "Η επιλογή --list είναι απαιτούμενη για το --show-files"
 
-#: src/cli/tracker-tag.c:426
+#: src/cli/tracker-tag.c:407
 msgid "Add and delete actions can not be used together"
 msgstr ""
 "Η εντολή προσθήκη και διαγραφή δεν μπορούν να χρησιμοποιηθούν ταυτόχρονα"
 
-#: src/cli/tracker-tag.c:428
+#: src/cli/tracker-tag.c:409
 msgid "The --description option can only be used with --add"
 msgstr "Η επιλογή --description μπορεί να χρησιμοποιηθεί μόνο με την --add"
 
@@ -769,15 +765,15 @@ msgid_plural " %2.2d seconds"
 msgstr[0] " σε %2.2d δευτερόλεπτο"
 msgstr[1] " σε %2.2d δευτερόλεπτα"
 
-#: src/control/tracker-main.c:61 src/extractor/tracker-main.c:94
-#: src/indexer/tracker-application.c:69 src/writeback/tracker-main.c:50
+#: src/control/tracker-main.c:56 src/extractor/tracker-main.c:94
+#: src/indexer/tracker-application.c:73 src/writeback/tracker-main.c:50
 msgid "Displays version information"
 msgstr "Εμφανίζει πληροφορίες έκδοσης"
 
 #. Translators: this messagge will apper immediately after the
 #. * usage string - Usage: COMMAND <THIS_MESSAGE>
 #.
-#: src/control/tracker-main.c:136 src/indexer/tracker-endpoint-helper.c:77
+#: src/control/tracker-main.c:116 src/indexer/tracker-endpoint-helper.c:77
 msgid "— start the tracker index proxy"
 msgstr "— εκκίνηση του διαμεσολαβητή ευρετηρίου tracker"
 
@@ -805,23 +801,23 @@ msgstr "FD"
 msgid "Filesystem root of the extracted data"
 msgstr "Ρίζα του συστήματος αρχείων των εξαγόμενων δεδομένων"
 
-#: src/extractor/tracker-main.c:262
+#: src/extractor/tracker-main.c:235
 msgid "No metadata or extractor modules found to handle this file"
 msgstr ""
 "Δεν βρέθηκαν μεταδεδομένα ή αρθρώματα του εξαγωγέα για τον χειρισμό αυτού "
 "του αρχείου"
 
-#: src/extractor/tracker-main.c:270
+#: src/extractor/tracker-main.c:243
 msgid "Metadata extraction failed"
 msgstr "Απέτυχε η εξαγωγή μεταδεδομένων"
 
 #. Translators: this message will appear immediately after the
 #. usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>
-#: src/extractor/tracker-main.c:333
+#: src/extractor/tracker-main.c:306
 msgid "— Extract file meta data"
 msgstr "— Εξαγωγή μεταδεδομένων από το αρχείο"
 
-#: src/extractor/tracker-main.c:347
+#: src/extractor/tracker-main.c:320
 msgid "Filename and mime type must be provided together"
 msgstr "Το όνομα αρχείου και ο τύπος mime θα πρέπει να παρέχονται μαζί"
 
@@ -832,39 +828,43 @@ msgstr ""
 "εξέρχεται"
 
 #: src/indexer/tracker-application.c:61
+msgid "Skips metadata extraction from file content"
+msgstr "Παραλείπει την εξαγωγή μεταδεδομένων από το περιεχόμενο του αρχείου"
+
+#: src/indexer/tracker-application.c:65
 msgid "Checks if FILE is eligible for being mined based on configuration"
 msgstr ""
 "Κάνει έλεγχο για το αν το ΑΡΧΕΙΟ είναι διαθέσιμο για εξόρυξη, με βάση τις "
 "ρυθμίσεις"
 
-#: src/indexer/tracker-application.c:65
+#: src/indexer/tracker-application.c:69
 msgid "Avoids changes in the filesystem"
 msgstr "Αποφεύγει τις αλλαγές στο σύστημα αρχείων"
 
-#: src/indexer/tracker-application.c:1262
+#: src/indexer/tracker-application.c:1283
 #, c-format
 msgid "Data object “%s” currently exists"
 msgstr "Υπάρχει το αντικείμενο δεδομένων «%s»"
 
-#: src/indexer/tracker-application.c:1263
+#: src/indexer/tracker-application.c:1284
 #, c-format
 msgid "Data object “%s” currently does not exist"
 msgstr "Δεν υπάρχει το αντικείμενο δεδομένων «%s»"
 
-#: src/indexer/tracker-application.c:1289
+#: src/indexer/tracker-application.c:1310
 #, c-format
 msgid "Parent directory “%s” is NOT eligible to be indexed (based on filters)"
 msgstr ""
 "Ο γονικός κατάλογος «%s» ΔΕΝ είναι κατάλληλος για ευρετηρίαση (βασισμένο σε "
 "φίλτρα)"
 
-#: src/indexer/tracker-application.c:1295
+#: src/indexer/tracker-application.c:1315
 #, c-format
 msgid "Parent directory “%s” is NOT eligible to be indexed (hidden file)"
 msgstr ""
 "Ο γονικός κατάλογος «%s» ΔΕΝ είναι κατάλληλος για ευρετηρίαση (κρυφό αρχείο)"
 
-#: src/indexer/tracker-application.c:1301
+#: src/indexer/tracker-application.c:1321
 #, c-format
 msgid ""
 "Parent directory “%s” is NOT eligible to be indexed (based on content "
@@ -873,29 +873,29 @@ msgstr ""
 "Ο γονικός κατάλογος «%s» ΔΕΝ είναι κατάλληλος για ευρετηρίαση (βασισμένο σε "
 "φίλτρα περιεχομένου)"
 
-#: src/indexer/tracker-application.c:1316
+#: src/indexer/tracker-application.c:1336
 msgid "Directory is NOT eligible to be indexed (based on filters)"
 msgstr "Ο κατάλογος ΔΕΝ είναι κατάλληλος για ευρετηρίαση (βασισμένο σε φίλτρα)"
 
-#: src/indexer/tracker-application.c:1320
+#: src/indexer/tracker-application.c:1340
 msgid "File is NOT eligible to be indexed (based on filters)"
 msgstr "Το αρχείο ΔΕΝ είναι κατάλληλο για ευρετηρίαση (βάση φίλτρων)"
 
-#: src/indexer/tracker-application.c:1323
+#: src/indexer/tracker-application.c:1342
 msgid "File is NOT eligible to be indexed (hidden file)"
 msgstr "Το αρχείο ΔΕΝ είναι κατάλληλο για ευρετηρίαση (κρυφό αρχείο)"
 
-#: src/indexer/tracker-application.c:1325
+#: src/indexer/tracker-application.c:1344
 msgid "File is NOT eligible to be indexed (not an indexed folder)"
 msgstr ""
 "Το αρχείο ΔΕΝ είναι κατάλληλο για ευρετηρίαση (δεν είναι ευρετηριασμένος "
 "φάκελος)"
 
-#: src/indexer/tracker-application.c:1333
+#: src/indexer/tracker-application.c:1352
 msgid "Directory is eligible to be indexed"
 msgstr "Ο κατάλογος είναι κατάλληλος για ευρετηρίαση"
 
-#: src/indexer/tracker-application.c:1334
+#: src/indexer/tracker-application.c:1353
 msgid "File is eligible to be indexed"
 msgstr "Το αρχείο είναι κατάλληλο για ευρετηρίαση"
 
@@ -924,6 +924,9 @@ msgstr "Απενεργοποίηση τερματισμού μετά από 30 �
 #: src/writeback/tracker-main.c:93
 msgid "— start the tracker writeback service"
 msgstr "— εκκίνηση της υπηρεσίας επανεγγραφής του tracker"
+
+#~ msgid "Could not get SPARQL connection"
+#~ msgstr "Αδύνατη η σύνδεση με το SPARQL"
 
 #~ msgid "Error message"
 #~ msgstr "Μήνυμα σφάλματος"
@@ -2099,8 +2102,8 @@ msgstr "— εκκίνηση της υπηρεσίας επανεγγραφής 
 #~ "Select the view on the toolbar for the content you want, e.g. everything, "
 #~ "files or just images"
 #~ msgstr ""
-#~ "Επιλογή της προβολής στην εργαλειοθήκη για το περιεχόμενο που θέλετε, π."
-#~ "χ. οτιδήποτε, αρχεία ή μόνο εικόνες"
+#~ "Επιλογή της προβολής στην εργαλειοθήκη για το περιεχόμενο που θέλετε, "
+#~ "π.χ. οτιδήποτε, αρχεία ή μόνο εικόνες"
 
 #~ msgid "Start to search using the entry box above"
 #~ msgstr ""
@@ -2831,8 +2834,8 @@ msgstr "— εκκίνηση της υπηρεσίας επανεγγραφής 
 #~ msgstr "Ανάκτηση προθεμάτων κλάσης"
 
 #~ msgid ""
-#~ "Retrieve properties for a class, prefixes can be used too (e.g. rdfs:"
-#~ "Resource)"
+#~ "Retrieve properties for a class, prefixes can be used too (e.g. "
+#~ "rdfs:Resource)"
 #~ msgstr ""
 #~ "Ανάκτηση ιδιοτήτων για μια κλάση, επίσης μπορείτε να χρησιμοποιήσετε "
 #~ "προθέματα (π.χ. rdfs:Resource)"
@@ -2913,11 +2916,11 @@ msgstr "— εκκίνηση της υπηρεσίας επανεγγραφής 
 #~ msgstr "Προθέματα"
 
 #~ msgid ""
-#~ "Could not find property for class prefix, e.g. :Resource in 'rdfs:"
-#~ "Resource'"
+#~ "Could not find property for class prefix, e.g. :Resource in "
+#~ "'rdfs:Resource'"
 #~ msgstr ""
-#~ "Αδυναμία εύρεσης ιδιότητας για πρόθεμα κλάσης, π.χ. Πηγές στο 'rdfs:"
-#~ "Resource'"
+#~ "Αδυναμία εύρεσης ιδιότητας για πρόθεμα κλάσης, π.χ. Πηγές στο "
+#~ "'rdfs:Resource'"
 
 #~ msgid "Could not list properties"
 #~ msgstr "Αδυναμία προβολής λίστας με τις ιδιότητες"
@@ -3500,8 +3503,8 @@ msgstr "— εκκίνηση της υπηρεσίας επανεγγραφής 
 #~ msgstr ""
 #~ "Θα·πρέπει·να·έχετε·λάβει·ένα·αντίγραφο·της· "
 #~ "GNU·General·Public·License·μαζί·με·τον ανιχνευτή (Tracker). Αν όχι γράψτε "
-#~ "στο Free Software Foundation, Inc., 59 Temple Place, Suite·330,·Boston,"
-#~ "·MA··02111-1307 USA"
+#~ "στο Free Software Foundation, Inc., 59 Temple Place, "
+#~ "Suite·330,·Boston,·MA··02111-1307 USA"
 
 #~ msgid "A notification icon application to monitor data miners for Tracker"
 #~ msgstr ""
