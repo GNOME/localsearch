@@ -4,20 +4,21 @@
 # Andika Triwidada <andika@gmail.com>, 2011-2016, 2020, 2024.
 # Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017-2021.
 #
+# herpiko <herpiko@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: LocalSearch localsearch-3.10\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/localsearch/-/issues\n"
-"POT-Creation-Date: 2025-12-10 21:07+0000\n"
-"PO-Revision-Date: 2026-01-03 13:25+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/localsearch/issues/\n"
+"POT-Creation-Date: 2026-09-13 21:41+0000\n"
+"PO-Revision-Date: 2026-11-10 07:46+0000\n"
+"Last-Translator: herpiko <herpiko@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Pelokalan\n"
 
 #: data/org.freedesktop.Tracker.Extract.gschema.xml:23
 msgid "Max bytes to extract"
@@ -137,14 +138,14 @@ msgstr "Direktori yang diindeks secara rekursif"
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:91
 msgid ""
 "List of directories to index recursively, Special values include: "
-"‘&DESKTOP’, ‘&DOCUMENTS’, ‘&DOWNLOAD’, ‘&MUSIC’, ‘&PICTURES’, "
-"‘&PUBLIC_SHARE’, ‘&TEMPLATES’, ‘&VIDEOS’. See /etc/xdg/user-dirs.defaults "
-"and $HOME/.config/user-dirs.default"
+"‘&DESKTOP’, ‘&DOCUMENTS’, ‘&DOWNLOAD’, ‘&MUSIC’, "
+"‘&PICTURES’, ‘&PUBLIC_SHARE’, ‘&TEMPLATES’, ‘&VIDEOS’. See "
+"/etc/xdg/user-dirs.defaults and $HOME/.config/user-dirs.default"
 msgstr ""
 "Daftar direktori yang diindeks secara rekursif. Nilai khusus termasuk: "
-"‘&DESKTOP’, ‘&DOCUMENTS’, ‘&DOWNLOAD’, ‘&MUSIC’, ‘&PICTURES’, "
-"‘&PUBLIC_SHARE’, ‘&TEMPLATES’, ‘&VIDEOS’. Lihat /etc/xdg/user-dirs.defaults "
-"dan $HOME/.config/user-dirs.default"
+"‘&DESKTOP’, ‘&DOCUMENTS’, ‘&DOWNLOAD’, ‘&MUSIC’, "
+"‘&PICTURES’, ‘&PUBLIC_SHARE’, ‘&TEMPLATES’, ‘&VIDEOS’. Lihat "
+"/etc/xdg/user-dirs.defaults dan $HOME/.config/user-dirs.default"
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:102
 msgid "Directories to index non-recursively"
@@ -155,14 +156,14 @@ msgstr "Direktori yang diindeks secara non rekursif"
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:105
 msgid ""
 "List of directories to index without inspecting subfolders, Special values "
-"include: ‘&DESKTOP’, ‘&DOCUMENTS’, ‘&DOWNLOAD’, ‘&MUSIC’, ‘&PICTURES’, "
-"‘&PUBLIC_SHARE’, ‘&TEMPLATES’, ‘&VIDEOS’. See /etc/xdg/user-dirs.defaults "
-"and $HOME/.config/user-dirs.default"
+"include: ‘&DESKTOP’, ‘&DOCUMENTS’, ‘&DOWNLOAD’, ‘&MUSIC’, "
+"‘&PICTURES’, ‘&PUBLIC_SHARE’, ‘&TEMPLATES’, ‘&VIDEOS’. See "
+"/etc/xdg/user-dirs.defaults and $HOME/.config/user-dirs.default"
 msgstr ""
 "Daftar direktori yang diindex tanpa memeriksa subfolder. Nilai khusus "
-"termasuk: ‘&DESKTOP’, ‘&DOCUMENTS’, ‘&DOWNLOAD’, ‘&MUSIC’, ‘&PICTURES’, "
-"‘&PUBLIC_SHARE’, ‘&TEMPLATES’, ‘&VIDEOS’. Lihat /etc/xdg/user-dirs.defaults "
-"dan $HOME/.config/user-dirs.default"
+"termasuk: ‘&DESKTOP’, ‘&DOCUMENTS’, ‘&DOWNLOAD’, ‘&MUSIC’, "
+"‘&PICTURES’, ‘&PUBLIC_SHARE’, ‘&TEMPLATES’, ‘&VIDEOS’. Lihat "
+"/etc/xdg/user-dirs.defaults dan $HOME/.config/user-dirs.default"
 
 #: data/org.freedesktop.Tracker.Miner.Files.gschema.xml:116
 msgid "Ignored files"
@@ -197,11 +198,11 @@ msgstr "Tampilkan bantuan pada subperintah"
 msgid "Show metadata extractor output"
 msgstr "Tampilkan keluaran pengekstrak metadata"
 
-#: src/cli/main.c:70 src/cli/tracker-index.c:382
+#: src/cli/main.c:70 src/cli/tracker-index.c:392
 msgid "List and change indexed folders"
 msgstr "Cantumkan dan ubah folder yang diindeks"
 
-#: src/cli/main.c:71 src/cli/tracker-info.c:543
+#: src/cli/main.c:71 src/cli/tracker-info.c:523
 msgid "Retrieve information available for files and resources"
 msgstr "Mengambil informasi yang tersedia untuk berkas dan sumber daya"
 
@@ -209,71 +210,76 @@ msgstr "Mengambil informasi yang tersedia untuk berkas dan sumber daya"
 msgid "Inhibit indexing temporarily"
 msgstr "Cegah pengindeksan untuk sementara"
 
-#: src/cli/main.c:73 src/cli/tracker-reset.c:202
+#: src/cli/main.c:73 src/cli/tracker-reset.c:203
 msgid "Erase the indexed data"
 msgstr "Hapus data yang diindeks"
 
-#: src/cli/main.c:74 src/cli/tracker-search.c:397
+#: src/cli/main.c:74 src/cli/main.c:75 src/cli/tracker-search.c:405
 msgid "Search for content"
 msgstr "Menelusuri konten"
 
-#: src/cli/main.c:75 src/cli/tracker-status.c:748
+#: src/cli/main.c:76 src/cli/tracker-status.c:649
 msgid "Provide status and statistics on the data indexed"
 msgstr "Memberikan status dan statistik pada data yang diindeks"
 
-#: src/cli/main.c:76 src/cli/tracker-tag.c:414
+#: src/cli/main.c:77 src/cli/tracker-tag.c:395
 msgid "Add, remove and list tags"
 msgstr "Tambah, hapus, atau cantumkan daftar tag"
 
-#: src/cli/main.c:77
+#: src/cli/main.c:78
 msgid "Sandbox for a testing environment"
 msgstr "Sandbox untuk suatu lingkungan pengujian"
 
-#: src/cli/main.c:122
+#: src/cli/main.c:123
 msgid "Available localsearch commands are:"
 msgstr "Perintah localsearch yang tersedia adalah:"
 
-#: src/cli/main.c:141
-msgid "See “localsearch help <command>” to read about a specific subcommand."
+#: src/cli/main.c:142
+msgid ""
+"See “localsearch help <command>” to read about a specific subcommand."
 msgstr ""
-"Lihat \"localsearch help <perintah>\" untuk membaca tentang sub perintah "
+"Lihat “localsearch help <command>” untuk membaca tentang subperintah "
 "tertentu."
 
-#: src/cli/main.c:184
+#: src/cli/main.c:185
 #, c-format
 msgid "“%s” is not a localsearch command. See “localsearch --help”"
 msgstr "\"%s\" bukanlah perintah localsearch. Lihat \"localsearch --help\""
 
-#: src/cli/tracker-extract.c:42 src/cli/tracker-info.c:74
-#: src/extractor/tracker-main.c:81
+#: src/cli/tracker-cli-utils.c:189 src/cli/tracker-status.c:312
+msgid "Message"
+msgstr "Pesan"
+
+#: src/cli/tracker-extract.c:44 src/cli/tracker-info.c:75
+#: src/extractor/tracker-main.c:82
 msgid "Output results format: “turtle”, “trig” or “json-ld”"
 msgstr "Format hasil keluaran: \"turtle\", \"trig\", atau “json-ld”"
 
-#: src/cli/tracker-extract.c:43 src/cli/tracker-info.c:75
-#: src/extractor/tracker-main.c:82
+#: src/cli/tracker-extract.c:45 src/cli/tracker-info.c:76
+#: src/extractor/tracker-main.c:83
 msgid "FORMAT"
 msgstr "FORMAT"
 
-#: src/cli/tracker-extract.c:45 src/cli/tracker-extract.c:46
+#: src/cli/tracker-extract.c:47 src/cli/tracker-extract.c:48
 #: src/cli/tracker-index.c:60 src/cli/tracker-index.c:61
-#: src/cli/tracker-info.c:80 src/cli/tracker-info.c:81
-#: src/cli/tracker-reset.c:52 src/extractor/tracker-main.c:75
-#: src/indexer/tracker-application.c:58
+#: src/cli/tracker-info.c:84 src/cli/tracker-info.c:85
+#: src/cli/tracker-reset.c:52 src/extractor/tracker-main.c:76
+#: src/extractor/tracker-main.c:91 src/indexer/tracker-application.c:66
 msgid "FILE"
 msgstr "BERKAS"
 
-#: src/cli/tracker-extract.c:90
+#: src/cli/tracker-extract.c:94
 msgid "Could not run tracker-extract: "
 msgstr "Tak bisa menjalankan tracker-extract: "
 
-#: src/cli/tracker-extract.c:123
+#: src/cli/tracker-extract.c:131
 msgid "Extract metadata from a file"
 msgstr "Ekstrak metadata dari suatu berkas lokal"
 
-#: src/cli/tracker-extract.c:130 src/cli/tracker-index.c:387
-#: src/cli/tracker-info.c:550 src/cli/tracker-inhibit.c:113
-#: src/cli/tracker-reset.c:207 src/cli/tracker-search.c:410
-#: src/cli/tracker-status.c:753 src/cli/tracker-tag.c:419
+#: src/cli/tracker-extract.c:138 src/cli/tracker-index.c:397
+#: src/cli/tracker-info.c:530 src/cli/tracker-inhibit.c:113
+#: src/cli/tracker-reset.c:208 src/cli/tracker-search.c:418
+#: src/cli/tracker-status.c:654 src/cli/tracker-tag.c:400
 msgid "Unrecognized options"
 msgstr "Opsi tak dikenal"
 
@@ -289,74 +295,75 @@ msgstr "Hapus BERKAS dari lokasi yang diindeks"
 msgid "Makes indexing recursive"
 msgstr "Membuat pengindeksan rekursif"
 
-#: src/cli/tracker-index.c:205
+#: src/cli/tracker-index.c:213
 #, c-format
 msgid "“%s” is not a directory"
 msgstr "“%s” bukan direktori"
 
 #. TRANSLATORS: These are commandline options
-#: src/cli/tracker-index.c:281
+#: src/cli/tracker-index.c:291
 msgid "Either --add or --remove must be provided"
 msgstr "Baik --add atau --remove harus disediakan"
 
 #. TRANSLATORS: These are commandline options
-#: src/cli/tracker-index.c:285
+#: src/cli/tracker-index.c:295
 msgid "--add and --remove are mutually exclusive"
 msgstr "--add dan --remove saling eksklusif"
 
 #. TRANSLATORS: These are commandline options
-#: src/cli/tracker-index.c:295
+#: src/cli/tracker-index.c:305
 msgid "--recursive requires --add"
 msgstr "--recursive membutuhkan --add"
 
-#: src/cli/tracker-index.c:353 src/cli/tracker-status.c:347
+#: src/cli/tracker-index.c:363 src/cli/tracker-status.c:311
 msgid "Path"
 msgstr "Path"
 
-#: src/cli/tracker-index.c:354
+#: src/cli/tracker-index.c:364
 msgid "Recursive"
 msgstr "Rekursif"
 
-#: src/cli/tracker-index.c:396
+#: src/cli/tracker-index.c:406
 msgid "Please specify one or more locations to index."
 msgstr "Harap tentukan satu atau beberapa lokasi untuk diindeks."
 
-#: src/cli/tracker-info.c:66
+#: src/cli/tracker-info.c:67
 msgid "Show full namespaces (i.e. don’t use nie:title, use full URLs)"
 msgstr ""
 "Tunjukkan ruang nama lengkap (yaitu jangan memakai nie:title, gunakan URL "
 "lengkap)"
 
-#: src/cli/tracker-info.c:70
+#: src/cli/tracker-info.c:71
 msgid "Show plain text content if available for resources"
 msgstr "Tunjukkan isi teks polos bila tersedia bagi sumber daya"
 
-#: src/cli/tracker-info.c:77
+#: src/cli/tracker-info.c:78
 msgid "Checks if FILE is eligible for being indexed"
 msgstr "Memeriksa apakah BERKAS memenuhi syarat untuk diindeks"
 
-#: src/cli/tracker-info.c:349
-msgid "Error message"
-msgstr "Pesan galat"
+#: src/cli/tracker-info.c:81 src/cli/tracker-search.c:190
+#: src/cli/tracker-status.c:80
+msgid "Removable device mount point to query"
+msgstr "Titik kait perangkat lepas pasang yang akan dikueri"
 
-#: src/cli/tracker-info.c:375 src/cli/tracker-search.c:341
-#: src/cli/tracker-status.c:129 src/cli/tracker-status.c:248
+#: src/cli/tracker-info.c:347 src/cli/tracker-search.c:358
+#: src/cli/tracker-status.c:662
 msgid "Could not connect to LocalSearch"
 msgstr "Tidak dapat terhubung ke LocalSearch"
 
-#: src/cli/tracker-info.c:420
+#: src/cli/tracker-info.c:395
 msgid "Unable to retrieve data for URI"
 msgstr "Tak bisa mengambil data bagi URI"
 
-#: src/cli/tracker-info.c:430
+#: src/cli/tracker-info.c:402
 msgid "No metadata available for that URI"
 msgstr "Tak tersedia metadata bagi URI itu"
 
-#: src/cli/tracker-info.c:435 src/cli/tracker-info.c:509
+#: src/cli/tracker-info.c:412 src/cli/tracker-info.c:489
 msgid "Could not get eligible status: "
 msgstr "Tak bisa mendapatkan status yang memenuhi syarat: "
 
-#: src/cli/tracker-info.c:461 src/extractor/tracker-main.c:184
+#: src/cli/tracker-info.c:441 src/extractor/tracker-main.c:165
 #, c-format
 msgid "Unsupported serialization format “%s”\n"
 msgstr "Format serialisasi yang tak didukung \"%s\"\n"
@@ -420,7 +427,7 @@ msgstr ""
 "Data yang diindeks bagi berkas ini telah dihapus dan akan diindeks ulang "
 "lagi."
 
-#: src/cli/tracker-reset.c:223
+#: src/cli/tracker-reset.c:224
 msgid "The LocalSearch indexed data is about to be deleted, proceed? [y/N]"
 msgstr "Data yang diindeks LocalSearch akan dihapus, lanjutkan? [y/T]"
 
@@ -428,109 +435,107 @@ msgstr "Data yang diindeks LocalSearch akan dihapus, lanjutkan? [y/T]"
 #. * A partial or full match will be considered an affirmative answer,
 #. * it is intentionally lowercase, so please keep it like this.
 #.
-#: src/cli/tracker-reset.c:231
+#: src/cli/tracker-reset.c:232
 msgid "yes"
 msgstr "ya"
 
-#: src/cli/tracker-search.c:99
+#: src/cli/tracker-search.c:116
 msgid "Results"
 msgstr "Hasil"
 
-#: src/cli/tracker-search.c:100 src/cli/tracker-search.c:101
-#: src/cli/tracker-search.c:103 src/cli/tracker-search.c:106
-#: src/cli/tracker-search.c:107 src/cli/tracker-search.c:108
+#: src/cli/tracker-search.c:117 src/cli/tracker-search.c:118
+#: src/cli/tracker-search.c:120 src/cli/tracker-search.c:123
+#: src/cli/tracker-search.c:124 src/cli/tracker-search.c:125
 msgid "Files"
 msgstr "Berkas"
 
-#: src/cli/tracker-search.c:102
-#| msgid "%d folder"
-#| msgid_plural "%d folders"
+#: src/cli/tracker-search.c:119
 msgid "Folders"
 msgstr "Folder"
 
-#: src/cli/tracker-search.c:104
+#: src/cli/tracker-search.c:121
 msgid "Albums"
 msgstr "Album"
 
-#: src/cli/tracker-search.c:105
+#: src/cli/tracker-search.c:122
 msgid "Artists"
 msgstr "Artis"
 
-#: src/cli/tracker-search.c:116
+#: src/cli/tracker-search.c:133
 msgid "Search for files"
 msgstr "Cari berkas"
 
-#: src/cli/tracker-search.c:120
+#: src/cli/tracker-search.c:137
 msgid "Search for folders"
 msgstr "Cari folder"
 
-#: src/cli/tracker-search.c:124
+#: src/cli/tracker-search.c:141
 msgid "Search for audio files"
 msgstr "Cari berkas audio"
 
-#: src/cli/tracker-search.c:128
+#: src/cli/tracker-search.c:145
 msgid "Search for music albums"
 msgstr "Cari album musik"
 
-#: src/cli/tracker-search.c:132
+#: src/cli/tracker-search.c:149
 msgid "Search for music artists"
 msgstr "Cari artis musik"
 
-#: src/cli/tracker-search.c:136
+#: src/cli/tracker-search.c:153
 msgid "Search for image files"
 msgstr "Cari berkas gambar"
 
-#: src/cli/tracker-search.c:140
+#: src/cli/tracker-search.c:157
 msgid "Search for video files"
 msgstr "Cari berkas video"
 
-#: src/cli/tracker-search.c:144
+#: src/cli/tracker-search.c:161
 msgid "Search for document files"
 msgstr "Cari berkas dokumen"
 
-#: src/cli/tracker-search.c:148
+#: src/cli/tracker-search.c:165
 msgid "Search for software files"
 msgstr "Cari berkas perangkat lunak"
 
-#: src/cli/tracker-search.c:157 src/cli/tracker-tag.c:87
+#: src/cli/tracker-search.c:174 src/cli/tracker-tag.c:87
 msgid "Limit the number of results shown"
 msgstr "Batasi cacah hasil yang ditampilkan"
 
-#: src/cli/tracker-search.c:161 src/cli/tracker-tag.c:91
+#: src/cli/tracker-search.c:178 src/cli/tracker-tag.c:91
 msgid "Offset the results"
 msgstr "Ofsetkan hasilnya"
 
-#: src/cli/tracker-search.c:165
+#: src/cli/tracker-search.c:182
 msgid "Show URNs for results"
 msgstr "Tampilkan URN untuk hasil"
 
-#: src/cli/tracker-search.c:169
+#: src/cli/tracker-search.c:186
 msgid "Return all non-existing matches too (i.e. include unmounted volumes)"
 msgstr ""
 "Mengembalikan semua kecocokan yang tidak hadir juga (mis. volume tak dikait "
 "yang termasuk)"
 
-#: src/cli/tracker-search.c:173
+#: src/cli/tracker-search.c:194
 msgid "Show help options"
 msgstr "Tampilkan opsi bantuan"
 
-#: src/cli/tracker-search.c:180 src/cli/tracker-status.c:80
+#: src/cli/tracker-search.c:201 src/cli/tracker-status.c:85
 msgid "search terms"
 msgstr "istilah yang dicari"
 
-#: src/cli/tracker-search.c:181
+#: src/cli/tracker-search.c:202
 msgid "TERMS"
 msgstr "ISTILAH"
 
-#: src/cli/tracker-status.c:67
+#: src/cli/tracker-status.c:68
 msgid "Follow status changes as they happen"
 msgstr "Ikuti perubahan status saat mereka terjadi"
 
-#: src/cli/tracker-status.c:71
+#: src/cli/tracker-status.c:72
 msgid "Show statistics for current index / data set"
 msgstr "Tunjukkan statistik bagi set data / indeks saat ini"
 
-#: src/cli/tracker-status.c:75
+#: src/cli/tracker-status.c:76
 msgid ""
 "Watch changes to the database in real time (e.g. resources or files being "
 "added)"
@@ -538,71 +543,63 @@ msgstr ""
 "Amati perubahan ke basis data secara real time (mis. sumber daya atau berkas "
 "sedang ditambahkan)"
 
-#: src/cli/tracker-status.c:81
+#: src/cli/tracker-status.c:86
 msgid "EXPRESSION"
 msgstr "EKSPRESI"
 
-#: src/cli/tracker-status.c:143 src/cli/tracker-status.c:267
-#: src/cli/tracker-status.c:289
+#: src/cli/tracker-status.c:138 src/cli/tracker-status.c:231
+#: src/cli/tracker-status.c:253
 msgid "Could not get LocalSearch statistics"
 msgstr "Tidak dapat memperoleh statistik LocalSearch"
 
-#: src/cli/tracker-status.c:348 src/cli/tracker-status.c:511
-msgid "Message"
-msgstr "Pesan"
-
-#: src/cli/tracker-status.c:406
+#: src/cli/tracker-status.c:365
 #, c-format
 msgid "Currently indexed"
 msgstr "Saat ini terindeks"
 
-#: src/cli/tracker-status.c:409 src/cli/tracker-tag.c:180
+#: src/cli/tracker-status.c:368 src/cli/tracker-tag.c:177
 #, c-format
 msgid "%d file"
 msgid_plural "%d files"
 msgstr[0] "%d berkas"
 
-#: src/cli/tracker-status.c:415
+#: src/cli/tracker-status.c:374
 #, c-format
 msgid "%d folder"
 msgid_plural "%d folders"
 msgstr[0] "%d folder"
 
-#: src/cli/tracker-status.c:429
+#: src/cli/tracker-status.c:388
 msgid "Remaining space on database partition"
 msgstr "Ruang tersisa pada partisi basis data"
 
-#: src/cli/tracker-status.c:439 src/cli/tracker-status.c:645
+#: src/cli/tracker-status.c:398 src/cli/tracker-status.c:550
 msgid "Indexer is paused"
 msgstr "Pengindeksan dijeda"
 
-#: src/cli/tracker-status.c:440
+#: src/cli/tracker-status.c:399
 msgid "Data is still being indexed"
 msgstr "Data sedang diindeks"
 
-#: src/cli/tracker-status.c:442
+#: src/cli/tracker-status.c:401
 msgid "Indexer is idle"
 msgstr "Pengindeks sedang menganggur"
 
-#: src/cli/tracker-status.c:449
+#: src/cli/tracker-status.c:408
 #, c-format
 msgid "%d recorded failure"
 msgid_plural "%d recorded failures"
 msgstr[0] "%d kegagalan yang tercatat"
 
-#: src/cli/tracker-status.c:533
+#: src/cli/tracker-status.c:438
 msgid "No reports found"
 msgstr "Tak ditemukan laporan"
 
-#: src/cli/tracker-status.c:705
-msgid "Could not get SPARQL connection"
-msgstr "Tak bisa memperoleh koneksi SPARQL"
-
-#: src/cli/tracker-status.c:714
+#: src/cli/tracker-status.c:614
 msgid "Now listening to database updates"
 msgstr "Kini mendengarkan pemutakhiran basis data"
 
-#: src/cli/tracker-status.c:715
+#: src/cli/tracker-status.c:615
 msgid "Press Ctrl+C to stop"
 msgstr "Tekan Ctrl+C untuk berhenti"
 
@@ -646,63 +643,53 @@ msgstr "BERKAS…"
 msgid "Could not get files related to tag"
 msgstr "Tak bisa mendapat berkas yang terkait dengan tag"
 
-#: src/cli/tracker-tag.c:151 src/cli/tracker-tag.c:335
+#: src/cli/tracker-tag.c:149 src/cli/tracker-tag.c:323
 msgid "Could not get all tags"
 msgstr "Tak bisa mendapat semua tag"
 
-#: src/cli/tracker-tag.c:156
+#: src/cli/tracker-tag.c:153
 msgid "Tags (shown by name)"
 msgstr "Tag (ditampilkan berdasar nama)"
 
-#: src/cli/tracker-tag.c:217
+#: src/cli/tracker-tag.c:213
 msgid "Could not add tag"
 msgstr "Tidak dapat menambah tag"
 
-#: src/cli/tracker-tag.c:222
+#: src/cli/tracker-tag.c:217
 msgid "Tag was added successfully"
 msgstr "Tag berhasil ditambahkan"
 
-#: src/cli/tracker-tag.c:248
+#: src/cli/tracker-tag.c:242
 msgid "Could not add tag to files"
 msgstr "Tidak dapat menambahkan tag ke berkas"
 
-#: src/cli/tracker-tag.c:253
+#: src/cli/tracker-tag.c:246
 msgid "Tagged"
 msgstr "Di-tag"
 
-#: src/cli/tracker-tag.c:278 src/cli/tracker-tag.c:306
+#: src/cli/tracker-tag.c:270 src/cli/tracker-tag.c:296
 msgid "Could not remove tag"
 msgstr "Tidak dapat menghapus tag"
 
-#: src/cli/tracker-tag.c:283 src/cli/tracker-tag.c:311
+#: src/cli/tracker-tag.c:274 src/cli/tracker-tag.c:300
 msgid "Tag was removed successfully"
 msgstr "Tag berhasil dihapus"
 
-#: src/cli/tracker-tag.c:360
+#: src/cli/tracker-tag.c:345
 msgid "Could not establish a connection to LocalSearch"
 msgstr "Tidak dapat menjalin koneksi ke LocalSearch"
 
-#: src/cli/tracker-tag.c:424
+#: src/cli/tracker-tag.c:405
 msgid "The --list option is required for --show-files"
 msgstr "Opsi —list diperlukan bagi —show-files"
 
-#: src/cli/tracker-tag.c:426
+#: src/cli/tracker-tag.c:407
 msgid "Add and delete actions can not be used together"
 msgstr "Aksi tambah dan hapus tak dapat dipakai bersama"
 
-#: src/cli/tracker-tag.c:428
+#: src/cli/tracker-tag.c:409
 msgid "The --description option can only be used with --add"
 msgstr "Opsi —description hanya dapat dipakai dengan —add"
-
-#: src/common/tracker-miner-proxy.c:349
-msgid "Cookie not recognized to resume paused miner"
-msgstr "Cookie tak dikenali untuk melanjutkan penambang yang mengambil jeda"
-
-#: src/common/tracker-miner-proxy.c:406
-msgid "Pause application and reason match an already existing pause request"
-msgstr ""
-"Istirahatkan aplikasi dan alasan cocok dengan permintaan istirahat yang "
-"telah ada"
 
 #: src/common/tracker-utils.c:101 src/common/tracker-utils.c:152
 msgid "less than one second"
@@ -756,94 +743,103 @@ msgid " %2.2d second"
 msgid_plural " %2.2d seconds"
 msgstr[0] " %2.2d detik"
 
-#: src/control/tracker-main.c:61 src/extractor/tracker-main.c:89
-#: src/indexer/tracker-application.c:65 src/writeback/tracker-main.c:50
+#: src/control/tracker-main.c:56 src/extractor/tracker-main.c:94
+#: src/indexer/tracker-application.c:73 src/writeback/tracker-main.c:50
 msgid "Displays version information"
 msgstr "Tampilkan informasi versi"
 
 #. Translators: this messagge will apper immediately after the
 #. * usage string - Usage: COMMAND <THIS_MESSAGE>
 #.
-#: src/control/tracker-main.c:136
+#: src/control/tracker-main.c:116 src/indexer/tracker-endpoint-helper.c:77
 msgid "— start the tracker index proxy"
 msgstr "— jalankan proksi indeks pelacak"
 
-#: src/extractor/tracker-main.c:74
+#: src/extractor/tracker-main.c:75
 msgid "File to extract metadata for"
 msgstr "Berkas yang akan diekstrak metadatanya"
 
-#: src/extractor/tracker-main.c:78
+#: src/extractor/tracker-main.c:79
 msgid "MIME type for file (if not provided, this will be guessed)"
 msgstr "Jenis MIME bagi berkas (bila tidak diberikan, akan ditebak)"
 
-#: src/extractor/tracker-main.c:79
+#: src/extractor/tracker-main.c:80
 msgid "MIME"
 msgstr "MIME"
 
-#: src/extractor/tracker-main.c:85
+#: src/extractor/tracker-main.c:86 src/indexer/tracker-endpoint-helper.c:40
 msgid "Socket file descriptor for peer-to-peer communication"
 msgstr "Deskriptor berkas soket untuk komunikasi peer-to-peer"
 
-#: src/extractor/tracker-main.c:86
+#: src/extractor/tracker-main.c:87 src/indexer/tracker-endpoint-helper.c:41
 msgid "FD"
 msgstr "FD"
 
-#: src/extractor/tracker-main.c:257
+#: src/extractor/tracker-main.c:90
+msgid "Filesystem root of the extracted data"
+msgstr "Root sistem berkas dari data yang diekstrak"
+
+#: src/extractor/tracker-main.c:235
 msgid "No metadata or extractor modules found to handle this file"
 msgstr ""
 "Tak ditemukan modul pengekstrak atau metadata untuk menangani berkas ini"
 
-#: src/extractor/tracker-main.c:265
+#: src/extractor/tracker-main.c:243
 msgid "Metadata extraction failed"
 msgstr "Ekstraksi metadata gagal"
 
 #. Translators: this message will appear immediately after the
 #. usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>
-#: src/extractor/tracker-main.c:327
+#: src/extractor/tracker-main.c:306
 msgid "— Extract file meta data"
 msgstr "— Ekstrak meta data berkas"
 
-#: src/extractor/tracker-main.c:341
+#: src/extractor/tracker-main.c:320
 msgid "Filename and mime type must be provided together"
 msgstr "Nama berkas dan jenis mime mesti diberikan bersamaan"
 
-#: src/indexer/tracker-application.c:53
+#: src/indexer/tracker-application.c:57
 msgid "Runs until all configured locations are indexed and then exits"
 msgstr "Jalankan sampai semua lokasi yang dikonfigurasi diindeks lalu keluar"
 
-#: src/indexer/tracker-application.c:57
+#: src/indexer/tracker-application.c:61
+msgid "Skips metadata extraction from file content"
+msgstr "Melewatkan ekstraksi metadata dari isi berkas"
+
+#: src/indexer/tracker-application.c:65
 msgid "Checks if FILE is eligible for being mined based on configuration"
 msgstr "Memeriksa apakah BERKAS boleh ditambang berdasar konfigurasi"
 
-#: src/indexer/tracker-application.c:61
+#: src/indexer/tracker-application.c:69
 msgid "Avoids changes in the filesystem"
 msgstr "Hindari perubahan dalam sistem berkas"
 
-#: src/indexer/tracker-application.c:612
+#: src/indexer/tracker-application.c:1283
 #, c-format
 msgid "Data object “%s” currently exists"
 msgstr "Objek data \"%s\" kini telah ada"
 
-#: src/indexer/tracker-application.c:613
+#: src/indexer/tracker-application.c:1284
 #, c-format
 msgid "Data object “%s” currently does not exist"
 msgstr "Objek data \"%s\" kini belum ada"
 
-#: src/indexer/tracker-application.c:639
+#: src/indexer/tracker-application.c:1310
 #, c-format
-msgid "Parent directory “%s” is NOT eligible to be indexed (based on filters)"
+msgid ""
+"Parent directory “%s” is NOT eligible to be indexed (based on filters)"
 msgstr ""
 "Direktori induk \"%s\" TIDAK memenuhi syarat untuk diindeks (berdasarkan "
 "penyaring)"
 
-#: src/indexer/tracker-application.c:645
+#: src/indexer/tracker-application.c:1315
 #, c-format
 msgid "Parent directory “%s” is NOT eligible to be indexed (hidden file)"
 msgstr ""
 "Direktori induk \"%s\" TIDAK memenuhi syarat untuk diindeks (berkas "
 "tersembunyi)"
 
-#: src/indexer/tracker-application.c:651
+#: src/indexer/tracker-application.c:1321
 #, c-format
 msgid ""
 "Parent directory “%s” is NOT eligible to be indexed (based on content "
@@ -852,30 +848,38 @@ msgstr ""
 "Direktori induk \"%s\" TIDAK memenuhi syarat untuk diindeks (berdasarkan "
 "pentaring konten)"
 
-#: src/indexer/tracker-application.c:666
+#: src/indexer/tracker-application.c:1336
 msgid "Directory is NOT eligible to be indexed (based on filters)"
 msgstr "Direktori TIDAK memenuhi syarat untuk diindeks (berdasarkan penyaring)"
 
-#: src/indexer/tracker-application.c:670
+#: src/indexer/tracker-application.c:1340
 msgid "File is NOT eligible to be indexed (based on filters)"
 msgstr "Berkas TIDAK memenuhi syarat untuk diindeks (berdasarkan penyaring)"
 
-#: src/indexer/tracker-application.c:673
+#: src/indexer/tracker-application.c:1342
 msgid "File is NOT eligible to be indexed (hidden file)"
 msgstr "Berkas TIDAK memenuhi syarat untuk diindeks (berkas tersembunyi)"
 
-#: src/indexer/tracker-application.c:675
+#: src/indexer/tracker-application.c:1344
 msgid "File is NOT eligible to be indexed (not an indexed folder)"
 msgstr ""
 "Berkas TIDAK memenuhi syarat untuk diindeks (bukan folder yang diindeks)"
 
-#: src/indexer/tracker-application.c:683
+#: src/indexer/tracker-application.c:1352
 msgid "Directory is eligible to be indexed"
 msgstr "Direktori memenuhi syarat untuk diindeks"
 
-#: src/indexer/tracker-application.c:684
+#: src/indexer/tracker-application.c:1353
 msgid "File is eligible to be indexed"
 msgstr "Berkas memenuhi syarat untuk diindeks"
+
+#: src/indexer/tracker-endpoint-helper.c:36
+msgid "Database location"
+msgstr "Lokasi basis data"
+
+#: src/indexer/tracker-endpoint-helper.c:37
+msgid "DIR"
+msgstr "DIR"
 
 #: src/writeback/tracker-main.c:54
 msgid ""
@@ -894,3 +898,17 @@ msgstr "Menonaktifkan mematikan setelah 30 detik tanpa aktivitas"
 #: src/writeback/tracker-main.c:93
 msgid "— start the tracker writeback service"
 msgstr "— mulai layanan tulis balik pelacak"
+
+#~ msgid "Error message"
+#~ msgstr "Pesan galat"
+
+#~ msgid "Could not get SPARQL connection"
+#~ msgstr "Tak bisa memperoleh koneksi SPARQL"
+
+#~ msgid "Cookie not recognized to resume paused miner"
+#~ msgstr "Cookie tak dikenali untuk melanjutkan penambang yang mengambil jeda"
+
+#~ msgid "Pause application and reason match an already existing pause request"
+#~ msgstr ""
+#~ "Istirahatkan aplikasi dan alasan cocok dengan permintaan istirahat yang "
+#~ "telah ada"
